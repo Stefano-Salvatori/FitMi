@@ -19,7 +19,7 @@ function pausecomp(millis) {
 }
 
 console.log('Waiting MongoDB...');
-pausecomp(10000);
+pausecomp(0);
 
 //connessione al db
 mongoose.set('useFindAndModify', false);
