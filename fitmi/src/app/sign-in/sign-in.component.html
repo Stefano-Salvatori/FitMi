@@ -1,0 +1,17 @@
+<div class="pane">
+  <h1>
+    {{title}}
+  </h1>
+  <div class="container">
+    <label>Username: <input [(ngModel)]="username"/></label>
+    <label>Password: <input type="password" [(ngModel)]="password"/></label>
+    <label>Birth date: <input type="date" [(ngModel)]="birthDate"/></label>
+    <p>Sesso:
+      <label> M <input type="radio" name="gender" (click)="setGender(M)" checked/></label>
+      <label> F <input type="radio" name="gender" (click)="setGender(F)"/></label>
+    </p>
+    <label>Altezza: <input type="number" [(ngModel)]="heigth"/> cm </label>
+    <label>Peso: <input type="number" [(ngModel)]="weight"/> kg </label>
+    <button (click)="signIn()">{{title}}</button>
+  </div>
+</div>
