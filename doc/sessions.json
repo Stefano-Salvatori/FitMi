@@ -1,0 +1,20 @@
+{
+    "_id": "",
+    "start": "",
+    "end": "",
+    "type": "",
+    "steps": "",
+    "heart_frequency": [
+        {
+            "timestamp": "",
+            "value": ""
+        }
+    ],
+    "position": [
+        {
+            "latitude": "",
+            "longitude": "",
+            "timestamp": ""
+        }
+    ]
+}
