@@ -1,17 +1,54 @@
-<div class="pane">
-  <h1>
-    {{title}}
-  </h1>
-  <div class="container">
-    <label>Username: <input [(ngModel)]="username"/></label>
-    <label>Password: <input type="password" [(ngModel)]="password"/></label>
-    <label>Birth date: <input type="date" [(ngModel)]="birthDate"/></label>
-    <p>Sesso:
-      <label> M <input type="radio" name="gender" (click)="setGender(M)" checked/></label>
-      <label> F <input type="radio" name="gender" (click)="setGender(F)"/></label>
-    </p>
-    <label>Altezza: <input type="number" [(ngModel)]="heigth"/> cm </label>
-    <label>Peso: <input type="number" [(ngModel)]="weight"/> kg </label>
-    <button (click)="signIn()">{{title}}</button>
-  </div>
-</div>
+<ion-content color="primary">
+  <ion-row color="primary" justify-content-center>
+    <ion-img src={{logoImage}} align-self-center></ion-img>
+  </ion-row>
+  <form #form="ngForm" (ngSubmit)="register(form)" class="container">
+    <ion-grid>
+      <ion-row color="primary" justify-content-center>
+        <ion-col>
+          <ion-item margin>
+            <ion-input name="username" ngModel type="text" required="true" placeholder="Username">
+            </ion-input>
+          </ion-item>
+
+          <ion-item margin>
+            <ion-input name="password" ngModel type="password" required="true" placeholder="Password">
+            </ion-input>
+          </ion-item>
+
+          <ion-item margin>
+            <ion-datetime displayFormat="DD/MM/YYYY" name="birthDate" ngModel placeholder="DD/MM/YYYY"></ion-datetime>
+          </ion-item>
+
+          <ion-radio-group name="gender" ngModel>
+            <ion-item margin>
+
+              <ion-radio value="M" margin checked></ion-radio>
+              <ion-label>M</ion-label>
+
+              <ion-radio value="F" margin></ion-radio>
+              <ion-label>F</ion-label>
+            </ion-item>
+
+          </ion-radio-group>
+
+
+
+          <ion-item margin>
+            <ion-input name="height" [(ngModel)]="height" type="number" required="true"
+              placeholder="Altezza"></ion-input>
+          </ion-item>
+
+          <ion-item margin>
+            <ion-input name="weight" [(ngModel)]="weight" type="number" required="true"
+              placeholder="Peso"></ion-input>
+          </ion-item>
+
+          <div padding>
+            <ion-button type="submit" size="small" color="light" expand="block" block>Sign In</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

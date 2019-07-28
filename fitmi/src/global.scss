@@ -25,51 +25,7 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-h1 {
-  //color: #369;
-  color: #fff;
-  font-size: 250%;
-}
 
-h2, h3 {
-  color: #369;
-}
+@import "theme/variables.scss";
 
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #039be5;
-}
 
-button {
-  color: #607d8b;
-  background-color: #eee;
-  padding: 5px 10px;
-  border-radius: 4px;
-  margin: 1%;
-  margin-left: 0.5%;
-  border: none;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  width: 75%;
-}
-
-.pane {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.container > * {
-    padding: 10px 10px;
-    border-radius: 4px;
-    margin: 2%;
-    width: 100%;
-}

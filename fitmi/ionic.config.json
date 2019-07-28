@@ -1,5 +1,7 @@
 {
   "name": "fitmi",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

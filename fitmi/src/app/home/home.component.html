@@ -1,9 +1,35 @@
-<div class="pane">
-  <h1>
-    {{title}}
-  </h1>
-  <div class="container">
-    <button (click)="login()">Login</button>
-    <button (click)="register()">Registrati</button>
-  </div>
-</div>
+<ion-content color="primary">
+  <ion-grid color="primary">
+    <ion-row justify-content-center>
+      <ion-img src={{logoImage}}></ion-img>
+    </ion-row>
+
+    <ion-row justify-content-center>
+      <ion-col align-self-center>
+        <ion-item margin>
+          <ion-input  [(ngModel)]="username" type="text" placeholder="Username" required="true">
+          </ion-input>
+        </ion-item>
+
+        <ion-item margin>
+          <ion-input [(ngModel)]="password" type="password" placeholder="Password" required="true">
+          </ion-input>
+        </ion-item>
+
+        <div padding>
+          <ion-button (click)="login()" size="small" type="submit" color="light" expand="block" block>
+            Login
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row justify-content-center>
+      <ion-label color="light">
+        Non hai un Account? <a (click)="register()" class="register_button">Registrati</a>
+      </ion-label>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>
