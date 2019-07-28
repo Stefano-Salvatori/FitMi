@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose')
 var Users = require('./src/models/usersModel')
+var cors = require('cors')
 
 //Creo istanza di express (web server)
 var app = express();
@@ -31,6 +32,9 @@ mongoose
 		{ useNewUrlParser: true })
 	.then(() => console.log('MongoDB Connected'))
 	.catch((err) => console.log(err));
+
+
+app.use(cors())
 
 var userRoutes = require('./src/routes/userRoutes');
 userRoutes(app);

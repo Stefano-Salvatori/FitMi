@@ -6,7 +6,7 @@ module.exports = function (app) {
 		.get(usersController.list_users);
 
 	app.route('/users/login')
-		.get(usersController.login_user);
+		.post(usersController.login_user);
 
 	app.get('/', function (req, res) {
 		res.send("Hello World!");
