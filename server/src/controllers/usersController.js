@@ -21,8 +21,10 @@ exports.login_user = (req, res) => {
 				if (pswErr) res.send(pswErr);
 
 				if (isMatch) res.send(user);
-				else res.send('password errata');
+				else res.status(401).json({ message: "Password Errata"});
 			});
+		} else {
+			res.status(401).json({ message: "Username non trovato"});
 		}
 	});
 }

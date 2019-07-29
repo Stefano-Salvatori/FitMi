@@ -7,6 +7,10 @@ var cors = require('cors')
 //Creo istanza di express (web server)
 var app = express();
 
+//Gestione richieste CORS
+app.use(cors())
+
+
 //importo parser per leggere i parametri passati in POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -34,7 +38,6 @@ mongoose
 	.catch((err) => console.log(err));
 
 
-app.use(cors())
 
 var userRoutes = require('./src/routes/userRoutes');
 userRoutes(app);

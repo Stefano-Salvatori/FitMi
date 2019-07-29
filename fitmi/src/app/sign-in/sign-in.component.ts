@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { serverAddress, serverBaseUrl } from '../../server-data';
+
 
 
 @Component({
@@ -17,7 +19,7 @@ export class SignInComponent implements OnInit {
   ngOnInit() { }
 
   register(form) {
-    this.httpClient.post('http://192.168.1.4:3000/users', form.value)
-      .subscribe(() => this.router.navigateByUrl('home'));
+    this.httpClient.post(serverAddress + '/users', form.value)
+      .subscribe(() => this.router.navigateByUrl('login'));
   }
 }

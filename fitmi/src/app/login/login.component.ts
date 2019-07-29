@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+
+import { serverAddress, serverBaseUrl } from '../../server-data';
+
 
 @Component({
   selector: 'app-home',
@@ -8,18 +11,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+
+
   private registrationRoute = 'sign-in';
-  private loginRoute = 'login';
+  private homeRoute = 'home';
 
   private username: string;
   private password: string;
 
-  private router: Router;
-  private httpClient: HttpClient;
+  private errorString = '';
+  private readonly incorrectFields = 'Username o Password non corretti';
+  private readonly connectionError = 'Errore di connessione al server';
 
-  public constructor(router: Router, httpClient: HttpClient) {
-    this.router = router;
-    this.httpClient = httpClient;
+
+  public constructor(private router: Router, private httpClient: HttpClient) {
   }
 
   public login(): void {
@@ -28,22 +33,20 @@ export class LoginComponent {
         'Content-Type': 'application/json',
       }),
     };
-    console.log(this.username);
-    console.log(this.password);
 
     this.httpClient
-      .post(
-        'http://192.168.1.4:3000/users/login',
-        {
-          username: this.username,
-          password: this.password,
-        },
-        httpOptions,
-      )
-      .subscribe((data): void => console.log(data));
-  }
-
-  public register(): void {
-    this.router.navigateByUrl(this.registrationRoute);
+      .post(serverAddress + '/users/login', {
+        username: this.username,
+        password: this.password,
+      }, httpOptions,
+      ).subscribe((serverResponse: HttpResponse<any>) => {
+        this.router.navigateByUrl(this.homeRoute);
+      }, (err: HttpErrorResponse) => {
+        if (err.status === 401) {
+          this.errorString = this.incorrectFields;
+        } else {
+          this.errorString = this.connectionError;
+        }
+      });
   }
 }
