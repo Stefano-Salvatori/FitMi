@@ -1,13 +1,15 @@
 <ion-content color="primary">
   <ion-grid color="primary">
     <ion-row justify-content-center>
-      <ion-img src={{logoImage}}></ion-img>
+      <ion-col align-self-center  size-xs="5" size-md="3" size-lg="2.5">
+          <ion-img src='assets/icon/logo_icon.png'></ion-img>
+      </ion-col>
     </ion-row>
-    
+
     <ion-row justify-content-center>
-      <ion-col align-self-center>
+      <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
         <ion-item margin>
-          <ion-input  [(ngModel)]="username" type="text" placeholder="Username" required="true">
+          <ion-input [(ngModel)]="username" type="text" placeholder="Username" required="true">
           </ion-input>
         </ion-item>
 

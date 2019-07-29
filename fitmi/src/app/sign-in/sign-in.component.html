@@ -1,11 +1,13 @@
 <ion-content color="primary">
   <ion-row color="primary" justify-content-center>
-    <ion-img src={{logoImage}} align-self-center></ion-img>
+      <ion-col align-self-center  size-xs="5" size-md="3" size-lg="2.5">
+          <ion-img src='assets/icon/logo_icon.png'></ion-img>
+      </ion-col>
   </ion-row>
   <form #form="ngForm" (ngSubmit)="register(form)" class="container">
     <ion-grid>
       <ion-row color="primary" justify-content-center>
-        <ion-col>
+        <ion-col size-md="6" size-lg="5" size-xs="12">
           <ion-item margin>
             <ion-input name="username" ngModel type="text" required="true" placeholder="Username">
             </ion-input>

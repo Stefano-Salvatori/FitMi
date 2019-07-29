@@ -8,9 +8,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  private registrationRoute: string = 'sign-in';
-  private loginRoute: string = 'login';
-  private logoImage: string = 'assets/icon/logo_icon.png';
+  private registrationRoute = 'sign-in';
+  private loginRoute = 'login';
 
   private username: string;
   private password: string;
