@@ -8,7 +8,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'sign-in', component: SignInComponent },
-  {path: '**', component: NotFoundResourceComponent }
+  { path: 'home', loadChildren: './home/home.module#HomePageModule' },
+  { path: '**', component: NotFoundResourceComponent }
+
 ];
 
 @NgModule({
