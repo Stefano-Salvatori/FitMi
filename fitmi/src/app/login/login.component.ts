@@ -29,9 +29,9 @@ export class LoginComponent {
   }
 
   public login(): void {
-console.log(this.password);
+    console.log(this.password);
 
-    var hashedPassword: string = this.chiper.sha512(this.password);
+    const hashedPassword: string = this.chiper.sha512(this.password);
 
     const httpOptions = {
       headers: new HttpHeaders({

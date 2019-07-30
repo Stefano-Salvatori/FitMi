@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse } from '../http-msg';
+import { HttpRequest, HttpResponse } from '../../http-msg';
 
 export interface AuthRequest extends HttpRequest {
   username: string;
