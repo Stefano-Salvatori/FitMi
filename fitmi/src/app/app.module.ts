@@ -14,6 +14,8 @@ import { NotFoundResourceComponent } from './not-found-resource/not-found-resour
 import { LoginComponent } from './login/login.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 
+import { AuthModule } from './auth/auth.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +28,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
     IonicModule.forRoot(),
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AuthModule
   ],
   providers: [
     StatusBar,

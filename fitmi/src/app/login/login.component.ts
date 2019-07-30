@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angul
 
 import { serverAddress, serverBaseUrl } from '../../server-data';
 
+import { CryptoService } from '../crypto.service';
 
 @Component({
   selector: 'app-home',
@@ -24,10 +25,14 @@ export class LoginComponent {
   private readonly connectionError = 'Errore di connessione al server';
 
 
-  public constructor(private router: Router, private httpClient: HttpClient) {
+  public constructor(private router: Router, private httpClient: HttpClient, private chiper: CryptoService) {
   }
 
   public login(): void {
+console.log(this.password);
+
+    var hashedPassword: string = this.chiper.sha512(this.password);
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -37,7 +42,7 @@ export class LoginComponent {
     this.httpClient
       .post(serverAddress + '/users/login', {
         username: this.username,
-        password: this.password,
+        password: hashedPassword,
       }, httpOptions,
       ).subscribe((serverResponse: HttpResponse<any>) => {
         this.router.navigateByUrl(this.homeRoute);
