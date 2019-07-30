@@ -20,7 +20,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
     NotFoundResourceComponent,
     LoginComponent,
     SignInComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

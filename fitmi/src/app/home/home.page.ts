@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {
 
+  private activities = ['Corsa', 'Camminata', 'Ciclismo', 'Palestra', 'Nuoto', 'Corsa Indoor'];
+
+
   constructor() { }
 
   ngOnInit() {
