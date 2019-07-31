@@ -22,7 +22,11 @@ var UserSchema = new Schema({
     totalSessions: { type: Number, default: 0 },
     sessionStreak: { type: Number, default: 0 }
   },
-  sessions: [[Schema.Types.ObjectId]]
+  sessions: [[Schema.Types.ObjectId]],
+  accessToken: {
+    id: String,
+    expirationTime: Number
+  }
 });
 
 //Anytime we add a user we hash his password

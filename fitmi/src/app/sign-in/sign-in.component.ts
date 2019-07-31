@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { serverAddress, serverBaseUrl } from '../../server-data';
 
 import { CryptoService } from '../crypto.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -13,13 +14,18 @@ import { CryptoService } from '../crypto.service';
 })
 export class SignInComponent implements OnInit {
 
-  constructor(private httpClient: HttpClient, private router: Router, private chiper: CryptoService) { }
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router,
+    private chiper: CryptoService,
+    private auth: AuthService) { }
 
   ngOnInit() { }
 
   register(form) {
     form.value.password = this.chiper.sha512(form.value.password);
-    this.httpClient.post(serverAddress + '/users', form.value)
-      .subscribe(() => this.router.navigateByUrl('login'));
+    this.auth.signIn(form.value).subscribe(() => {
+      this.router.navigateByUrl('login');
+    });
   }
 }

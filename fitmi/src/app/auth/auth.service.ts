@@ -2,7 +2,7 @@ import { Injectable } from  '@angular/core';
 import { tap } from  'rxjs/operators';
 import { Observable, BehaviorSubject } from  'rxjs';
 
-import { Storage } from  '@ionic/storage';
+import { StorageService } from  '../storage.service';
 import { AuthRequest, AuthResponse } from  './auth-msg';
 
 
@@ -16,25 +16,25 @@ export class AuthService {
 
   private authSubject = new BehaviorSubject(false);
 
-  constructor(private httpClient: HttpClient, private storage: Storage) { }
+  constructor(private httpClient: HttpClient, private storage: StorageService) { }
 
-  register(request: AuthRequest): Observable<AuthResponse> {
-    return this.httpClient.post<AuthResponse>(`http://192.168.1.4:3000/sign-in`, request).pipe(
-      tap(async (res:  AuthResponse) => {
-          await this.storage.set("token", res.accessToken);
-          await this.storage.set("expirationTime", res.expirationTime);
+  signIn(request: AuthRequest): Observable<AuthResponse> {
+    return this.httpClient.post<AuthResponse>(`http://localhost:3000/users`, request).pipe(
+      tap(async (res: AuthResponse) => {
+          await this.storage.store("accessToken", res.accessToken.id);
+          await this.storage.store("expirationTime", res.accessToken.expirationTime);
           this.authSubject.next(true);
-      });
+      })
     );
   }
 
   login(request: AuthRequest): Observable<AuthResponse> {
-    return this.httpClient.post<AuthResponse>(`http://192.168.1.4:3000/login`, request).pipe(
+    return this.httpClient.post<AuthResponse>(`http://localhost/login`, request).pipe(
      tap(async (res: AuthResponse) => {
-       await this.storage.set("token", res.accessToken);
-       await this.storage.set("expirationTime", res.expirationTime);
+       await this.storage.store("token", res.accessToken);
+       await this.storage.store("expirationTime", res.expirationTime);
        this.authSubject.next(true);
-     });
+     })
    );
   }
 

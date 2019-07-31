@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { serverAddress, serverBaseUrl } from '../../server-data';
 
 import { CryptoService } from '../crypto.service';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
 
   private registrationRoute = 'sign-in';
@@ -25,13 +26,28 @@ export class LoginComponent {
   private readonly connectionError = 'Errore di connessione al server';
 
 
-  public constructor(private router: Router, private httpClient: HttpClient, private chiper: CryptoService) {
+  public constructor(
+    private router: Router,
+    private httpClient: HttpClient,
+    private chiper: CryptoService,
+    private storage: StorageService) {
   }
 
+  public ngOnInit() { }
+
   public login(): void {
-    console.log(this.password);
 
     const hashedPassword: string = this.chiper.sha512(this.password);
+
+/*
+    this.storage.retrieve("accessToken").then(data => {
+      if (data) {
+        console.log("NO data");
+      } else {
+        console.log(data);
+      }
+    });
+*/
 
     const httpOptions = {
       headers: new HttpHeaders({

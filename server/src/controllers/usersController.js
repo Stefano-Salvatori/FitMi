@@ -31,8 +31,14 @@ exports.login_user = (req, res) => {
 
 exports.create_user = (req, res) => {
 	var newUser = new User(req.body);
+	generateAccessToken(newUser);
 	newUser.save(function (err, user) {
 		if (err) res.send(err);
 		res.status(201).json(user);
 	});
 };
+
+function generateAccessToken(user) {
+		user.accessToken.id = "AAA";
+		user.accessToken.expirationTime = 1;
+	}
