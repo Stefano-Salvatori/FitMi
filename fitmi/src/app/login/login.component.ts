@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angul
 import { serverAddress, serverBaseUrl } from '../../server-data';
 
 import { CryptoService } from '../crypto.service';
-import { StorageService } from '../storage.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -30,30 +30,22 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private httpClient: HttpClient,
     private chiper: CryptoService,
-    private storage: StorageService) {
+    private auth: AuthService) {
   }
 
-  public ngOnInit() { }
+  public ngOnInit() {
+    this.auth.tryAutoLogin();
+  }
 
   public login(): void {
 
     const hashedPassword: string = this.chiper.sha512(this.password);
 
-/*
-    this.storage.retrieve("accessToken").then(data => {
-      if (data) {
-        console.log("NO data");
-      } else {
-        console.log(data);
-      }
-    });
-*/
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
-    };
+    }
 
     this.httpClient
       .post(serverAddress + '/users/login', {

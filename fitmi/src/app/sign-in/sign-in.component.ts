@@ -22,7 +22,7 @@ export class SignInComponent implements OnInit {
 
   ngOnInit() { }
 
-  register(form) {
+  signIn(form) {
     form.value.password = this.chiper.sha512(form.value.password);
     this.auth.signIn(form.value).subscribe(() => {
       this.router.navigateByUrl('login');

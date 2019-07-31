@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('Users');
+var sha512 = require('js-sha512');
 
 exports.list_users = (req, res) => {
 	User.find({}, (err, user) => {
@@ -19,7 +20,6 @@ exports.login_user = (req, res) => {
 			console.log(name, password);
 			user.comparePassword(password, (pswErr, isMatch) => {
 				if (pswErr) res.send(pswErr);
-
 				if (isMatch) res.send(user);
 				else res.status(401).json({ message: "Password Errata"});
 			});
@@ -31,7 +31,7 @@ exports.login_user = (req, res) => {
 
 exports.create_user = (req, res) => {
 	var newUser = new User(req.body);
-	generateAccessToken(newUser);
+	newUser.accessToken = generateAccessToken(newUser);
 	newUser.save(function (err, user) {
 		if (err) res.send(err);
 		res.status(201).json(user);
@@ -39,6 +39,8 @@ exports.create_user = (req, res) => {
 };
 
 function generateAccessToken(user) {
-		user.accessToken.id = "AAA";
-		user.accessToken.expirationTime = 1;
-	}
+	return {
+			id: sha512(user.username),
+			expirationTime: Date.now() + 1000 * 60 * 60 * 24 * 30 // 30 days
+  }
+}
