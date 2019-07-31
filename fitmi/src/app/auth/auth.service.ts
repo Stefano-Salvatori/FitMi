@@ -1,12 +1,14 @@
-import { Injectable } from  '@angular/core';
+import { Injectable, Output, EventEmitter } from  '@angular/core';
 import { tap } from  'rxjs/operators';
 import { Observable, BehaviorSubject } from  'rxjs';
 import { Router } from '@angular/router';
 
+import { serverAddress, serverBaseUrl } from '../../server-data';
+
 import { StorageService } from  '../storage.service';
 import { AuthRequest, AuthResponse } from  './auth-msg';
-import { HttpClientService } from '../http-client.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+//import { HttpClientService } from '../http-client.service';
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class AuthService {
 
   private authSubject = new BehaviorSubject(false);
+
+  @Output() loginErrorNumberEmitter: EventEmitter<number> = new EventEmitter();
 
   private tabsRoute = 'tabs';
 
@@ -31,14 +35,25 @@ export class AuthService {
     );
   }
 
-  login(request: AuthRequest): Observable<AuthResponse> {
-    return this.httpClient.post<AuthResponse>(`http://localhost/login`, request).pipe(
-     tap(async (res: AuthResponse) => {
-//TO-DO
-       //await this.storage.store("accessToken", res.accessToken);
-       //this.authSubject.next(true);
-     })
-   );
+  login(username, password) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    }
+
+    this.httpClient.post(serverAddress + '/users/login', {
+        username: username,
+        password: password
+      }, httpOptions
+    ).subscribe((serverResponse: HttpResponse<any>) => {
+      this.authSubject.next(true);
+// TO-DO refresh auth token     
+      this.router.navigateByUrl(this.tabsRoute);
+    }, (err: HttpErrorResponse) => {
+      this.loginErrorNumberEmitter.emit(err.status);
+    });
   }
 
   tryAutoLogin() {
@@ -57,6 +72,7 @@ export class AuthService {
 
   private refreshTokenExpirationTime() {
 //TO-DO
+
   }
 
   isLoggedIn() {

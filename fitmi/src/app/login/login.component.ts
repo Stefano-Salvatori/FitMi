@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-
-import { serverAddress, serverBaseUrl } from '../../server-data';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { CryptoService } from '../crypto.service';
 import { AuthService } from '../auth/auth.service';
@@ -14,9 +12,8 @@ import { AuthService } from '../auth/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-
   private registrationRoute = 'sign-in';
-  private homeRoute = 'home';
+  private tabsRoute = 'tabs';
 
   private username: string;
   private password: string;
@@ -28,9 +25,15 @@ export class LoginComponent implements OnInit {
 
   public constructor(
     private router: Router,
-    private httpClient: HttpClient,
     private chiper: CryptoService,
     private auth: AuthService) {
+      this.auth.loginErrorNumberEmitter.subscribe(err => {
+        if (err === 401) {
+          this.errorString = this.incorrectFields;
+        } else {
+          this.errorString = this.connectionError;
+        }
+      });
   }
 
   public ngOnInit() {
@@ -38,28 +41,7 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-
     const hashedPassword: string = this.chiper.sha512(this.password);
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    }
-
-    this.httpClient
-      .post(serverAddress + '/users/login', {
-        username: this.username,
-        password: hashedPassword,
-      }, httpOptions,
-      ).subscribe((serverResponse: HttpResponse<any>) => {
-        this.router.navigateByUrl(this.homeRoute);
-      }, (err: HttpErrorResponse) => {
-        if (err.status === 401) {
-          this.errorString = this.incorrectFields;
-        } else {
-          this.errorString = this.connectionError;
-        }
-      });
+    this.auth.login(this.username, hashedPassword);
   }
 }
