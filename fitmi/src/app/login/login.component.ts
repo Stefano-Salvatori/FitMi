@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { CryptoService } from '../crypto.service';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -25,7 +24,6 @@ export class LoginComponent implements OnInit {
 
   public constructor(
     private router: Router,
-    private chiper: CryptoService,
     private auth: AuthService) {
       this.auth.loginErrorNumberEmitter.subscribe(err => {
         if (err === 401) {
@@ -41,7 +39,6 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    const hashedPassword: string = this.chiper.sha512(this.password);
-    this.auth.login(this.username, hashedPassword);
+    this.auth.login(this.username, this.password);
   }
 }

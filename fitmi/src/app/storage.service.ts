@@ -15,6 +15,7 @@ export class StorageService {
   }
 
   public retrieve(key: string) {
+//this.storage.clear();
     return this.storage.get(key);
   }
 

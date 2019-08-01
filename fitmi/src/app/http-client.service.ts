@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from  'rxjs';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { serverAddress, serverBaseUrl } from '../server-data';
 
 const httpOptions = {
@@ -13,10 +14,13 @@ const httpOptions = {
 })
 export class HttpClientService {
 
-  private baseUrlPrefix: string = "http://";
   private baseUrl: string;
 
   constructor(private httpClient: HttpClient) {
-    this.baseUrl = 'http://' + serverAddress + serverBaseUrl;
+    this.baseUrl = serverAddress + serverBaseUrl;
+  }
+
+  post(url, payload): Observable<any> {
+    return this.httpClient.post(this.baseUrl + url, payload, httpOptions);
   }
 }

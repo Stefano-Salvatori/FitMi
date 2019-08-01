@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aes-js": "^3.1.2",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "js-sha512": "^0.8.0",
