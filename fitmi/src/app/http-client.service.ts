@@ -20,7 +20,7 @@ export class HttpClientService {
     this.baseUrl = serverAddress + serverBaseUrl;
   }
 
-  post(url, payload): Observable<any> {
-    return this.httpClient.post(this.baseUrl + url, payload, httpOptions);
+  post(path, payload): Observable<any> {
+    return this.httpClient.post(this.baseUrl + path, payload, httpOptions);
   }
 }

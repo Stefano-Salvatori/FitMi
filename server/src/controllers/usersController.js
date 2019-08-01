@@ -18,7 +18,12 @@ exports.login_user = (req, res) => {
 
   var body = req.body;
   if (body.token) {
-    console.log("TOKEN");
+		User.findOne({ 'accessToken.id': body.token }, (err, user) => {
+			if (err) res.send(err);
+			if (user != null) {
+				res.send(user);
+			}
+		});
 	} else {
 	  var name = body.username;
 	  var password = body.password;
@@ -39,20 +44,24 @@ exports.login_user = (req, res) => {
 
 exports.create_user = (req, res) => {
 	var newUser = new User(req.body);
-	newUser.accessToken = generateAccessToken(newUser);
+	newUser.accessToken = generateAccessToken(newUser.username);
 	newUser.save(function (err, user) {
 		if (err) res.send(err);
 		res.status(201).json(user);
 	});
 };
 
-function generateAccessToken(user) {
-	var userHash = sha512(user.username);
+function generateAccessToken(username) {
+	var userHash = sha512(username);
 	var plainBytes = aes.utils.utf8.toBytes(userHash);
   var encryptedBytes = aesCtr.encrypt(plainBytes);
 	var tokenId = aes.utils.hex.fromBytes(encryptedBytes);
 	return {
 			id: tokenId,
-			expirationTime: Date.now()  + 1000 * 60 * 60 * 24 * 30 // 30 days
+			expirationTime: refreshExpirationTime()
   }
+}
+
+function refreshExpirationTime() {
+	return Date.now()  + 1000 * 60 * 60 * 24 * 30; // 30 days
 }

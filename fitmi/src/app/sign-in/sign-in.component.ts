@@ -21,8 +21,6 @@ export class SignInComponent implements OnInit {
   ngOnInit() { }
 
   signIn(form) {
-    this.auth.signIn(form.value).subscribe(() => {
-      this.router.navigateByUrl('login');
-    });
+    this.auth.signIn(form.value);
   }
 }
