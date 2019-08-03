@@ -7,6 +7,8 @@ export interface AuthRequest extends HttpRequest {
 }
 
 export interface AuthResponse extends HttpResponse {
-  accessToken: string;
-  expirationTime: number;
+  accessToken: {
+    id: string,
+    expirationTime: number
+  }
 }

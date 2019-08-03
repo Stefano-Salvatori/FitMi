@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { AuthService } from '../auth/auth.service';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
 
   public constructor(
     private router: Router,
-    private auth: AuthService) {
+    private auth: AuthService,
+  private storage: StorageService) {
       this.auth.loginErrorNumberEmitter.subscribe(err => {
         if (err === 401) {
           this.errorString = this.incorrectFields;

@@ -24,15 +24,14 @@ export class AuthService {
     private storage: StorageService,
     private router: Router) { }
 
-  signIn(request: AuthRequest) {
-    this.httpClient.post(`/users`, request).pipe(
+  signIn(payload: AuthRequest) {
+    this.httpClient.post(`/users`, payload).pipe(
       tap(async (res: AuthResponse) => {
-          console.log(res);
-          await this.storage.store(this.storage.getAccessTokenName(), res.accessToken);
-          this.authSubject.next(true);
+          await this.storage.store(this.storage.getAccessTokenName(), res.accessToken).then(v =>
+            this.router.navigateByUrl('login'));
       })
     ).subscribe(() => {
-      this.router.navigateByUrl('login');
+
     });
   }
 
@@ -45,22 +44,26 @@ export class AuthService {
 
   tryAutoLogin() {
     this.storage.retrieve(this.storage.getAccessTokenName()).then(token => {
-      //console.log("PRE " + token.expirationTime + " date: " + Date.now() + " -> " + (token.expirationTime - Date.now()));
       if (token && token.expirationTime - Date.now() > 0) {
         this.loginRequest({
           token: token.id
         });
+      } else {
+        console.log("No valid token found...");
       }
     });
   }
 
   private loginRequest(payload) {
     this.httpClient.post('/users/login', payload).pipe(
-      tap(async (res: AuthResponse) => await this.storage.store(this.storage.getAccessTokenName(), res.accessToken))
-    ).subscribe(
-      (res: HttpResponse<any>) => {
-        this.authSubject.next(true);
-        this.router.navigateByUrl(this.tabsRoute);
+      tap(async (res: AuthResponse) => {
+        await this.storage.store(this.storage.getAccessTokenName(), res.accessToken).then(v => {
+          this.authSubject.next(true);
+          this.router.navigateByUrl(this.tabsRoute);
+        })
+      })
+    ).subscribe(() => {
+
     },
       (err: HttpErrorResponse) => {
         this.loginErrorNumberEmitter.emit(err.status);

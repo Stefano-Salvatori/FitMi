@@ -19,10 +19,14 @@ exports.login_user = (req, res) => {
   var body = req.body;
   if (body.token) {
 		User.findOne({ 'accessToken.id': body.token }, (err, user) => {
-			if (err) res.send(err);
-			if (user != null) {
-				res.send(user);
-			}
+			  if (err) res.send(err);
+			  if (user != null) {
+				  refreshExpirationTime(name);
+				  res.send(user);
+			  } else {
+					console.log("Token err " + body.token);
+				  res.status(401).json({ message: "Access Token non esistente"});
+			  }
 		});
 	} else {
 	  var name = body.username;
@@ -32,8 +36,11 @@ exports.login_user = (req, res) => {
 		  if (user != null) {
 			  user.comparePassword(password, (pswErr, isMatch) => {
 				  if (pswErr) res.send(pswErr);
-				  if (isMatch) res.send(user);
-				  else res.status(401).json({ message: "Password Errata"});
+				  if (isMatch) {
+            refreshExpirationTime(name);
+						res.send(user);
+				  } else
+					  res.status(401).json({ message: "Password Errata"});
 			  });
 		  } else {
 			  res.status(401).json({ message: "Username non trovato"});
@@ -51,6 +58,10 @@ exports.create_user = (req, res) => {
 	});
 };
 
+async function refreshExpirationTime(username) {
+	const res = await User.updateOne({ username: username }, { accessToken: generateAccessToken(username) });
+}
+
 function generateAccessToken(username) {
 	var userHash = sha512(username);
 	var plainBytes = aes.utils.utf8.toBytes(userHash);
@@ -58,10 +69,10 @@ function generateAccessToken(username) {
 	var tokenId = aes.utils.hex.fromBytes(encryptedBytes);
 	return {
 			id: tokenId,
-			expirationTime: refreshExpirationTime()
+			expirationTime: calculateNewExpirationTime()
   }
 }
 
-function refreshExpirationTime() {
+function calculateNewExpirationTime() {
 	return Date.now()  + 1000 * 60 * 60 * 24 * 30; // 30 days
 }

@@ -10,12 +10,11 @@ export class StorageService {
 
   constructor(private storage: Storage) { }
 
-  public store(key: string, value) {
-    this.storage.set(key, value);
+  public store(key: string, value): Promise<any> {
+    return this.storage.set(key, value);
   }
 
-  public retrieve(key: string) {
-//this.storage.clear();
+  public retrieve(key: string): Promise<any> {
     return this.storage.get(key);
   }
 
