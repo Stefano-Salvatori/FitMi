@@ -1,0 +1,30 @@
+.profile-photo{
+    border-radius:50%;
+    display: block;
+    margin: auto;
+    width: 10em;
+    height: 10em;
+}
+
+.profile-top-info{
+    display: block;
+    margin: auto;
+
+}
+
+.badges {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.informations {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.badges ion-row {
+    overflow-y: hidden;
+    overflow-x: visible;
+}

@@ -4,14 +4,16 @@ import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  templateUrl: './profile.page.html',
+  styleUrls: ['./profile.page.scss'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfilePage implements OnInit {
+  badges = [0,1,2,3];
 
   constructor(private auth: AuthService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   logout() {
     this.auth.logout();
