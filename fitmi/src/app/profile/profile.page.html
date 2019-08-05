@@ -1,0 +1,110 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-title>Profilo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content align-items-center>
+  <ion-grid>
+    <ion-row align-items-center justify-content-center>
+      <ion-col align-items-center justify-content-center col-4>
+        <img class="profile-photo" src="http://www.cs.unibo.it/~bravetti/foto%20nuova.jpg">
+      </ion-col>
+      <ion-col col-8>
+        <ion-list class="profile-top-info">
+          <ion-item lines="none">
+            <ion-col size="12">
+              <ion-label color="medium">Nome</ion-label>
+              <ion-label color="dark"><strong>Mario</strong></ion-label>
+            </ion-col>
+
+          </ion-item>
+          <ion-item lines="none">
+            <ion-col size="12">
+              <ion-label color="medium">Cognome</ion-label>
+              <ion-label color="dark"><strong>Bravetti</strong></ion-label>
+            </ion-col>
+
+          </ion-item>
+          <ion-item lines="none">
+            <ion-col size="12">
+              <ion-label color="medium">Punteggio</ion-label>
+              <ion-label color="dark"><strong>1534</strong></ion-label>
+            </ion-col>
+
+          </ion-item>
+
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    
+  </ion-grid>
+
+  <div padding class="badges">
+    <ion-label padding><strong>Badges</strong></ion-label>
+    <ion-row nowrap>
+      <ion-col *ngFor="let badge of badges">
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <img src="https://cdn0.iconfinder.com/data/icons/gamification-flat-awards-and-badges/500/star13-512.png">
+          </ion-avatar>
+          <ion-label>Run 50km</ion-label>
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+  </div>
+
+  <div padding class="informations">
+    <ion-label padding><strong>Informations</strong></ion-label>
+    <ion-grid fixed no-margin>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item lines="none">
+            <ion-col size="12">
+              <ion-label color="medium">Sesso</ion-label>
+              <ion-label color="dark"><strong>M</strong></ion-label>
+            </ion-col>
+          </ion-item>
+
+        </ion-col>
+        <ion-col size="6">
+          <ion-item lines="none">
+            <ion-col size="12">
+              <ion-label color="medium">Età</ion-label>
+              <ion-label color="dark"><strong>23</strong></ion-label>
+            </ion-col>
+          </ion-item>
+
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item lines="none">
+            <ion-col size="12">
+              <ion-label color="medium">Altezza</ion-label>
+              <ion-label color="dark"><strong>1.69</strong></ion-label>
+            </ion-col>
+          </ion-item>
+
+        </ion-col>
+        <ion-col size="6">
+          <ion-item lines="none">
+            <ion-col size="12">
+              <ion-label color="medium">Peso</ion-label>
+              <ion-label color="dark"><strong>63</strong></ion-label>
+            </ion-col>
+          </ion-item>
+
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </div>
+
+  <div padding>
+    <ion-button (click)="onClick()" color="danger">
+      Logout 
+    </ion-button>
+  </div>
+</ion-content>

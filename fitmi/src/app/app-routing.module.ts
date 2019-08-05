@@ -12,7 +12,8 @@ const routes: Routes = [
   {
     path: 'tabs', loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
-  { path: '**', component: NotFoundResourceComponent }
+  { path: '**', component: NotFoundResourceComponent },  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' }
+
 
 ];
 
