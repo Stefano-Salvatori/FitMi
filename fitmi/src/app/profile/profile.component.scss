@@ -1,9 +1,22 @@
-.profile-photo{
-    border-radius:50%;
+.profile-photo {
+    max-width: 300px;
+    background-position: center;
+}
+
+.profile-photo-div {
     display: block;
     margin: auto;
-    width: 10em;
-    height: 10em;
+    position: relative;
+    max-width: 300px;
+    height: auto;
+}
+
+.profile-img {
+    top:7.5%;
+    left:7.5%;
+    border-radius: 50%;
+    width:85%;
+    position: absolute;
 }
 
 .profile-top-info{

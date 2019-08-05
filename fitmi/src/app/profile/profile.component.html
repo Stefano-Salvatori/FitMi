@@ -7,10 +7,31 @@
 <ion-content align-items-center>
   <ion-grid>
     <ion-row align-items-center justify-content-center>
-      <ion-col align-items-center justify-content-center col-4>
-        <img class="profile-photo" src="http://www.cs.unibo.it/~bravetti/foto%20nuova.jpg">
+      <ion-col align-items-center justify-content-center size="7">
+        <div class="profile-photo-div">
+          <circle-progress class="profile-photo" 
+          [percent]="85" 
+          [backgroundOpacity]="1" 
+          [radius]="100" 
+          [toFixed]="0"
+          [maxPercent]="100" 
+          [outerStrokeWidth]="5" 
+          [outerStrokeColor]="'#058dba'" 
+          [animationDuration]="800"
+          [showTitle]="false" 
+          [showSubtitle]="false" 
+          [showUnits]="false" 
+          [showInnerStroke]="false"
+          [responsive]="true">
+          </circle-progress>
+          <img class="profile-img" src="https://www.pcclean.io/wp-content/uploads/2019/04/961019-150x150.jpg"
+            alt="Profile image">
+        </div>
+
+
+
       </ion-col>
-      <ion-col col-8>
+      <ion-col size="5">
         <ion-list class="profile-top-info">
           <ion-item lines="none">
             <ion-col size="12">
