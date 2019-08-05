@@ -24,7 +24,6 @@ exports.login_user = (req, res) => {
 				  refreshExpirationTime(name);
 				  res.send(user);
 			  } else {
-					console.log("Token err " + body.token);
 				  res.status(401).json({ message: "Access Token non esistente"});
 			  }
 		});

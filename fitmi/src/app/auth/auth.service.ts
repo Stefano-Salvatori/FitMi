@@ -54,6 +54,10 @@ export class AuthService {
     });
   }
 
+  logout() {
+    this.storage.clean().then(() => this.router.navigateByUrl('login'));
+  }
+
   private loginRequest(payload) {
     this.httpClient.post('/users/login', payload).pipe(
       tap(async (res: AuthResponse) => {

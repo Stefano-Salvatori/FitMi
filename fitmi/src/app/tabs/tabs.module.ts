@@ -7,6 +7,7 @@ import { TabsPageRoutingModule } from './tabs.router.module';
 
 import { TabsPage } from './tabs.page';
 import { HomePage } from '../home/home.page';
+import { ProfileComponent } from '../profile/profile.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { HomePage } from '../home/home.page';
   ],
   declarations: [
     TabsPage,
-    HomePage
+    HomePage,
+    ProfileComponent
   ]
 })
 export class TabsPageModule {}

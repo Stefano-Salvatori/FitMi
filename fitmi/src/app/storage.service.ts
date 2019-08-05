@@ -21,4 +21,8 @@ export class StorageService {
   public getAccessTokenName(): string {
     return this.accessTokenStorageName;
   }
+
+  public clean(): Promise<any> {
+    return this.storage.clear();
+  }
 }
