@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TabsPage } from './tabs.page';
-import { HomePage } from '../home/home.page';
-import { ProfilePage } from '../profile/profile.page';
+import { TabsComponent } from './tabs.component';
+import { HomeComponent } from '../home/home.component';
+import { ProfileComponent } from '../profile/profile.component';
 
 const routes: Routes = [
   {
-    path: '', component: TabsPage,
+    path: '', component: TabsComponent,
     children: [
       {
         path: 'home',
-        component: HomePage
+        component: HomeComponent
       },
       {
         path: 'leaderboard',
-        component: HomePage
+        component: HomeComponent
       },
       {
         path: 'stats',
-        component: HomePage
+        component: HomeComponent
       },
       {
         path: 'profile',
-        component: ProfilePage
+        component: ProfileComponent
       }]
   }
 ];

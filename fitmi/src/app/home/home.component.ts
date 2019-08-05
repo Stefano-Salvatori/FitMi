@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
-export class HomePage implements OnInit {
+export class HomeComponent implements OnInit {
 
   private activities = ['Corsa', 'Camminata', 'Ciclismo', 'Palestra', 'Nuoto', 'Corsa Indoor'];
 

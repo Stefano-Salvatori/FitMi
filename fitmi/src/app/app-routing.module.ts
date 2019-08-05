@@ -3,7 +3,7 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { NotFoundResourceComponent } from './not-found-resource/not-found-resource.component';
 import { LoginComponent } from './login/login.component';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { TabsPage } from './tabs/tabs.page';
+import { TabsComponent } from './tabs/tabs.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -12,8 +12,7 @@ const routes: Routes = [
   {
     path: 'tabs', loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
-  { path: '**', component: NotFoundResourceComponent },  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' }
-
+  { path: '**', component: NotFoundResourceComponent },
 
 ];
 

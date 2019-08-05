@@ -4,10 +4,10 @@ import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfileComponent implements OnInit {
   badges = [0,1,2,3];
 
   constructor(private auth: AuthService) { }
