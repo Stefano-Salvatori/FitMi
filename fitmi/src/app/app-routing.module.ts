@@ -4,14 +4,14 @@ import { NotFoundResourceComponent } from './not-found-resource/not-found-resour
 import { LoginComponent } from './login/login.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { TabsComponent } from './tabs/tabs.component';
+import { SwimmingComponent } from './swimming/swimming.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'sign-in', component: SignInComponent },
-  {
-    path: 'tabs', loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  },
+  { path: 'tabs', loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule) },
+  { path: 'swimming', component: SwimmingComponent },
   { path: '**', component: NotFoundResourceComponent },
 
 ];

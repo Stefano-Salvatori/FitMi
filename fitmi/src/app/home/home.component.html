@@ -8,7 +8,7 @@
   <ion-grid align-items-center  justify-content-center>
     <ion-row  justify-content-center >
       <ion-col size-xs="6" size-md="4" size-lg="4" *ngFor="let activity of this.activities" no-padding>
-        <ion-card justify-content-center href="login" button="true" no-margin>
+        <ion-card justify-content-center button="true" no-margin (click)="startSession(activity)">
           <ion-card-header no-padding>
             <ion-img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"></ion-img>
           </ion-card-header>

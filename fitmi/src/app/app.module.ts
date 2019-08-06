@@ -16,12 +16,19 @@ import { SignInComponent } from './sign-in/sign-in.component';
 
 import { AuthModule } from './auth/auth.module';
 
+import { SwimmingComponent } from './swimming/swimming.component';
+import { SessionDataComponent } from './session-data/session-data.component';
+import { SessionGoalComponent } from './session-goal/session-goal.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundResourceComponent,
     LoginComponent,
-    SignInComponent
+    SignInComponent,
+    SwimmingComponent,
+    SessionDataComponent,
+    SessionGoalComponent
     ],
   imports: [
     BrowserModule,
@@ -29,7 +36,7 @@ import { AuthModule } from './auth/auth.module';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    AuthModule
+    AuthModule,
   ],
   providers: [
     StatusBar,

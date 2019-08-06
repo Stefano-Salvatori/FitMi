@@ -3,27 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { TabsComponent } from './tabs.component';
 import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile.component';
+import { SwimmingComponent } from '../swimming/swimming.component';
 
 const routes: Routes = [
   {
     path: '', component: TabsComponent,
     children: [
-      {
-        path: 'home',
-        component: HomeComponent
-      },
-      {
-        path: 'leaderboard',
-        component: HomeComponent
-      },
-      {
-        path: 'stats',
-        component: HomeComponent
-      },
-      {
-        path: 'profile',
-        component: ProfileComponent
-      }]
+      { path: 'home', component: HomeComponent },
+      { path: 'leaderboard', component: HomeComponent },
+      { path: 'stats', component: HomeComponent },
+      { path: 'profile', component: ProfileComponent}
+    ]
   }
 ];
 
