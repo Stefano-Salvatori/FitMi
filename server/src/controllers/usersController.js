@@ -17,6 +17,7 @@ exports.list_users = (req, res) => {
 exports.login_user = (req, res) => {
 
   var body = req.body;
+  var name = body.username;
   if (body.token) {
 		User.findOne({ 'accessToken.id': body.token }, (err, user) => {
 			  if (err) res.send(err);
@@ -28,7 +29,6 @@ exports.login_user = (req, res) => {
 			  }
 		});
 	} else {
-	  var name = body.username;
 	  var password = body.password;
 	  User.findOne({ username: name }, (err, user) => {
 		  if (err) res.send(err);
@@ -62,8 +62,7 @@ async function refreshExpirationTime(username) {
 }
 
 function generateAccessToken(username) {
-	var userHash = sha512(username);
-	var plainBytes = aes.utils.utf8.toBytes(userHash);
+	var plainBytes = aes.utils.utf8.toBytes(username);
   var encryptedBytes = aesCtr.encrypt(plainBytes);
 	var tokenId = aes.utils.hex.fromBytes(encryptedBytes);
 	return {

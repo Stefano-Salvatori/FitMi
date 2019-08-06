@@ -13,7 +13,8 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 })
 export class AuthService {
 
-  private authSubject = new BehaviorSubject(false);
+  //private authSubject = new BehaviorSubject(false);
+  private user;
 
   @Output() loginErrorNumberEmitter: EventEmitter<number> = new EventEmitter();
 
@@ -55,14 +56,18 @@ export class AuthService {
   }
 
   logout() {
-    this.storage.clean().then(() => this.router.navigateByUrl('login'));
+    this.storage.clean().then(() => {
+      //this.authSubject.next(false);
+      this.router.navigateByUrl('login');
+    });
   }
 
   private loginRequest(payload) {
     this.httpClient.post('/users/login', payload).pipe(
       tap(async (res: AuthResponse) => {
         await this.storage.store(this.storage.getAccessTokenName(), res.accessToken).then(v => {
-          this.authSubject.next(true);
+          this.user = res;
+          //this.authSubject.next(true);
           this.router.navigateByUrl(this.tabsRoute);
         })
       })
@@ -72,6 +77,10 @@ export class AuthService {
       (err: HttpErrorResponse) => {
         this.loginErrorNumberEmitter.emit(err.status);
     });
+  }
+
+  public getUser() {
+    return this.user;
   }
 
 /*

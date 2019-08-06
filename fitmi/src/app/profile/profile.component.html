@@ -9,18 +9,18 @@
     <ion-row align-items-center justify-content-center>
       <ion-col align-items-center justify-content-center size="7">
         <div class="profile-photo-div">
-          <circle-progress class="profile-photo" 
-          [percent]="85" 
-          [backgroundOpacity]="1" 
-          [radius]="100" 
+          <circle-progress class="profile-photo"
+          [percent]="85"
+          [backgroundOpacity]="1"
+          [radius]="100"
           [toFixed]="0"
-          [maxPercent]="100" 
-          [outerStrokeWidth]="5" 
-          [outerStrokeColor]="'#058dba'" 
+          [maxPercent]="100"
+          [outerStrokeWidth]="5"
+          [outerStrokeColor]="'#058dba'"
           [animationDuration]="800"
-          [showTitle]="false" 
-          [showSubtitle]="false" 
-          [showUnits]="false" 
+          [showTitle]="false"
+          [showSubtitle]="false"
+          [showUnits]="false"
           [showInnerStroke]="false"
           [responsive]="true">
           </circle-progress>
@@ -36,21 +36,21 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Nome</ion-label>
-              <ion-label color="dark"><strong>Mario</strong></ion-label>
+              <ion-label color="dark"><strong>{{firstName}}</strong></ion-label>
             </ion-col>
 
           </ion-item>
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Cognome</ion-label>
-              <ion-label color="dark"><strong>Bravetti</strong></ion-label>
+              <ion-label color="dark"><strong>{{lastName}}</strong></ion-label>
             </ion-col>
 
           </ion-item>
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Punteggio</ion-label>
-              <ion-label color="dark"><strong>1534</strong></ion-label>
+              <ion-label color="dark"><strong>{{score}}</strong></ion-label>
             </ion-col>
 
           </ion-item>
@@ -84,7 +84,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Sesso</ion-label>
-              <ion-label color="dark"><strong>M</strong></ion-label>
+              <ion-label color="dark"><strong>{{gender}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
@@ -93,7 +93,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Età</ion-label>
-              <ion-label color="dark"><strong>23</strong></ion-label>
+              <ion-label color="dark"><strong>{{age}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
@@ -104,7 +104,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Altezza</ion-label>
-              <ion-label color="dark"><strong>1.69</strong></ion-label>
+              <ion-label color="dark"><strong>{{height}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
@@ -113,7 +113,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Peso</ion-label>
-              <ion-label color="dark"><strong>63</strong></ion-label>
+              <ion-label color="dark"><strong>{{weight}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
