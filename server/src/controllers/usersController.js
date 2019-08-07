@@ -17,6 +17,7 @@ exports.list_users = (req, res) => {
 exports.login_user = (req, res) => {
 
   var body = req.body;
+  var name = body.username;
   if (body.token) {
 		User.findOne({ 'accessToken.id': body.token }, (err, user) => {
 			  if (err) res.send(err);
@@ -28,7 +29,6 @@ exports.login_user = (req, res) => {
 			  }
 		});
 	} else {
-	  var name = body.username;
 	  var password = body.password;
 	  User.findOne({ username: name }, (err, user) => {
 		  if (err) res.send(err);
@@ -36,7 +36,7 @@ exports.login_user = (req, res) => {
 			  user.comparePassword(password, (pswErr, isMatch) => {
 				  if (pswErr) res.send(pswErr);
 				  if (isMatch) {
-            refreshExpirationTime(name);
+            refreshExpirationTime(name, user.accessToken.id);
 						res.send(user);
 				  } else
 					  res.status(401).json({ message: "Password Errata"});
@@ -57,13 +57,17 @@ exports.create_user = (req, res) => {
 	});
 };
 
-async function refreshExpirationTime(username) {
-	const res = await User.updateOne({ username: username }, { accessToken: generateAccessToken(username) });
+async function refreshExpirationTime(username, tokenId) {
+	const res = await User.updateOne({ username: username }, { accessToken: {
+		id: tokenId,
+		expirationTime: calculateNewExpirationTime()
+	  }
+	});
 }
 
 function generateAccessToken(username) {
-	var userHash = sha512(username);
-	var plainBytes = aes.utils.utf8.toBytes(userHash);
+	var hashUsername = sha512(username);
+	var plainBytes = aes.utils.utf8.toBytes(hashUsername);
   var encryptedBytes = aesCtr.encrypt(plainBytes);
 	var tokenId = aes.utils.hex.fromBytes(encryptedBytes);
 	return {

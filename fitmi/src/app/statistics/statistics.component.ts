@@ -13,6 +13,8 @@ import { STOCKS } from './stocks';
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss']
 })
+
+
 export class StatisticsComponent implements OnInit {
 
   title = 'Line Chart';

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,36 +8,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-
+  private  BASE_ICON_PATH = '../../assets/icon/fit_activities_icons';
+  private  ICON_EXTENSION = '.png';
   private activities = [
-    { name: 'Corsa',
-      icon: 'assets/icon/fit_activities_icons/running.png'
+    {
+      name: 'Corsa',
+      icon: this.BASE_ICON_PATH + '/running' + this.ICON_EXTENSION,
+      route: 'running'
     },
     {
       name: 'Camminata',
-      icon: 'assets/icon/fit_activities_icons/walking.png'
+      icon: this.BASE_ICON_PATH + '/walking' + this.ICON_EXTENSION,
+      route: 'walking'
     },
     {
       name: 'Ciclismo',
-      icon: 'assets/icon/fit_activities_icons/bicycle.png'
+      icon: this.BASE_ICON_PATH + '/bicycle' + this.ICON_EXTENSION,
+      route: 'cycling'
     },
     {
       name: 'Palestra',
-      icon: 'assets/icon/fit_activities_icons/gym.png'
+      icon: this.BASE_ICON_PATH + '/gym' + this.ICON_EXTENSION,
+      route: 'gym'
     },
     {
       name: 'Nuoto',
-      icon: 'assets/icon/fit_activities_icons/swimming.png'
+      icon: this.BASE_ICON_PATH + '/swimming' + this.ICON_EXTENSION,
+      route: 'swimming'
     },
     {
       name: 'Indoor',
-      icon: 'assets/icon/fit_activities_icons/training.png'
+      icon: this.BASE_ICON_PATH + '/training' + this.ICON_EXTENSION,
+      route: 'indoor-run'
     }];
 
 
-  constructor() { }
 
-  ngOnInit() {
+  constructor(private router: Router) { }
+
+  ngOnInit() { }
+
+  startSession(activity: string) {
+    this.router.navigateByUrl(this.activities.find(a => a.name === activity).route);
   }
-
 }
