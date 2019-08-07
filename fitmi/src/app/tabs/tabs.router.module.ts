@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { TabsComponent } from './tabs.component';
 import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile.component';
+import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
+import { StatisticsComponent } from '../statistics/statistics.component';
 
 const routes: Routes = [
   {
@@ -14,11 +16,11 @@ const routes: Routes = [
       },
       {
         path: 'leaderboard',
-        component: HomeComponent
+        component: LeaderboardComponent
       },
       {
         path: 'stats',
-        component: HomeComponent
+        component: StatisticsComponent
       },
       {
         path: 'profile',

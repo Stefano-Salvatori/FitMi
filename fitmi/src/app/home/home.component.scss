@@ -1,18 +1,25 @@
 ion-card {
-    //height: 100%;
-    /*border-color: lightgrey;
-    border-style: solid;
-    border-width: 0px 1px 1px 0;
+    margin: 0,0,0,0;
+    padding: 0,0,0,0;
+
+   /* height: 80%;
+    //border-color: lightgrey;
+    //border-style: solid;
+    //border-width: 0px 1px 1px 0;
     -webkit-box-shadow: 0px !important;
-    box-shadow: none !important;
+    //box-shadow: none !important;
     border-radius: 0;*/
 }
 
 ion-img {
-    transform: scale(0.6,0.6);
+    margin: 0,0,0,0;
+    padding: 0,0,0,0;
+    transform: scale(0.5,0.5);
 }
 
 ion-content {
+    margin: 0,0,0,0;
+    padding: 0,0,0,0;
     height: 10px;
 
 }

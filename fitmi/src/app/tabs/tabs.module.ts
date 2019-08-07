@@ -9,6 +9,8 @@ import { TabsComponent } from './tabs.component';
 import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
+import { StatisticsComponent } from '../statistics/statistics.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
   declarations: [
     TabsComponent,
     HomeComponent,
-    ProfileComponent
+    LeaderboardComponent,
+    StatisticsComponent,
+    ProfileComponent,
   ]
 })
 export class TabsPageModule {}
