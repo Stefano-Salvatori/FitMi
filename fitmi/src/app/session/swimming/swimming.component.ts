@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SwimmingComponent implements OnInit {
 
-  private title: string = "Nuoto"; 
-
   constructor() { }
 
   ngOnInit() {}

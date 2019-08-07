@@ -16,9 +16,17 @@ import { SignInComponent } from './sign-in/sign-in.component';
 
 import { AuthModule } from './auth/auth.module';
 
-import { SwimmingComponent } from './swimming/swimming.component';
-import { SessionDataComponent } from './session-data/session-data.component';
-import { SessionGoalComponent } from './session-goal/session-goal.component';
+import { RunningComponent } from './session/running/running.component';
+import { WalkingComponent } from './session/walking/walking.component';
+import { CyclingComponent } from './session/cycling/cycling.component';
+import { GymComponent } from './session/gym/gym.component';
+import { SwimmingComponent } from './session/swimming/swimming.component';
+import { IndoorRunComponent } from './session/indoor-run/indoor-run.component';
+import { SessionHeaderComponent } from './session/session-header/session-header.component';
+import { SessionFooterComponent } from './session/session-footer/session-footer.component';
+import { SessionDataComponent } from './session/session-data/session-data.component';
+import { SessionGoalComponent } from './session/session-goal/session-goal.component';
+
 
 @NgModule({
   declarations: [
@@ -26,9 +34,16 @@ import { SessionGoalComponent } from './session-goal/session-goal.component';
     NotFoundResourceComponent,
     LoginComponent,
     SignInComponent,
+    RunningComponent,
+    WalkingComponent,
+    CyclingComponent,
+    GymComponent,
     SwimmingComponent,
+    IndoorRunComponent,
+    SessionHeaderComponent,
     SessionDataComponent,
-    SessionGoalComponent
+    SessionGoalComponent,
+    SessionFooterComponent
     ],
   imports: [
     BrowserModule,
@@ -36,7 +51,7 @@ import { SessionGoalComponent } from './session-goal/session-goal.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    AuthModule,
+    AuthModule
   ],
   providers: [
     StatusBar,
