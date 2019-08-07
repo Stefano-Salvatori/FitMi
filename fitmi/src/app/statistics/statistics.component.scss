@@ -1,0 +1,45 @@
+ .container {
+      font-family: sans-serif;
+      width: 1000px !important;
+      margin: auto;
+    }
+
+    svg {
+      position: relative;
+      margin-top: 25px;
+      margin-bottom: 50px;
+      width: 1000px;
+      height: 540px;
+      background-color: #fff;
+    }
+
+    svg text {
+      font-family: sans-serif;
+      font-size: 11px;
+    }
+
+    .x-axis path,
+    .x-axis line,
+    .z-line line,
+    .y-axis path {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .scatter-wrap .x-axis .tick,
+    .scatter-wrap .y-axis .tick {
+      opacity: 0 !important;
+    }
+
+    .scatter-points .point {
+      transition: stroke-width 0.2s;
+    }
+
+    .line-wrap text {
+      font-size: 12px;
+    }
+
+    .text-wrap text {
+      font-size: 16px;
+    }

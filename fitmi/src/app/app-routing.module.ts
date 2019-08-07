@@ -4,6 +4,7 @@ import { NotFoundResourceComponent } from './not-found-resource/not-found-resour
 import { LoginComponent } from './login/login.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { TabsComponent } from './tabs/tabs.component';
+import { HomeComponent } from './home/home.component';
 
 import { RunningComponent } from './session/running/running.component';
 import { WalkingComponent } from './session/walking/walking.component';

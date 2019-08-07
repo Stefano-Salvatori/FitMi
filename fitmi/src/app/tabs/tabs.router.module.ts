@@ -3,16 +3,29 @@ import { RouterModule, Routes } from '@angular/router';
 import { TabsComponent } from './tabs.component';
 import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile.component';
+import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
+import { StatisticsComponent } from '../statistics/statistics.component';
 
 const routes: Routes = [
   {
     path: '', component: TabsComponent,
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'leaderboard', component: HomeComponent },
-      { path: 'stats', component: HomeComponent },
-      { path: 'profile', component: ProfileComponent}
-    ]
+      {
+        path: 'home',
+        component: HomeComponent
+      },
+      {
+        path: 'leaderboard',
+        component: LeaderboardComponent
+      },
+      {
+        path: 'stats',
+        component: StatisticsComponent
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
+      }]
   }
 ];
 

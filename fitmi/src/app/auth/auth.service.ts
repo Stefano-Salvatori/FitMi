@@ -1,10 +1,10 @@
-import { Injectable, Output, EventEmitter } from  '@angular/core';
-import { tap } from  'rxjs/operators';
-import { Observable, BehaviorSubject } from  'rxjs';
+import { Injectable, Output, EventEmitter } from '@angular/core';
+import { tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { StorageService } from  '../storage.service';
-import { AuthRequest, AuthResponse } from  './auth-msg';
+import { StorageService } from '../storage.service';
+import { AuthRequest, AuthResponse } from './auth-msg';
 import { HttpClientService } from '../http-client.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
@@ -13,7 +13,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 })
 export class AuthService {
 
-  //private authSubject = new BehaviorSubject(false);
+  // private authSubject = new BehaviorSubject(false);
   private user;
 
   @Output() loginErrorNumberEmitter: EventEmitter<number> = new EventEmitter();
@@ -36,10 +36,10 @@ export class AuthService {
     });
   }
 
-  login(username, password) {
+  login(username: string, password: string) {
     this.loginRequest({
-      username: username,
-      password: password
+      username,
+      password
     });
   }
 
@@ -50,14 +50,14 @@ export class AuthService {
           token: token.id
         });
       } else {
-        console.log("No valid token found...");
+        console.log('No valid token found...');
       }
     });
   }
 
   logout() {
     this.storage.clean().then(() => {
-      //this.authSubject.next(false);
+      // this.authSubject.next(false);
       this.router.navigateByUrl('login');
     });
   }
@@ -67,9 +67,9 @@ export class AuthService {
       tap(async (res: AuthResponse) => {
         await this.storage.store(this.storage.getAccessTokenName(), res.accessToken).then(v => {
           this.user = res;
-          //this.authSubject.next(true);
+          // this.authSubject.next(true);
           this.router.navigateByUrl(this.tabsRoute);
-        })
+        });
       })
     ).subscribe(() => {
 

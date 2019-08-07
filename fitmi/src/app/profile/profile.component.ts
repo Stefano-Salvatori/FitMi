@@ -10,21 +10,21 @@ import { CircleProgressComponent } from 'ng-circle-progress';
 })
 export class ProfileComponent implements OnInit {
 
-  @ViewChild(CircleProgressComponent,{static:false}) progress!: CircleProgressComponent;
+  @ViewChild(CircleProgressComponent, {static: false}) progress!: CircleProgressComponent;
 
   private firstName: string;
   private lastName: string;
   private score: number;
-  private badges = [0,1,2,3];
+  private badges = [0, 1, 2, 3];
   private gender: string;
   private age: number;
   private height: number;
   private weight: number;
 
   constructor(private auth: AuthService) {
-    var user = this.auth.getUser();
-    this.firstName = user.firstName || "AAA";
-    this.lastName = user.lastName || "BBB";
+    const user = this.auth.getUser();
+    this.firstName = user.firstName || 'AAA';
+    this.lastName = user.lastName || 'BBB';
     this.score = user.score;
     this.gender = user.gender;
     this.age = this.calculateAge(user.birthDate);
@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.progress.animate(0,85);
+    this.progress.animate(0, 85);
   }
 
 
@@ -45,14 +45,14 @@ export class ProfileComponent implements OnInit {
   }
 
   private calculateAge(birthDate: string): number {
-    birthDate = birthDate.split("T")[0];
-    //birthDate = birthDate[0];
-    var splitDate = birthDate.split("-");
-    var year = splitDate[0];
-    var month = splitDate[1];
-    var day = splitDate[2];
-    var date = new Date();
-    var age = date.getFullYear() - parseInt(year);
+    birthDate = birthDate.split('T')[0];
+    // birthDate = birthDate[0];
+    const splitDate = birthDate.split('-');
+    const year = splitDate[0];
+    const month = splitDate[1];
+    const day = splitDate[2];
+    const date = new Date();
+    let age = date.getFullYear() - parseInt(year);
     if (((date.getMonth() + 1) - parseInt(month) < 0)
       || ((date.getMonth() + 1) === parseInt(month) && date.getDate() - parseInt(day) < 0))  {
       age -= 1;

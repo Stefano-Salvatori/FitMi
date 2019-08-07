@@ -8,6 +8,9 @@ import { TabsComponentRoutingModule } from './tabs.router.module';
 import { TabsComponent } from './tabs.component';
 import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile.component';
+import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
+import { StatisticsComponent } from '../statistics/statistics.component';
+
 
 @NgModule({
   imports: [
@@ -19,7 +22,9 @@ import { ProfileComponent } from '../profile/profile.component';
   declarations: [
     TabsComponent,
     HomeComponent,
-    ProfileComponent
+    LeaderboardComponent,
+    StatisticsComponent,
+    ProfileComponent,
   ]
 })
 export class TabsPageModule {}

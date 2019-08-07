@@ -8,52 +8,47 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  private activities = ['Corsa', 'Camminata', 'Ciclismo', 'Palestra', 'Nuoto', 'Corsa Indoor'];
-  private activityRoutes = ['running', 'walking', 'cycling', 'gym', 'swimming', 'indoor-run'];
-  private baseIconPath = "../../assets/img/";
-  private iconExtension = ".png";
+  private  BASE_ICON_PATH = '../../assets/icon/fit_activities_icons';
+  private  ICON_EXTENSION = '.png';
+  private activities = [
+    {
+      name: 'Corsa',
+      icon: this.BASE_ICON_PATH + '/running' + this.ICON_EXTENSION,
+      route: 'running'
+    },
+    {
+      name: 'Camminata',
+      icon: this.BASE_ICON_PATH + '/walking' + this.ICON_EXTENSION,
+      route: 'walking'
+    },
+    {
+      name: 'Ciclismo',
+      icon: this.BASE_ICON_PATH + '/bicycle' + this.ICON_EXTENSION,
+      route: 'cycling'
+    },
+    {
+      name: 'Palestra',
+      icon: this.BASE_ICON_PATH + '/gym' + this.ICON_EXTENSION,
+      route: 'gym'
+    },
+    {
+      name: 'Nuoto',
+      icon: this.BASE_ICON_PATH + '/swimming' + this.ICON_EXTENSION,
+      route: 'swimming'
+    },
+    {
+      name: 'Indoor',
+      icon: this.BASE_ICON_PATH + '/training' + this.ICON_EXTENSION,
+      route: 'indoor-run'
+    }];
+
+
 
   constructor(private router: Router) { }
 
   ngOnInit() { }
 
   startSession(activity: string) {
-    switch(activity) {
-      case this.activities[0]:
-        this.router.navigateByUrl(this.activityRoutes[0]);
-        break;
-      case this.activities[1]:
-        this.router.navigateByUrl(this.activityRoutes[1]);
-        break;
-      case this.activities[2]:
-        this.router.navigateByUrl(this.activityRoutes[2]);
-        break;
-      case this.activities[3]:
-        this.router.navigateByUrl(this.activityRoutes[3]);
-        break;
-      case this.activities[4]:
-        this.router.navigateByUrl(this.activityRoutes[4]);
-        break;
-      case this.activities[5]:
-        this.router.navigateByUrl(this.activityRoutes[5]);
-        break;
-    }
-  }
-
-  selectImage(activity: string): string {
-    switch(activity) {
-      case this.activities[0]:
-        return this.baseIconPath + this.activityRoutes[0] + this.iconExtension;
-      case this.activities[1]:
-        return this.baseIconPath + this.activityRoutes[1] + this.iconExtension;
-      case this.activities[2]:
-        return this.baseIconPath + this.activityRoutes[2] + this.iconExtension;
-      case this.activities[3]:
-        return this.baseIconPath + this.activityRoutes[3] + this.iconExtension;
-      case this.activities[4]:
-        return this.baseIconPath + this.activityRoutes[4] + this.iconExtension;
-      case this.activities[5]:
-        return this.baseIconPath + this.activityRoutes[5] + this.iconExtension;
-    }
+    this.router.navigateByUrl(this.activities.find(a => a.name === activity).route);
   }
 }
