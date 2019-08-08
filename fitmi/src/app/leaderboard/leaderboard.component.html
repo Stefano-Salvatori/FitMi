@@ -1,3 +1,42 @@
-<p>
-  leaderboard works!
-</p>
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-title>Leaderboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content align-items-center justify-content-center id="leaderboard">
+  <table width="100%" height="70%">
+    <tr>
+      <th>Rank</th>
+      <th>User</th>
+      <th></th>
+      <th>Fitness Points</th>
+    </tr>
+    
+    <tr *ngFor="let user of this.users; index as i" class="otherRow" (click)="onUserClick()">
+      <!--
+      <div *ngIf="i==0; then thenBlock else elseBlock">
+      <ng-template #thenBlock>
+        <td><img src="../../assets/icon/fit_activities_icons/running.png" id="leaderImg"></td>
+      </ng-template>
+      </div>
+      -->
+      <td>{{i+1}}</td>
+      <td><img src={{user.profileImg}} class="otherUserProfileImg" /></td>
+      <td style="padding: 15px">{{user.name}}</td>
+      <td>{{user.fitnessPoints}}</td>
+    </tr>
+
+
+    
+    </table>
+
+    <footer id="userRow" class="flex-container">
+      <div>{{currentUserRank + 1}}</div>
+      <div><img src={{currentUser.profileImg}} id="userImg" /></div>
+      <div>{{currentUser.name}}</div>
+      <div>{{currentUser.fitnessPoints}}</div>
+    </footer>
+
+
+</ion-content>

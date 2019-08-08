@@ -10,5 +10,5 @@ export interface AuthResponse extends HttpResponse {
   accessToken: {
     id: string,
     expirationTime: number
-  }
+  };
 }

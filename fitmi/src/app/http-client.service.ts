@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from  'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { serverAddress, serverBaseUrl } from '../server-data';
 
@@ -22,5 +22,9 @@ export class HttpClientService {
 
   post(path, payload): Observable<any> {
     return this.httpClient.post(this.baseUrl + path, payload, httpOptions);
+  }
+
+  get(path)  {
+    return this.httpClient.get(this.baseUrl + path, httpOptions);
   }
 }
