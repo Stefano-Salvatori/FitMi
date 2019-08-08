@@ -27,6 +27,9 @@ import { SessionFooterComponent } from './session/session-footer/session-footer.
 import { SessionDataComponent } from './session/session-data/session-data.component';
 import { SessionGoalComponent } from './session/session-goal/session-goal.component';
 
+import { AgmCoreModule } from '@agm/core';
+import { SessionMapComponent } from './session/session-map/session-map.component';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +46,8 @@ import { SessionGoalComponent } from './session/session-goal/session-goal.compon
     SessionHeaderComponent,
     SessionDataComponent,
     SessionGoalComponent,
-    SessionFooterComponent
+    SessionFooterComponent,
+    SessionMapComponent
     ],
   imports: [
     BrowserModule,
@@ -51,7 +55,10 @@ import { SessionGoalComponent } from './session/session-goal/session-goal.compon
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    AuthModule
+    AuthModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCubnab2Mn3cbhQH3CDWpmHYGgt5iB8MP4'
+    })
   ],
   providers: [
     StatusBar,
