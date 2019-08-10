@@ -1,0 +1,33 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Connection</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content align-items-center justify-content-center color="light">
+  <ion-grid style="height: 100%"  align-items-center color="light">
+    <ion-row  justify-content-center align-items-center style="height: 15%">
+        <ion-text color="medium">
+          <h1>Searching for Mi-Band...</h1>
+        </ion-text>
+    </ion-row>
+
+    <ion-row justify-content-center align-items-center style="height: 15%">
+        <ion-text color="medium">
+          <p>
+           {{mibandConnection.status}}...
+            <ion-spinner color="primary"></ion-spinner>
+          </p>
+        </ion-text>
+    </ion-row>
+
+    <ion-row justify-content-center align-items-center style="height: 60%" >
+        <ion-img src='../../assets/icon/mibandicon.png'></ion-img>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
