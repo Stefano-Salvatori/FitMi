@@ -51,4 +51,8 @@ export class HomeComponent implements OnInit {
   startSession(activity: string) {
     this.router.navigateByUrl(this.activities.find(a => a.name === activity).route);
   }
+
+  navigateToDeviceConnectionPage() {
+    this.router.navigateByUrl('device-connection');
+  }
 }

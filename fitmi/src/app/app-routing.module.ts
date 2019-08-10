@@ -12,6 +12,7 @@ import { CyclingComponent } from './session/cycling/cycling.component';
 import { GymComponent } from './session/gym/gym.component';
 import { SwimmingComponent } from './session/swimming/swimming.component';
 import { IndoorRunComponent } from './session/indoor-run/indoor-run.component';
+import { DeviceConnectionComponent } from './device-connection/device-connection.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'gym', component: GymComponent },
   { path: 'swimming', component: SwimmingComponent },
   { path: 'indoor-run', component: IndoorRunComponent },
+  { path: 'device-connection', component: DeviceConnectionComponent },
   { path: '**', component: NotFoundResourceComponent },
 
 ];

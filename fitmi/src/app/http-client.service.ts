@@ -24,7 +24,7 @@ export class HttpClientService {
     return this.httpClient.post(this.baseUrl + path, payload, httpOptions);
   }
 
-  get(path)  {
-    return this.httpClient.get(this.baseUrl + path, httpOptions);
+  get<T>(path)  {
+    return this.httpClient.get<T>(this.baseUrl + path, httpOptions);
   }
 }

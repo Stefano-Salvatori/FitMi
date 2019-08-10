@@ -29,6 +29,7 @@ import { SessionGoalComponent } from './session/session-goal/session-goal.compon
 
 import { AgmCoreModule } from '@agm/core';
 import { SessionMapComponent } from './session/session-map/session-map.component';
+import { DeviceConnectionComponent } from './device-connection/device-connection.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { SessionMapComponent } from './session/session-map/session-map.component
     GymComponent,
     SwimmingComponent,
     IndoorRunComponent,
+    DeviceConnectionComponent,
     SessionHeaderComponent,
     SessionDataComponent,
     SessionGoalComponent,

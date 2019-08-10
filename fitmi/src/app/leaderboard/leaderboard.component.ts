@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 import { USERS, User } from './mock_users';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-leaderboard',
@@ -18,8 +19,8 @@ export class LeaderboardComponent implements OnInit {
   private currentUserRank = 8;
   private currentUser = USERS[0];
 
-  constructor(private httpClient: HttpClientService) {
-
+  constructor(private httpClient: HttpClientService, private auth: AuthService) {
+    // currentUser = auth.getUser();
     // httpClient.get<User[]>('/users').subscribe(res =>  this.users = res);
   }
 
