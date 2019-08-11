@@ -6,12 +6,10 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { HomeComponent } from './home/home.component';
 
-import { RunningComponent } from './session/running/running.component';
-import { WalkingComponent } from './session/walking/walking.component';
-import { CyclingComponent } from './session/cycling/cycling.component';
-import { GymComponent } from './session/gym/gym.component';
-import { SwimmingComponent } from './session/swimming/swimming.component';
-import { IndoorRunComponent } from './session/indoor-run/indoor-run.component';
+import { SessionTabsComponent } from './session/session-tabs/session-tabs.component';
+import { SessionMapComponent } from './session/session-map/session-map.component';
+import { RunningStatsComponent } from './session/running-stats/running-stats.component';
+
 import { DeviceConnectionComponent } from './device-connection/device-connection.component';
 
 const routes: Routes = [
@@ -19,12 +17,20 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'tabs', loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule) },
-  { path: 'running', component: RunningComponent },
-  { path: 'walking', component: WalkingComponent },
-  { path: 'cycling', component: CyclingComponent },
-  { path: 'gym', component: GymComponent },
-  { path: 'swimming', component: SwimmingComponent },
-  { path: 'indoor-run', component: IndoorRunComponent },
+  {
+    path: 'running',
+    component: SessionTabsComponent,
+    children: [
+      {
+        path: 'stats',
+        component: RunningStatsComponent
+      },
+      {
+        path: 'map',
+        component: SessionMapComponent
+      }
+    ]
+  },
   { path: 'device-connection', component: DeviceConnectionComponent },
   { path: '**', component: NotFoundResourceComponent },
 
