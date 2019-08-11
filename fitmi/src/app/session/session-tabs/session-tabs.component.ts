@@ -13,5 +13,4 @@ export class SessionTabsComponent implements OnInit {
   ngOnInit() {
     this.router.navigateByUrl(this.router.url + '/stats');
   }
-
 }

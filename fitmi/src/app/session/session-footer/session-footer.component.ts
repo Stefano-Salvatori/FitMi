@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-session-footer',
@@ -7,11 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SessionFooterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
   endSession() {
-    console.log("END");  
+    this.router.navigateByUrl('/tabs');
   }
 }

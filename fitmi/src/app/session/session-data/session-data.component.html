@@ -3,41 +3,43 @@
 <ion-item lines="none">
       <ion-row size="5">
         <ion-col><ion-label color="medium">Tempo: </ion-label></ion-col>
-        <ion-col><ion-label color="dark"><strong>00:00:00</strong></ion-label></ion-col>
+        <ion-col><ion-label color="dark">
+          <strong>{{("0"+elapsedHour).slice(-2)}}:{{("0"+elapsedMin).slice(-2)}}:{{("0"+elapsedSec).slice(-2)}}</strong>
+        </ion-label></ion-col>
       </ion-row>
 </ion-item>
 <ion-item lines="none">
       <ion-row size="5">
         <ion-col><ion-label color="medium">Distanza: </ion-label></ion-col>
-        <ion-col><ion-label color="dark"><strong>0</strong></ion-label></ion-col>
+        <ion-col><ion-label color="dark"><strong>{{distance}}</strong></ion-label></ion-col>
         <ion-col><ion-label color="medium">m</ion-label></ion-col>
       </ion-row>
 </ion-item>
 <ion-item lines="none">
       <ion-row size="5">
         <ion-col><ion-label color="medium">Calorie: </ion-label></ion-col>
-        <ion-col><ion-label color="dark"><strong>0</strong></ion-label></ion-col>
+        <ion-col><ion-label color="dark"><strong>{{calories}}</strong></ion-label></ion-col>
         <ion-col><ion-label color="medium">kCal</ion-label></ion-col>
      </ion-row>
 </ion-item>
 <ion-item lines="none">
       <ion-row size="5">
         <ion-col><ion-label color="medium">Frequenza cardiaca: </ion-label></ion-col>
-        <ion-col><ion-label color="dark"><strong>70</strong></ion-label></ion-col>
+        <ion-col><ion-label color="dark"><strong>{{currHeartbeat}}</strong></ion-label></ion-col>
         <ion-col><ion-label color="medium">bpm</ion-label></ion-col>
     </ion-row>
 </ion-item>
 <ion-item  lines="none">
     <ion-row size="5" class="inner-item">
       <ion-col><ion-label color="medium">Max: </ion-label></ion-col>
-      <ion-col><ion-label color="dark"><strong>120</strong></ion-label></ion-col>
+      <ion-col><ion-label color="dark"><strong>{{maxHeartbeat}}</strong></ion-label></ion-col>
       <ion-col><ion-label color="medium">bpm</ion-label></ion-col>
     </ion-row>
 </ion-item>
 <ion-item lines="none">
     <ion-row size="5" class="inner-item">
       <ion-col><ion-label color="medium">Min: </ion-label></ion-col>
-      <ion-col><ion-label color="dark"><strong>60</strong></ion-label></ion-col>
+      <ion-col><ion-label color="dark"><strong>{{minHeartbeat}}</strong></ion-label></ion-col>
       <ion-col><ion-label color="medium">bpm</ion-label></ion-col>
     </ion-row>
 </ion-item>
