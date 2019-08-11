@@ -27,7 +27,7 @@ import { SessionMapComponent } from './session/session-map/session-map.component
 import { AgmCoreModule } from '@agm/core';
 
 import { DeviceConnectionComponent } from './device-connection/device-connection.component';
-
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,8 @@ import { DeviceConnectionComponent } from './device-connection/device-connection
     AuthModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCubnab2Mn3cbhQH3CDWpmHYGgt5iB8MP4'
-    })
+    }),
+    NgCircleProgressModule.forRoot({})
   ],
   providers: [
     StatusBar,
