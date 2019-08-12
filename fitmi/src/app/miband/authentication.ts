@@ -1,8 +1,9 @@
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
-import { MiBandService } from './miband.service';
-import { BehaviorSubject } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { MiBandGatt } from './mibandGatt';
 
 export enum AuthenticationState{
+    STEP0,
     STEP1,
     STEP2,
     STEP3
@@ -19,13 +20,13 @@ export class Authentication {
     private REQ_AUTH_KEY_RESPONSE = [0x10, 0x02, 0x01];
     private AUTH_OK = [0x10, 0x03, 0x01];
 
-    private authenticationState: BehaviorSubject<AuthenticationState>;
+    private authenticationState: BehaviorSubject<AuthenticationState> = new BehaviorSubject(AuthenticationState.STEP0);
 
     constructor(private address: string, private ble: BluetoothLE) {
     }
 
-    public getAuthenticationStateObservable(){
-        return this.authenticationState.asObservable();
+    public getAuthenticationStateObservable(): Observable<AuthenticationState>{
+        return this.authenticationState;
     }
 
   
@@ -34,8 +35,8 @@ export class Authentication {
         return new Promise((resolve, reject) => {
             this.ble.subscribe({
                 address: this.address,
-                service: MiBandService.UUID_SERVICE_AUTH,
-                characteristic: MiBandService.UUID_CHARACTERISTIC_AUTH
+                service: MiBandGatt.UUID_SERVICE_AUTH,
+                characteristic: MiBandGatt.UUID_CHARACTERISTIC_AUTH
             }).subscribe(async (res) => {
                 if (res.status == 'subscribed') {
                     console.log("STEP 1");
@@ -57,30 +58,28 @@ export class Authentication {
                             break;
                         case this.AUTH_OK.toString():
                             console.log("authenticated");
-                            this.authenticationState.complete();
                             resolve();
                             break;
                     }
                 }
             }, () => {
-                this.authenticationState.error("Authentication Failed");
                 reject();
             });
         });
     }
 
     private async step1() {
-        await this.writeWithoutResponse(this.STEP1_MESSAGE, MiBandService.UUID_SERVICE_AUTH, MiBandService.UUID_CHARACTERISTIC_AUTH);
+        await this.writeWithoutResponse(this.STEP1_MESSAGE, MiBandGatt.UUID_SERVICE_AUTH, MiBandGatt.UUID_CHARACTERISTIC_AUTH);
     }
     private async step2() {
-        await this.writeWithoutResponse(this.STEP2_MESSAGE, MiBandService.UUID_SERVICE_AUTH, MiBandService.UUID_CHARACTERISTIC_AUTH);
+        await this.writeWithoutResponse(this.STEP2_MESSAGE, MiBandGatt.UUID_SERVICE_AUTH, MiBandGatt.UUID_CHARACTERISTIC_AUTH);
     }
     private async step3(bytesToEncode: Uint8Array) {
         var aesjs = require('aes-js');
         const aesCtr = new aesjs.ModeOfOperation.ecb(this.SECRET_KEY_BYTES);
         const encryptedBytes = aesCtr.encrypt(bytesToEncode);
         const bytesToSend = Array.from(this.STEP3_MESSAGE).concat(Array.from(encryptedBytes));
-        await this.writeWithoutResponse(bytesToSend, MiBandService.UUID_SERVICE_AUTH, MiBandService.UUID_CHARACTERISTIC_AUTH);
+        await this.writeWithoutResponse(bytesToSend, MiBandGatt.UUID_SERVICE_AUTH, MiBandGatt.UUID_CHARACTERISTIC_AUTH);
     }
     private async writeWithoutResponse(value: number[], service: string, characteristic: string): Promise<void> {
         this.ble.write({

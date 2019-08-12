@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { MiBandService, ConnectionState } from '../miband/miband.service';
+import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-device-connection',
@@ -7,21 +10,28 @@ import { Component, OnInit } from '@angular/core';
 })
 
 
-export class DeviceConnectionComponent implements OnInit {
+export class DeviceConnectionComponent implements OnInit, AfterViewInit {
 
-  private mibandConnection = {
-    status: 'Searching'
-  };
-  constructor() {
+  private mibandConnection = ''
 
-    setTimeout(() => {
-      this.mibandConnection.status = 'Connecting';
-      setTimeout(() => {
-        this.mibandConnection.status = 'Connected';
-      }, 2000);
-    }, 2000);
+  constructor(private miBand: MiBandService,
+    private ble: BluetoothLE,
+    private platform: Platform) { }
+
+  async ngAfterViewInit() {
+    await this.platform.ready();
+    this.ble.initialize().subscribe(async res => {
+      this.miBand.getConnectionStateObservable()
+      .subscribe(connectionState => {
+        console.log(connectionState);
+        this.mibandConnection = connectionState;
+      });
+      await this.miBand.findMiBand();
+      await this.miBand.connect();
+
+    });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
 }

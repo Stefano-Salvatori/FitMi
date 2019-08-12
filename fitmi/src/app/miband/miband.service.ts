@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BluetoothLE, OperationResult, Device } from '@ionic-native/bluetooth-le/ngx';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Authentication } from './authentication';
+import { MiBandGatt } from './mibandGatt';
+import { Platform } from '@ionic/angular';
 
 export enum Notification {
     MESSAGE = 1,
@@ -11,83 +13,96 @@ export enum Notification {
 
 }
 
-export enum ConnectionState{
-    IDLE,
-    CONNECTING,
-    CONNECTED,
-    AUTHENTICATING,
-    AUTHENTICATED,
-    DISCONNECTING,
-    DISCONNECTED
+export enum ConnectionState {
+    IDLE = "Idle",
+    SEARCHING_DEVICE = "Searching Device...",
+    CONNECTING = "Connecting...",
+    CONNECTED = "Connected",
+    AUTHENTICATING = "Authenticating...",
+    AUTHENTICATED = "Authenticated",
+    DISCONNECTING = "Disconnecting...",
+    DISCONNECTED = "Disconnected"
 }
 
 @Injectable({
     providedIn: 'root',
 })
 export class MiBandService {
-    public static UUID_SERVICE_GENERIC_ACCESS = '1800';
-    public static UUID_SERVICE_GENERIC_ATTRIBUTE = '1801';
-    public static UUID_SERVICE_DEVICE_INFORMATION = '180A';
-    public static UUID_SERVICE_ALERT_NOTIFICATION = '1811';
-    public static UUID_SERVICE_IMMEDIATE_ALERT = '1802';
-    public static UUID_CHARATERISTIC_VIBRATE = '2A06';
-    public static UUID_SERVICE_HRM = '180D';
-    public static UUID_CHARATERISTIC_HRM_CONTROL = '2A39'
-    public static UUID_CHARATERISTIC_HRM_DATA = '2A37'
-
-    public static UUID_SERVICE_MIBAND_1 = 'FEE0';
-    public static UUID_SERVICE_AUTH = 'FEE1';
-    public static UUID_CHARACTERISTIC_AUTH = '00000009-0000-3512-2118-0009AF100700';
-    public static UUID_CHARACTERISTIC_BATTERY = '00000006-0000-3512-2118-0009AF100700';
-    public static UUID_CHARACTERISTIC_STEPS = '00000007-0000-3512-2118-0009AF100700';
-
-    public static UUID_CHARACTERISTIC_TIME = '2A2B';
 
 
     private address: string
-    private ble: BluetoothLE
-    private connectionState: BehaviorSubject<ConnectionState>;
+    private connectionState: ConnectionState = ConnectionState.IDLE;
+    private connectionStateBehaviour: BehaviorSubject<ConnectionState> =
+        new BehaviorSubject(this.connectionState)
 
-    constructor() {}
 
-    public getConnectionStateObservable(){
-        return this.connectionState.asObservable();
+    constructor(private ble: BluetoothLE) {
+
+    }
+
+    /**
+ * Start ble Scan and find the address of the MiBand searching for a device that expose the miband's autentication service.
+ * This must always be called the first time we use the service. 
+ */
+    public async findMiBand() {
+        return new Promise<void>(async (resolve, reject) => {
+            const devices = (await this.ble.retrieveConnected()).devices;
+            if (devices!= undefined && devices.find(d => d.name === MiBandGatt.DEVICE_NAME) != undefined) {
+                this.address = devices.find(d => d.name === MiBandGatt.DEVICE_NAME).address
+            } else {
+                this.notifyNewConnectionState(ConnectionState.SEARCHING_DEVICE);
+                this.ble.startScan({}).subscribe(async device => {
+                    if (device.name === MiBandGatt.DEVICE_NAME) {
+                        console.log(device);
+                        this.address = device.address;
+                        this.ble.stopScan()
+                        resolve();
+                    }
+                })
+            }
+        });
+    }
+
+
+    public getConnectionStateObservable(): Observable<ConnectionState> {
+        return this.connectionStateBehaviour;
     }
 
     public async unsubscribeHeartRate() {
         //unsubscribe to avoid 'Already subscribed errors
         await this.ble.unsubscribe({
             address: this.address,
-            service: MiBandService.UUID_SERVICE_HRM,
-            characteristic: MiBandService.UUID_CHARATERISTIC_HRM_DATA
+            service: MiBandGatt.UUID_SERVICE_HRM,
+            characteristic: MiBandGatt.UUID_CHARATERISTIC_HRM_DATA
         }).catch(() => { })
 
 
     }
+
     public getHeartRate(): Observable<OperationResult> {
         return this.ble.subscribe({
             address: this.address,
-            service: MiBandService.UUID_SERVICE_HRM,
-            characteristic: MiBandService.UUID_CHARATERISTIC_HRM_DATA
+            service: MiBandGatt.UUID_SERVICE_HRM,
+            characteristic: MiBandGatt.UUID_CHARATERISTIC_HRM_DATA
         })
     }
 
     public async startHeartRateMonitoring() {
         await this.write([0x15, 0x02, 0x00],
-            MiBandService.UUID_SERVICE_HRM,
-            MiBandService.UUID_CHARATERISTIC_HRM_CONTROL)
+            MiBandGatt.UUID_SERVICE_HRM,
+            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
         await this.write([0x15, 0x01, 0x00],
-            MiBandService.UUID_SERVICE_HRM,
-            MiBandService.UUID_CHARATERISTIC_HRM_CONTROL)
+            MiBandGatt.UUID_SERVICE_HRM,
+            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
         await this.write([0x15, 0x01, 0x01],
-            MiBandService.UUID_SERVICE_HRM,
-            MiBandService.UUID_CHARATERISTIC_HRM_CONTROL)
+            MiBandGatt.UUID_SERVICE_HRM,
+            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
     }
 
     public async stopHeartRateMonitoring() {
         await this.write([0x15, 0x01, 0x00],
-            MiBandService.UUID_SERVICE_HRM,
-            MiBandService.UUID_CHARATERISTIC_HRM_CONTROL)
+            MiBandGatt.UUID_SERVICE_HRM,
+            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
     }
 
 
@@ -107,14 +122,14 @@ export class MiBandService {
                 })
 
             await this.write([0x15, 0x01, 0x00],
-                MiBandService.UUID_SERVICE_HRM,
-                MiBandService.UUID_CHARATERISTIC_HRM_CONTROL)
+                MiBandGatt.UUID_SERVICE_HRM,
+                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
             await this.write([0x15, 0x02, 0x00],
-                MiBandService.UUID_SERVICE_HRM,
-                MiBandService.UUID_CHARATERISTIC_HRM_CONTROL)
+                MiBandGatt.UUID_SERVICE_HRM,
+                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
             await this.write([0x15, 0x02, 0x01],
-                MiBandService.UUID_SERVICE_HRM,
-                MiBandService.UUID_CHARATERISTIC_HRM_CONTROL)
+                MiBandGatt.UUID_SERVICE_HRM,
+                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
         });
 
     }
@@ -122,8 +137,8 @@ export class MiBandService {
     public async getPedometerStats() {
         const res = await this.ble.read({
             address: this.address,
-            service: MiBandService.UUID_SERVICE_MIBAND_1,
-            characteristic: MiBandService.UUID_CHARACTERISTIC_STEPS
+            service: MiBandGatt.UUID_SERVICE_MIBAND_1,
+            characteristic: MiBandGatt.UUID_CHARACTERISTIC_STEPS
         });
         const data = Buffer.from(this.ble.encodedStringToBytes(res.value))
         let result = { steps: 0, distance: 0, calories: 0 }
@@ -138,8 +153,8 @@ export class MiBandService {
     public async getTime() {
         const res = await this.ble.read({
             address: this.address,
-            service: MiBandService.UUID_SERVICE_MIBAND_1,
-            characteristic: MiBandService.UUID_CHARACTERISTIC_TIME
+            service: MiBandGatt.UUID_SERVICE_MIBAND_1,
+            characteristic: MiBandGatt.UUID_CHARACTERISTIC_TIME
         });
         return this.parseDate(Buffer.from(this.ble.encodedStringToBytes(res.value)))
     }
@@ -147,8 +162,8 @@ export class MiBandService {
     public async getBatteryInfo() {
         const res = await this.ble.read({
             address: this.address,
-            service: MiBandService.UUID_SERVICE_MIBAND_1,
-            characteristic: MiBandService.UUID_CHARACTERISTIC_BATTERY
+            service: MiBandGatt.UUID_SERVICE_MIBAND_1,
+            characteristic: MiBandGatt.UUID_CHARACTERISTIC_BATTERY
         });
 
         console.log("response: " + this.ble.encodedStringToBytes(res.value))
@@ -160,8 +175,8 @@ export class MiBandService {
 
     public async sendNotification(notificationType: Notification): Promise<void> {
         await this.writeWithoutResponse([notificationType],
-            MiBandService.UUID_SERVICE_IMMEDIATE_ALERT,
-            MiBandService.UUID_CHARATERISTIC_VIBRATE);
+            MiBandGatt.UUID_SERVICE_IMMEDIATE_ALERT,
+            MiBandGatt.UUID_CHARATERISTIC_VIBRATE);
     }
 
 
@@ -180,6 +195,7 @@ export class MiBandService {
 
     }
 
+
     public async connect(): Promise<void> {
         return new Promise(async (resolve, reject) => {
             this.notifyNewConnectionState(ConnectionState.CONNECTING);
@@ -196,34 +212,26 @@ export class MiBandService {
                     console.log("RECONNECTING...");
                     this.ble.reconnect({ address: this.address })
                         .subscribe(async () => {
-                            console.log("CONNECTED");
+                            this.notifyNewConnectionState(ConnectionState.CONNECTED);
                             await this.discoverServices();
                             this.notifyNewConnectionState(ConnectionState.AUTHENTICATING);
-                            await new Authentication(this.address,this.ble).authenticate();
-                            console.log("resolve");
+                            await new Authentication(this.address, this.ble).authenticate();
                             this.notifyNewConnectionState(ConnectionState.AUTHENTICATED);
-
-                            this.notifyNewConnectionState(ConnectionState.CONNECTED);
                             resolve();
                         }, async err => {
-                            await this.disconnect();
-                            await this.connect();
-
-                            this.notifyNewConnectionState(ConnectionState.CONNECTED);
-                            resolve()
+                            console.log(err);
+                            reject();
                         });
                 }
             } else {
                 console.log("First Connection");
                 this.ble.connect({ address: this.address, autoConnect: true })
                     .subscribe(async () => {
-                        console.log("CONNECTED");
+                        this.notifyNewConnectionState(ConnectionState.CONNECTED);
                         await this.discoverServices();
                         this.notifyNewConnectionState(ConnectionState.AUTHENTICATING);
-                        await new Authentication(this.address,this.ble).authenticate();
+                        await new Authentication(this.address, this.ble).authenticate();
                         this.notifyNewConnectionState(ConnectionState.AUTHENTICATED);
-                        console.log("resolve");
-                        this.notifyNewConnectionState(ConnectionState.CONNECTED);
                         resolve()
                     }, err => console.log(err));
             }
@@ -232,14 +240,10 @@ export class MiBandService {
 
     }
 
-
-
-
     public async discoverServices(): Promise<Device> {
         return this.ble.discover({ address: this.address });
     }
 
-   
     private async write(value: number[], service: string, characteristic: string): Promise<void> {
         this.ble.write({
             address: this.address,
@@ -248,8 +252,6 @@ export class MiBandService {
             value: this.ble.bytesToEncodedString(Uint8Array.from(value))
         })
     }
-
-
 
     private async writeWithoutResponse(value: number[], service: string, characteristic: string): Promise<void> {
         this.ble.write({
@@ -260,8 +262,6 @@ export class MiBandService {
             value: this.ble.bytesToEncodedString(Uint8Array.from(value))
         })
     }
-
-
 
 
     private parseDate(buff: Buffer): Date {
@@ -275,17 +275,10 @@ export class MiBandService {
         return new Date(year, mon, day, hrs, min, sec)
     }
 
-    /**
-     * Start ble Scan and find the address of the MiBand searching for a device that expose the miband's autentication service.
-     * This must always be called the first time we use the service. 
-     */
-    public async findMiBand() {
-        this.address = (await this.ble.startScan({ services: [MiBandService.UUID_SERVICE_AUTH] }).toPromise()).address
-    }
-
-    private notifyNewConnectionState(newState: ConnectionState){
+    private notifyNewConnectionState(newState: ConnectionState) {
         //notify observers
-        this.connectionState.next(newState);
+        this.connectionState = newState;
+        this.connectionStateBehaviour.next(this.connectionState);
     }
 
 }

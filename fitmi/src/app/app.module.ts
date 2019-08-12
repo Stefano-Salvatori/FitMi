@@ -6,6 +6,8 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
+
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +32,7 @@ import { SessionGoalComponent } from './session/session-goal/session-goal.compon
 import { AgmCoreModule } from '@agm/core';
 import { SessionMapComponent } from './session/session-map/session-map.component';
 import { DeviceConnectionComponent } from './device-connection/device-connection.component';
+import { MiBandService } from './miband/miband.service';
 
 
 @NgModule({
@@ -63,6 +66,8 @@ import { DeviceConnectionComponent } from './device-connection/device-connection
     })
   ],
   providers: [
+    MiBandService,
+    BluetoothLE,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

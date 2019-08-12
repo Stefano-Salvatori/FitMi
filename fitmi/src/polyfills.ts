@@ -64,3 +64,7 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+(window as any).global = window;
+//Need this to use Buffer during miband bluetooth authentication
+// @ts-ignore
+window.Buffer = window.Buffer || require('buffer').Buffer;
