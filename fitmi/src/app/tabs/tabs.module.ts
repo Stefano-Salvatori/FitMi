@@ -27,4 +27,5 @@ import { StatisticsComponent } from '../statistics/statistics.component';
     ProfileComponent,
   ]
 })
-export class TabsPageModule {}
+export class TabsPageModule {
+}

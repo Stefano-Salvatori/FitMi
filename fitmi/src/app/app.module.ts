@@ -18,22 +18,18 @@ import { SignInComponent } from './sign-in/sign-in.component';
 
 import { AuthModule } from './auth/auth.module';
 
-import { RunningComponent } from './session/running/running.component';
-import { WalkingComponent } from './session/walking/walking.component';
-import { CyclingComponent } from './session/cycling/cycling.component';
-import { GymComponent } from './session/gym/gym.component';
-import { SwimmingComponent } from './session/swimming/swimming.component';
-import { IndoorRunComponent } from './session/indoor-run/indoor-run.component';
+import { RunningStatsComponent } from './session/running-stats/running-stats.component';
+
 import { SessionHeaderComponent } from './session/session-header/session-header.component';
 import { SessionFooterComponent } from './session/session-footer/session-footer.component';
 import { SessionDataComponent } from './session/session-data/session-data.component';
 import { SessionGoalComponent } from './session/session-goal/session-goal.component';
-
-import { AgmCoreModule } from '@agm/core';
+import { SessionTabsComponent } from './session/session-tabs/session-tabs.component';
 import { SessionMapComponent } from './session/session-map/session-map.component';
 import { DeviceConnectionComponent } from './device-connection/device-connection.component';
 import { MiBandService } from './miband/miband.service';
-
+import { AgmCoreModule } from '@agm/core';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
   declarations: [
@@ -41,18 +37,14 @@ import { MiBandService } from './miband/miband.service';
     NotFoundResourceComponent,
     LoginComponent,
     SignInComponent,
-    RunningComponent,
-    WalkingComponent,
-    CyclingComponent,
-    GymComponent,
-    SwimmingComponent,
-    IndoorRunComponent,
+    RunningStatsComponent,
     DeviceConnectionComponent,
     SessionHeaderComponent,
     SessionDataComponent,
     SessionGoalComponent,
     SessionFooterComponent,
-    SessionMapComponent
+    SessionMapComponent,
+    SessionTabsComponent
     ],
   imports: [
     BrowserModule,
@@ -63,7 +55,8 @@ import { MiBandService } from './miband/miband.service';
     AuthModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCubnab2Mn3cbhQH3CDWpmHYGgt5iB8MP4'
-    })
+    }),
+    NgCircleProgressModule.forRoot({})
   ],
   providers: [
     MiBandService,

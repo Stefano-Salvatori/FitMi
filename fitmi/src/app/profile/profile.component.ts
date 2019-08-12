@@ -46,7 +46,6 @@ export class ProfileComponent implements OnInit {
 
   private calculateAge(birthDate: string): number {
     birthDate = birthDate.split('T')[0];
-    // birthDate = birthDate[0];
     const splitDate = birthDate.split('-');
     const year = splitDate[0];
     const month = splitDate[1];

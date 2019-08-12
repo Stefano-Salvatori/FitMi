@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IndoorRunComponent } from './indoor-run.component';
+import { RunningStatsComponent } from './running-stats.component';
 
-describe('IndoorRunComponent', () => {
-  let component: IndoorRunComponent;
-  let fixture: ComponentFixture<IndoorRunComponent>;
+describe('RunningStatsComponent', () => {
+  let component: RunningStatsComponent;
+  let fixture: ComponentFixture<RunningComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IndoorRunComponent ],
+      declarations: [ RunningStatsComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IndoorRunComponent);
+    fixture = TestBed.createComponent(RunningSTatsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

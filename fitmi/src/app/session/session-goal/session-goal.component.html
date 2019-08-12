@@ -1,3 +1,22 @@
-<p>
-  session-goal works!
-</p>
+<div class="bar-container">
+  <circle-progress class="progress-bar"
+    [percent]="75"
+    [radius]="100"
+    [toFixed]="0"
+    [maxPercent]="100"
+    [space]="-4"
+    [outerStrokeWidth]="5"
+    [innerStrokeWidth]="3"
+    [outerStrokeColor]="'#058dba'"
+    [innerStrokeColor]= "'#e7e8ea'"
+    [showTitle]="true"
+    [title]="'Obiettivo'"
+    [showSubtitle]="true"
+    [subtitle]="'75%'"
+    [subtitleFontSize]="18"
+    [showUnits]="false"
+    [showInnerStroke]="true"
+    [responsive]="false"
+    [clockwise]="false">
+</circle-progress>
+</div>
