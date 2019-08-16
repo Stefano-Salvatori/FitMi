@@ -1,7 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { MiBandService, ConnectionState } from '../miband/miband.service';
+import { MiBandService, ConnectionState, Notification } from '../miband/miband.service';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-device-connection',
@@ -17,7 +18,8 @@ export class DeviceConnectionComponent implements OnInit {
 
   constructor(private miBand: MiBandService,
     private ble: BluetoothLE,
-    private platform: Platform) { }
+    private platform: Platform,
+    private router: Router) { }
 
 
 
@@ -30,11 +32,19 @@ export class DeviceConnectionComponent implements OnInit {
           this.mibandConnection = connectionState;
         });
 
+      if (!(await this.ble.isEnabled()).isEnabled) {
+        this.ble.enable();
+      }
+
       this.miBand.findMiBand()
         .then(() => {
           return this.miBand.connect();
         })
-        .then(() => this.hideSpinner())
+        .then(async () => {
+          this.hideSpinner();
+          this.miBand.sendNotification(Notification.VIBRATE);
+          await this.router.navigateByUrl("tabs/home");
+        })
         .catch(() => this.hideSpinner());
     });
   }
