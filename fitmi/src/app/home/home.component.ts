@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToDeviceConnectionPage() {
-    this.router.navigateByUrl('device-connection');
+    console.log("Device Connection");
+    this.router.navigateByUrl('/device-connection');
   }
 }

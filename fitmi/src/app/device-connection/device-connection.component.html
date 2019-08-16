@@ -9,23 +9,23 @@
 
 
 <ion-content align-items-center justify-content-center color="light">
-  <ion-grid style="height: 100%"  align-items-center color="light" padding>
-    <ion-row  justify-content-center align-items-center style="height: 15%">
-        <ion-text color="medium">
-          <h1>Device Connection</h1>
-        </ion-text>
+  <ion-grid style="height: 100%" align-items-center color="light" padding>
+    <ion-row justify-content-center align-items-center style="height: 15%">
+      <ion-text color="medium">
+        <h1>Device Connection</h1>
+      </ion-text>
     </ion-row>
 
     <ion-row justify-content-center align-items-center style="height: 15%">
-        <ion-text color="medium">
-          <p [innerHtml] = "mibandConnection"></p>
-        </ion-text>
+      <ion-text color="medium" [innerHtml]="mibandConnection">
+      </ion-text>
+      <div [hidden]="spinnerHidden">
         <ion-spinner color="primary"></ion-spinner>
-
+      </div>
     </ion-row>
 
-    <ion-row justify-content-center align-items-center style="height: 60%" >
-        <ion-img src='../../assets/icon/mibandicon.png'></ion-img>
+    <ion-row justify-content-center align-items-center style="height: 60%">
+      <ion-img src='../../assets/icon/mibandicon.png'></ion-img>
     </ion-row>
   </ion-grid>
 

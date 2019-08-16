@@ -21,13 +21,17 @@ export enum ConnectionState {
     AUTHENTICATING = "Authenticating...",
     AUTHENTICATED = "Authenticated",
     DISCONNECTING = "Disconnecting...",
-    DISCONNECTED = "Disconnected"
+    DISCONNECTED = "Disconnected",
+    NOT_FOUND = "Device Not Found",
+    ERROR = "An Error Occured"
 }
 
 @Injectable({
     providedIn: 'root',
 })
 export class MiBandService {
+
+    private readonly MAX_SCAN_TIME = 30000 //ms
 
 
     private address: string
@@ -41,24 +45,38 @@ export class MiBandService {
     }
 
     /**
- * Start ble Scan and find the address of the MiBand searching for a device that expose the miband's autentication service.
- * This must always be called the first time we use the service. 
- */
+     * Start ble Scan and find the address of the MiBand searching for a device that expose the miband's autentication service.
+     * This must always be called the first time we use the service. 
+     */
     public async findMiBand() {
         return new Promise<void>(async (resolve, reject) => {
             const devices = (await this.ble.retrieveConnected()).devices;
-            if (devices!= undefined && devices.find(d => d.name === MiBandGatt.DEVICE_NAME) != undefined) {
+            if (devices != undefined && devices.find(d => d.name === MiBandGatt.DEVICE_NAME) != undefined) {
                 this.address = devices.find(d => d.name === MiBandGatt.DEVICE_NAME).address
             } else {
                 this.notifyNewConnectionState(ConnectionState.SEARCHING_DEVICE);
+                const timer = setTimeout(() => {
+                    this.ble.stopScan();
+                    this.notifyNewConnectionState(ConnectionState.NOT_FOUND);
+                    reject();
+                }, this.MAX_SCAN_TIME)
+
+                if((await this.ble.isScanning()).isScanning){
+                    await this.ble.stopScan();
+                }
                 this.ble.startScan({}).subscribe(async device => {
                     if (device.name === MiBandGatt.DEVICE_NAME) {
-                        console.log(device);
+                        clearTimeout(timer)
                         this.address = device.address;
                         this.ble.stopScan()
                         resolve();
                     }
+                }, err => {
+                    console.log(err);
+                    this.notifyNewConnectionState(ConnectionState.ERROR);
+                    reject();
                 })
+
             }
         });
     }
