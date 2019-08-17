@@ -14,6 +14,10 @@ export class StorageService {
     return this.storage.set(key, value);
   }
 
+  public remove(key: string): Promise<any> {
+    return this.storage.remove(key);
+  }
+
   public retrieve(key: string): Promise<any> {
     return this.storage.get(key);
   }

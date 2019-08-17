@@ -33,8 +33,7 @@ const routes: Routes = [
       }
     ]
   },
-  { path: 'device-connection', component: DeviceConnectionComponent },
-  { path: '**', component: NotFoundResourceComponent },
+    { path: '**', component: NotFoundResourceComponent },
 
 ];
 

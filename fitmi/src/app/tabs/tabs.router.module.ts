@@ -5,6 +5,7 @@ import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
+import { DeviceConnectionComponent } from '../device-connection/device-connection.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,9 @@ const routes: Routes = [
         path: 'profile',
         component: ProfileComponent
       }]
+  },
+  {
+    path: 'device-connection', component: DeviceConnectionComponent
   }
 ];
 

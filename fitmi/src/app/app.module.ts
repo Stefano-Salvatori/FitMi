@@ -38,7 +38,6 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     LoginComponent,
     SignInComponent,
     RunningStatsComponent,
-    DeviceConnectionComponent,
     SessionHeaderComponent,
     SessionDataComponent,
     SessionGoalComponent,

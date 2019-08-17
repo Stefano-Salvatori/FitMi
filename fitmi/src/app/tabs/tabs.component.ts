@@ -11,7 +11,7 @@ export class TabsComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.router.navigateByUrl(this.router.url + '/home');
+    //this.router.navigateByUrl(this.router.url + '/home');
   }
 
 }

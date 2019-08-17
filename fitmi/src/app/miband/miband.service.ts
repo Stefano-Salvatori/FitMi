@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Authentication } from './authentication';
 import { MiBandGatt } from './mibandGatt';
 import { Platform } from '@ionic/angular';
+import { StorageService } from '../storage.service';
 
 export enum Notification {
     MESSAGE = 1,
@@ -21,13 +22,18 @@ export enum ConnectionState {
     AUTHENTICATING = "Authenticating...",
     AUTHENTICATED = "Authenticated",
     DISCONNECTING = "Disconnecting...",
-    DISCONNECTED = "Disconnected"
+    DISCONNECTED = "Disconnected",
+    NOT_FOUND = "Device Not Found",
+    ERROR = "An Error Occured"
 }
 
 @Injectable({
     providedIn: 'root',
 })
 export class MiBandService {
+
+    private readonly MAX_SCAN_TIME = 30000 //ms
+    private readonly MI_BAND_ADDRESS_KEY = "miband-address"
 
 
     private address: string
@@ -36,31 +42,104 @@ export class MiBandService {
         new BehaviorSubject(this.connectionState)
 
 
-    constructor(private ble: BluetoothLE) {
+    constructor(private ble: BluetoothLE, private storage: StorageService) {
 
     }
 
     /**
- * Start ble Scan and find the address of the MiBand searching for a device that expose the miband's autentication service.
- * This must always be called the first time we use the service. 
- */
+     * Look for the MiBand address. If the band is already connected the address can be found in the local storage; otherwise start ble Scan and find the address of the MiBand searching for a device that expose the miband's autentication service.
+     * This must always be called the first time we use this service so that the adress of the band is correctly set up. 
+     */
     public async findMiBand() {
         return new Promise<void>(async (resolve, reject) => {
-            const devices = (await this.ble.retrieveConnected()).devices;
-            if (devices!= undefined && devices.find(d => d.name === MiBandGatt.DEVICE_NAME) != undefined) {
-                this.address = devices.find(d => d.name === MiBandGatt.DEVICE_NAME).address
+            if((await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)) != undefined){
+                this.address = await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)
+                resolve();
             } else {
                 this.notifyNewConnectionState(ConnectionState.SEARCHING_DEVICE);
+                const timer = setTimeout(() => {
+                    this.ble.stopScan();
+                    this.notifyNewConnectionState(ConnectionState.NOT_FOUND);
+                    reject();
+                }, this.MAX_SCAN_TIME)
+
+                if((await this.ble.isScanning()).isScanning){
+                    await this.ble.stopScan();
+                }
                 this.ble.startScan({}).subscribe(async device => {
                     if (device.name === MiBandGatt.DEVICE_NAME) {
-                        console.log(device);
+                        clearTimeout(timer)
                         this.address = device.address;
+                        this.storage.store(this.MI_BAND_ADDRESS_KEY, this.address);
                         this.ble.stopScan()
                         resolve();
                     }
+                }, err => {
+                    console.log(err);
+                    this.notifyNewConnectionState(ConnectionState.ERROR);
+                    reject();
                 })
             }
         });
+    }
+
+    public async disconnect() {
+        this.notifyNewConnectionState(ConnectionState.DISCONNECTING);
+        await this.storage.remove(this.MI_BAND_ADDRESS_KEY);
+        const wasConnected = await this.ble.wasConnected({ address: this.address });
+        if (wasConnected.wasConnected) {
+            const isConnected = await this.ble.isConnected({ address: this.address });
+            if (isConnected.isConnected) {
+                await this.ble.disconnect({ address: this.address }).catch(() => { })
+                await this.ble.close({ address: this.address }).catch(() => { })
+            }
+            this.notifyNewConnectionState(ConnectionState.DISCONNECTED);
+        }
+    }
+
+
+    public async connect(): Promise<void> {
+        return new Promise(async (resolve, reject) => {
+            this.notifyNewConnectionState(ConnectionState.CONNECTING);
+            const wasConnected = await this.ble.wasConnected({ address: this.address });
+            if (wasConnected.wasConnected) {
+                console.log("Was Connected");
+                const isConnected = await this.ble.isConnected({ address: this.address });
+                //If the device is already connected we don't need to perform authentication
+                if (isConnected.isConnected) {
+                    await this.discoverServices();
+                    this.notifyNewConnectionState(ConnectionState.CONNECTED);
+                    resolve();
+                } else {
+                    console.log("RECONNECTING...");
+                    this.ble.reconnect({ address: this.address })
+                        .subscribe(async () => {
+                            this.notifyNewConnectionState(ConnectionState.CONNECTED);
+                            await this.discoverServices();
+                            this.notifyNewConnectionState(ConnectionState.AUTHENTICATING);
+                            await new Authentication(this.address, this.ble).authenticate();
+                            this.notifyNewConnectionState(ConnectionState.AUTHENTICATED);
+                            resolve();
+                        }, async err => {
+                            console.log(err);
+                            reject();
+                        });
+                }
+            } else {
+                console.log("First Connection");
+                this.ble.connect({ address: this.address, autoConnect: true })
+                    .subscribe(async () => {
+                        this.notifyNewConnectionState(ConnectionState.CONNECTED);
+                        await this.discoverServices();
+                        this.notifyNewConnectionState(ConnectionState.AUTHENTICATING);
+                        await new Authentication(this.address, this.ble).authenticate();
+                        this.notifyNewConnectionState(ConnectionState.AUTHENTICATED);
+                        resolve()
+                    }, err => console.log(err));
+            }
+
+        })
+
     }
 
 
@@ -180,65 +259,7 @@ export class MiBandService {
     }
 
 
-    public async disconnect() {
-        this.notifyNewConnectionState(ConnectionState.DISCONNECTING);
-        const wasConnected = await this.ble.wasConnected({ address: this.address });
-        if (wasConnected.wasConnected) {
-            const isConnected = await this.ble.isConnected({ address: this.address });
-            if (isConnected.isConnected) {
-                await this.ble.disconnect({ address: this.address }).catch(() => { })
-                await this.ble.close({ address: this.address }).catch(() => { })
-            }
-
-            this.notifyNewConnectionState(ConnectionState.DISCONNECTED);
-        }
-
-    }
-
-
-    public async connect(): Promise<void> {
-        return new Promise(async (resolve, reject) => {
-            this.notifyNewConnectionState(ConnectionState.CONNECTING);
-            const wasConnected = await this.ble.wasConnected({ address: this.address });
-            if (wasConnected.wasConnected) {
-                console.log("Was Connected");
-                const isConnected = await this.ble.isConnected({ address: this.address });
-                //If the device is already connected we don't need to perform authentication
-                if (isConnected.isConnected) {
-                    await this.discoverServices();
-                    this.notifyNewConnectionState(ConnectionState.CONNECTED);
-                    resolve();
-                } else {
-                    console.log("RECONNECTING...");
-                    this.ble.reconnect({ address: this.address })
-                        .subscribe(async () => {
-                            this.notifyNewConnectionState(ConnectionState.CONNECTED);
-                            await this.discoverServices();
-                            this.notifyNewConnectionState(ConnectionState.AUTHENTICATING);
-                            await new Authentication(this.address, this.ble).authenticate();
-                            this.notifyNewConnectionState(ConnectionState.AUTHENTICATED);
-                            resolve();
-                        }, async err => {
-                            console.log(err);
-                            reject();
-                        });
-                }
-            } else {
-                console.log("First Connection");
-                this.ble.connect({ address: this.address, autoConnect: true })
-                    .subscribe(async () => {
-                        this.notifyNewConnectionState(ConnectionState.CONNECTED);
-                        await this.discoverServices();
-                        this.notifyNewConnectionState(ConnectionState.AUTHENTICATING);
-                        await new Authentication(this.address, this.ble).authenticate();
-                        this.notifyNewConnectionState(ConnectionState.AUTHENTICATED);
-                        resolve()
-                    }, err => console.log(err));
-            }
-
-        })
-
-    }
+   
 
     public async discoverServices(): Promise<Device> {
         return this.ble.discover({ address: this.address });

@@ -10,6 +10,7 @@ import { HomeComponent } from '../home/home.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
+import { DeviceConnectionComponent } from '../device-connection/device-connection.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { StatisticsComponent } from '../statistics/statistics.component';
     LeaderboardComponent,
     StatisticsComponent,
     ProfileComponent,
+    DeviceConnectionComponent
   ]
 })
 export class TabsPageModule {

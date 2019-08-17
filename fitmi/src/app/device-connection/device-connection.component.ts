@@ -1,7 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { MiBandService, ConnectionState } from '../miband/miband.service';
+import { MiBandService, ConnectionState, Notification } from '../miband/miband.service';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-device-connection',
@@ -10,28 +11,48 @@ import { Platform } from '@ionic/angular';
 })
 
 
-export class DeviceConnectionComponent implements OnInit, AfterViewInit {
+export class DeviceConnectionComponent implements OnInit {
 
   private mibandConnection = ''
+  private spinnerHidden = false;
 
   constructor(private miBand: MiBandService,
     private ble: BluetoothLE,
-    private platform: Platform) { }
+    private platform: Platform,
+    private router: Router) { }
 
-  async ngAfterViewInit() {
+
+
+  async ngOnInit() {
     await this.platform.ready();
     this.ble.initialize().subscribe(async res => {
       this.miBand.getConnectionStateObservable()
-      .subscribe(connectionState => {
-        console.log(connectionState);
-        this.mibandConnection = connectionState;
-      });
-      await this.miBand.findMiBand();
-      await this.miBand.connect();
+        .subscribe(connectionState => {
+          console.log(connectionState);
+          this.mibandConnection = connectionState;
+        });
 
+      if (!(await this.ble.isEnabled()).isEnabled) {
+        this.ble.enable();
+      }
+
+      this.miBand.findMiBand()
+        .then(() => {
+          return this.miBand.connect();
+        })
+        .then(async () => {
+          this.hideSpinner();
+          this.miBand.sendNotification(Notification.VIBRATE);
+          await this.router.navigateByUrl("tabs/home");
+        })
+        .catch(() => this.hideSpinner());
     });
   }
 
-  ngOnInit() { }
+
+  private hideSpinner() {
+    this.spinnerHidden = true
+
+  }
 
 }
