@@ -6,7 +6,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-radio-group name="type"  [(ngModel)]="type">
+    <ion-radio-group name="type"  [(ngModel)]="goal.type">
       <ion-list-header>Tipo obiettivo</ion-list-header>
 
 <!-- Should use for loop but there might be an issue that permits multiple choices -->
@@ -30,7 +30,7 @@
   <ion-row justify-content-center align-items-center>
     <ion-col align-items-center justify-content-center size="4"> Obiettivo: </ion-col>
     <ion-col align-items-center justify-content-center size="4">
-      <ion-input name="goal" [(ngModel)]="goal" type="number" required="true"></ion-input>
+      <ion-input name="goal" [(ngModel)]="goal.threshold" type="number" required="true"></ion-input>
     </ion-col>
     <ion-col align-items-center justify-content-center size="4"> {{selectUnit()}} </ion-col>
   </ion-row>

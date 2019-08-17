@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GoalSettingsComponent } from './goal-settings.component';
+import { CompleteGoalSettingsComponent } from './complete-goal-settings.component';
 
-describe('GoalSettingsComponent', () => {
-  let component: GoalSettingsComponent;
-  let fixture: ComponentFixture<GoalSettingsComponent>;
+describe('CompleteGoalSettingsComponent', () => {
+  let component: CompleteGoalSettingsComponent;
+  let fixture: ComponentFixture<CompleteGoalSettingsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GoalSettingsComponent ],
+      declarations: [ CompleteGoalSettingsComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GoalSettingsComponent);
+    fixture = TestBed.createComponent(CompleteGoalSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

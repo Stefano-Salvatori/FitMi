@@ -11,6 +11,6 @@ export class SessionTabsComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.router.navigateByUrl(this.router.url + '/stats');
+    //this.router.navigateByUrl(this.router.url + '/stats');
   }
 }
