@@ -1,0 +1,41 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-title>Obiettivi</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-radio-group name="type"  [(ngModel)]="type">
+      <ion-list-header>Tipo obiettivo</ion-list-header>
+
+<!-- Should use for loop but there might be an issue that permits multiple choices -->
+      <ion-item>
+        <ion-radio value={{goals[0].name}} slot="start" margin checked></ion-radio>
+        <ion-label>{{goals[0].label}}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-radio value={{goals[1].name}}  slot="start" margin></ion-radio>
+        <ion-label>{{goals[1].label}}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-radio value={{goals[2].name}}  slot="start" margin></ion-radio>
+        <ion-label>{{goals[2].label}}</ion-label>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-row justify-content-center align-items-center>
+    <ion-col align-items-center justify-content-center size="4"> Obiettivo: </ion-col>
+    <ion-col align-items-center justify-content-center size="4">
+      <ion-input name="goal" [(ngModel)]="goal" type="number" required="true"></ion-input>
+    </ion-col>
+    <ion-col align-items-center justify-content-center size="4"> {{selectUnit()}} </ion-col>
+  </ion-row>
+</ion-content>
+
+<div padding>
+  <ion-button (click)="startSession()" color="success"> Inizia </ion-button>
+</div>
