@@ -19,7 +19,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { AuthModule } from './auth/auth.module';
 
 import { RunningStatsComponent } from './session/running-stats/running-stats.component';
-
+import { CompleteGoalSettingsComponent } from './session/goal-settings/complete-goal-settings/complete-goal-settings.component';
 import { SessionHeaderComponent } from './session/session-header/session-header.component';
 import { SessionFooterComponent } from './session/session-footer/session-footer.component';
 import { SessionDataComponent } from './session/session-data/session-data.component';
@@ -41,7 +41,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     SessionGoalComponent,
     SessionFooterComponent,
     SessionMapComponent,
-    SessionTabsComponent
+    SessionTabsComponent,
+    CompleteGoalSettingsComponent
     ],
   imports: [
     BrowserModule,

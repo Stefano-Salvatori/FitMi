@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { SessionTabsComponent } from './session/session-tabs/session-tabs.component';
 import { SessionMapComponent } from './session/session-map/session-map.component';
 import { RunningStatsComponent } from './session/running-stats/running-stats.component';
+import { CompleteGoalSettingsComponent } from './session/goal-settings/complete-goal-settings/complete-goal-settings.component';
 
 import { DeviceConnectionComponent } from './device-connection/device-connection.component';
 
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'tabs', loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule) },
+  { path: 'running/goal_settings', component: CompleteGoalSettingsComponent },
   {
     path: 'running',
     component: SessionTabsComponent,

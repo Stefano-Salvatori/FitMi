@@ -14,32 +14,32 @@ export class HomeComponent implements OnInit {
     {
       name: 'Corsa',
       icon: this.BASE_ICON_PATH + '/running' + this.ICON_EXTENSION,
-      route: 'running'
+      route: 'running/goal_settings'
     },
     {
       name: 'Camminata',
       icon: this.BASE_ICON_PATH + '/walking' + this.ICON_EXTENSION,
-      route: 'walking'
+      route: 'walking/goal_settings'
     },
     {
       name: 'Ciclismo',
       icon: this.BASE_ICON_PATH + '/bicycle' + this.ICON_EXTENSION,
-      route: 'cycling'
+      route: 'cycling/goal_settings'
     },
     {
       name: 'Palestra',
       icon: this.BASE_ICON_PATH + '/gym' + this.ICON_EXTENSION,
-      route: 'gym'
+      route: 'gym/goal_settings'
     },
     {
       name: 'Nuoto',
       icon: this.BASE_ICON_PATH + '/swimming' + this.ICON_EXTENSION,
-      route: 'swimming'
+      route: 'swimming/goal_settings'
     },
     {
       name: 'Indoor',
       icon: this.BASE_ICON_PATH + '/training' + this.ICON_EXTENSION,
-      route: 'indoor-run'
+      route: 'indoor-run/goal_settings'
     }];
 
 
