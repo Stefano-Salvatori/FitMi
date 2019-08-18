@@ -3,8 +3,8 @@ import { BluetoothLE, OperationResult, Device } from '@ionic-native/bluetooth-le
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Authentication } from './authentication';
 import { MiBandGatt } from './mibandGatt';
-import { Platform } from '@ionic/angular';
 import { StorageService } from '../storage.service';
+import { map, filter, share, shareReplay } from 'rxjs/operators';
 
 export enum Notification {
     MESSAGE = 1,
@@ -28,7 +28,7 @@ export enum ConnectionState {
 }
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class MiBandService {
 
@@ -43,6 +43,19 @@ export class MiBandService {
 
 
     constructor(private ble: BluetoothLE, private storage: StorageService) {
+    }
+
+    public static iconOf(notification: string) {
+        switch (notification) {
+            case Notification[Notification.MESSAGE]:
+                return "text";
+            case Notification[Notification.OFF]:
+                return "power";
+            case Notification[Notification.PHONE]:
+                return "call";
+            case Notification[Notification.VIBRATE]:
+                return "notifications";
+        }
 
     }
 
@@ -52,7 +65,7 @@ export class MiBandService {
      */
     public async findMiBand() {
         return new Promise<void>(async (resolve, reject) => {
-            if((await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)) != undefined){
+            if ((await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)) != undefined) {
                 this.address = await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)
                 resolve();
             } else {
@@ -63,7 +76,7 @@ export class MiBandService {
                     reject();
                 }, this.MAX_SCAN_TIME)
 
-                if((await this.ble.isScanning()).isScanning){
+                if ((await this.ble.isScanning()).isScanning) {
                     await this.ble.stopScan();
                 }
                 this.ble.startScan({}).subscribe(async device => {
@@ -158,12 +171,18 @@ export class MiBandService {
 
     }
 
-    public getHeartRate(): Observable<OperationResult> {
+    public getHeartRate(): Observable<number> {
+        this.unsubscribeHeartRate();
         return this.ble.subscribe({
             address: this.address,
             service: MiBandGatt.UUID_SERVICE_HRM,
             characteristic: MiBandGatt.UUID_CHARATERISTIC_HRM_DATA
         })
+            .pipe(filter(heartRateValue => heartRateValue.status != 'subscribed'))
+            .pipe(map(heartRateValue => {
+                const data = this.ble.encodedStringToBytes(heartRateValue.value);
+                return Buffer.from(data).readUInt16BE(0)
+            }))
     }
 
     public async startHeartRateMonitoring() {
@@ -189,16 +208,11 @@ export class MiBandService {
         return new Promise<number>(async (resolve, reject) => {
             this.unsubscribeHeartRate();
             this.getHeartRate()
-                .subscribe(heartRateValue => {
-                    if (heartRateValue.status != 'subscribed') {
-                        const data = this.ble.encodedStringToBytes(heartRateValue.value);
-                        this.unsubscribeHeartRate();
-                        resolve(Buffer.from(data).readUInt16BE(0));
-                    }
-                }, err => {
-                    console.log(err);
-                    reject();
-                })
+                .subscribe(heartRateValue => resolve(heartRateValue),
+                    err => {
+                        console.log(err);
+                        reject();
+                    })
 
             await this.write([0x15, 0x01, 0x00],
                 MiBandGatt.UUID_SERVICE_HRM,
@@ -245,8 +259,6 @@ export class MiBandService {
             characteristic: MiBandGatt.UUID_CHARACTERISTIC_BATTERY
         });
 
-        console.log("response: " + this.ble.encodedStringToBytes(res.value))
-
         if (res.value.length <= 2) return -1;
         else return this.ble.encodedStringToBytes(res.value)[1]
 
@@ -258,8 +270,6 @@ export class MiBandService {
             MiBandGatt.UUID_CHARATERISTIC_VIBRATE);
     }
 
-
-   
 
     public async discoverServices(): Promise<Device> {
         return this.ble.discover({ address: this.address });

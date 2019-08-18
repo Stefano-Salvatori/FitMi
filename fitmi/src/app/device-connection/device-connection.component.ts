@@ -40,10 +40,10 @@ export class DeviceConnectionComponent implements OnInit {
         .then(() => {
           return this.miBand.connect();
         })
-        .then(async () => {
+        .then(() => {
           this.hideSpinner();
           this.miBand.sendNotification(Notification.VIBRATE);
-          await this.router.navigateByUrl("tabs/home");
+          this.router.navigateByUrl("tabs/test");
         })
         .catch(() => this.hideSpinner());
     });
