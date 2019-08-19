@@ -26,8 +26,6 @@ import { SessionDataComponent } from './session/session-data/session-data.compon
 import { SessionGoalComponent } from './session/session-goal/session-goal.component';
 import { SessionTabsComponent } from './session/session-tabs/session-tabs.component';
 import { SessionMapComponent } from './session/session-map/session-map.component';
-import { DeviceConnectionComponent } from './device-connection/device-connection.component';
-import { MiBandService } from './miband/miband.service';
 import { AgmCoreModule } from '@agm/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
@@ -59,7 +57,6 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     NgCircleProgressModule.forRoot({})
   ],
   providers: [
-    MiBandService,
     BluetoothLE,
     StatusBar,
     SplashScreen,
