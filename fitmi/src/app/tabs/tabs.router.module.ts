@@ -10,7 +10,8 @@ import { MiBandTestComponent } from '../mi-band-test/mi-band-test.component';
 
 const routes: Routes = [
   {
-    path: '', component: TabsComponent,
+    path: '',
+    component: TabsComponent,
     children: [
       {
         path: 'home',

@@ -29,6 +29,11 @@ const routes: Routes = [
     component: SessionTabsComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'stats',
+        pathMatch: 'full'
+      },
+      {
         path: 'stats',
         component: SessionStatsComponent
       },
@@ -42,6 +47,11 @@ const routes: Routes = [
     path: 'walking',
     component: SessionTabsComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'stats',
+        pathMatch: 'full'
+      },
       {
         path: 'stats',
         component: SessionStatsComponent
@@ -57,6 +67,11 @@ const routes: Routes = [
     component: SessionTabsComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'stats',
+        pathMatch: 'full'
+      },
+      {
         path: 'stats',
         component: SessionStatsComponent
       },
@@ -70,6 +85,11 @@ const routes: Routes = [
     path: 'gym',
     component: SessionTabsComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'stats',
+        pathMatch: 'full'
+      },
       {
         path: 'stats',
         component: SessionStatsComponent
@@ -85,6 +105,11 @@ const routes: Routes = [
     component: SessionTabsComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'stats',
+        pathMatch: 'full'
+      },
+      {
         path: 'stats',
         component: SessionStatsComponent
       },
@@ -99,6 +124,11 @@ const routes: Routes = [
     component: SessionTabsComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'stats',
+        pathMatch: 'full'
+      },
+      {
         path: 'stats',
         component: SessionStatsComponent
       },
@@ -108,7 +138,7 @@ const routes: Routes = [
       }
     ]
   },
-    { path: '**', component: NotFoundResourceComponent },
+  { path: '**', component: NotFoundResourceComponent },
 
 ];
 
