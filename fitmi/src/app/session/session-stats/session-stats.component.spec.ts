@@ -1,11 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RunningStatsComponent } from './running-stats.component';
+import { SessionStatsComponent } from './session-stats.component';
 
-describe('RunningStatsComponent', () => {
-  let component: RunningStatsComponent;
-  let fixture: ComponentFixture<RunningComponent>;
+describe('SessionStatsComponent', () => {
+  let component: SessionStatsComponent;
+  let fixture: ComponentFixture<SessionStatsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -16,7 +16,7 @@ describe('RunningStatsComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RunningSTatsComponent);
+    fixture = TestBed.createComponent(SessionStatsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

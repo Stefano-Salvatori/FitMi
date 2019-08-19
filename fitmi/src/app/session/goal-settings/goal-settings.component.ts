@@ -1,17 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import {  ActivatedRoute, Router } from '@angular/router';
 
-import  { GoalBufferService } from '../goal-buffer.service';
+import  { SessionDataService } from '../session-data.service';
 import { Goal } from '../goal';
 
 @Component({
   selector: 'app-complete-goal-settings',
-  templateUrl: './complete-goal-settings.component.html',
-  styleUrls: ['./complete-goal-settings.component.scss'],
+  templateUrl: './goal-settings.component.html',
+  styleUrls: ['./goal-settings.component.scss'],
 })
-export class CompleteGoalSettingsComponent implements OnInit {
+export class GoalSettingsComponent implements OnInit {
 
   private goalType = [
+    {
+      name: "time",
+      label: "Tempo",
+      unit: "min"
+    },
     {
       name: "distance",
       label: "Distanza",
@@ -30,10 +35,16 @@ export class CompleteGoalSettingsComponent implements OnInit {
   ];
 
   private goal: Goal = new Goal(this.goalType[0].name, 0);
+  private possibleGoal: boolean[];
 
-  constructor(private router: Router, private route: ActivatedRoute, private goalBuffer: GoalBufferService) { }
+  private title: string;
 
-  ngOnInit() {}
+  constructor(private router: Router, private route: ActivatedRoute, private sessionData: SessionDataService) {
+    this.possibleGoal = this.sessionData.getPossibleGoal();
+    this.title = this.sessionData.getName();
+  }
+
+  ngOnInit() { }
 
   selectUnit(): string {
     this.goal.unit = this.goalType.find(goal => goal.name === this.goal.type).unit;
@@ -41,7 +52,7 @@ export class CompleteGoalSettingsComponent implements OnInit {
   }
 
   startSession() {
-    this.goalBuffer.changeMessage(this.goal);
+    this.sessionData.setGoal(this.goal);
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

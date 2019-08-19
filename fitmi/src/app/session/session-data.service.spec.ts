@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GoalBufferService } from './goal-buffer.service';
+import { GoalBufferService } from './session-data.service';
 
-describe('GoalBufferService', () => {
+describe('SessionDataService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: GoalBufferService = TestBed.get(GoalBufferService);
+    const service: SessionDataService = TestBed.get(SessionDataService);
     expect(service).toBeTruthy();
   });
 });
