@@ -13,7 +13,6 @@ export class GoalBufferService {
   constructor() { }
 
   changeMessage(message: Goal) {
-    this.messageSource.next(message)
-    console.log(message);
+    this.messageSource.next(message);
   }
 }

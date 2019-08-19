@@ -11,7 +11,7 @@ import { Goal } from '../goal';
 })
 export class CompleteGoalSettingsComponent implements OnInit {
 
-  private goals = [
+  private goalType = [
     {
       name: "distance",
       label: "Distanza",
@@ -29,14 +29,15 @@ export class CompleteGoalSettingsComponent implements OnInit {
     }
   ];
 
-  private goal: Goal = new Goal(this.goals[0].name, 0);
+  private goal: Goal = new Goal(this.goalType[0].name, 0);
 
   constructor(private router: Router, private route: ActivatedRoute, private goalBuffer: GoalBufferService) { }
 
   ngOnInit() {}
 
   selectUnit(): string {
-    return this.goals.find(goal => goal.name === this.goal.type).unit;
+    this.goal.unit = this.goalType.find(goal => goal.name === this.goal.type).unit;
+    return this.goal.unit;
   }
 
   startSession() {
