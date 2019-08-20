@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SessionDataService } from '../session/session-data.service';
 
 @Component({
   selector: 'app-home',
@@ -14,42 +15,51 @@ export class HomeComponent implements OnInit {
     {
       name: 'Corsa',
       icon: this.BASE_ICON_PATH + '/running' + this.ICON_EXTENSION,
-      route: 'running/goal_settings'
+      route: 'running/goal_settings',
+      possibleGoal: [true, true, true, true] // time, distance, calories, steps
     },
     {
       name: 'Camminata',
       icon: this.BASE_ICON_PATH + '/walking' + this.ICON_EXTENSION,
-      route: 'walking/goal_settings'
+      route: 'walking/goal_settings',
+      possibleGoal: [true, true, true, true]
     },
     {
       name: 'Ciclismo',
       icon: this.BASE_ICON_PATH + '/bicycle' + this.ICON_EXTENSION,
-      route: 'cycling/goal_settings'
+      route: 'cycling/goal_settings',
+      possibleGoal: [true, true, true, false]
     },
     {
       name: 'Palestra',
       icon: this.BASE_ICON_PATH + '/gym' + this.ICON_EXTENSION,
-      route: 'gym/goal_settings'
+      route: 'gym/goal_settings',
+      possibleGoal: [true, false, true, false]
     },
     {
       name: 'Nuoto',
       icon: this.BASE_ICON_PATH + '/swimming' + this.ICON_EXTENSION,
-      route: 'swimming/goal_settings'
+      route: 'swimming/goal_settings',
+      possibleGoal: [true, true, true, false]
     },
     {
       name: 'Indoor',
       icon: this.BASE_ICON_PATH + '/training' + this.ICON_EXTENSION,
-      route: 'indoor-run/goal_settings'
+      route: 'indoor-run/goal_settings',
+      possibleGoal: [true, true, true, true]
     }];
 
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private sessionData: SessionDataService) { }
 
   ngOnInit() { }
 
   startSession(activity: string) {
-    this.router.navigateByUrl(this.activities.find(a => a.name === activity).route);
+    var activityData = this.activities.find(a => a.name === activity);
+    this.sessionData.setPossibleGoal(activityData.possibleGoal);
+    this.sessionData.setName(activityData.name);
+    this.router.navigateByUrl(activityData.route);
   }
 
   navigateToDeviceConnectionPage() {

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CircleProgressComponent } from 'ng-circle-progress';
+import  { SessionDataService } from '../session-data.service';
+import { Goal } from '../goal';
 
 @Component({
   selector: 'app-session-goal',
@@ -10,12 +12,15 @@ export class SessionGoalComponent implements OnInit {
 
   @ViewChild(CircleProgressComponent, {static: false}) progress!: CircleProgressComponent;
 
-  constructor() { }
+  private goal: Goal = new Goal("", 0);
 
-  ngOnInit() {}
-
-
-  ngAfterViewInit() {
-    this.progress.animate(0, 75);
+  constructor(private sessionData: SessionDataService) {
+    this.sessionData.currentGoal.subscribe(g => console.log(g));
   }
+
+  ngOnInit() {
+  }
+
+
+  ngAfterViewInit() { }
 }

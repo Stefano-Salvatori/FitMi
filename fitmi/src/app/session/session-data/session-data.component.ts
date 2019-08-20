@@ -18,7 +18,8 @@ export class SessionDataComponent implements OnInit {
   private minHeartbeat: number = 60;
   private maxHeartbeat: number = 100;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     this.setupChrono();

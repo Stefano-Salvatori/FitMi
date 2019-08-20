@@ -1,0 +1,20 @@
+Corsa
+Camminata
+Indoor
+ -> 
+ Distanza
+ Calorie
+ Passo
+
+Ciclismo
+Nuoto
+ ->
+ Distanza
+ Calorie
+
+Palestra
+ ->
+ Calorie
+
+
+NOTA: tempo opzionale da aggiungere?
