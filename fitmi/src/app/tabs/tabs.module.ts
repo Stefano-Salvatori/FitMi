@@ -18,6 +18,7 @@ import { MiBandTestComponent } from '../mi-band-test/mi-band-test.component';
   imports: [
     IonicModule,
     CommonModule,
+    FormsModule,
     TabsComponentRoutingModule,
     NgCircleProgressModule.forRoot({})
   ],

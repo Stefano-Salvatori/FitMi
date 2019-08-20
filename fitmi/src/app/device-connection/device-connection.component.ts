@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import { MiBandService, ConnectionState, Notification } from '../miband/miband.service';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Platform } from '@ionic/angular';
@@ -19,17 +19,18 @@ export class DeviceConnectionComponent implements OnInit {
   constructor(private miBand: MiBandService,
     private ble: BluetoothLE,
     private platform: Platform,
-    private router: Router) { }
+    private router: Router,
+    private ngZone: NgZone) { }
 
 
 
   async ngOnInit() {
     await this.platform.ready();
-    this.ble.initialize().subscribe(async res => {
+    this.ble.initialize().subscribe(async () => {
       this.miBand.getConnectionStateObservable()
         .subscribe(connectionState => {
           console.log(connectionState);
-          this.mibandConnection = connectionState;
+          this.ngZone.run(() => this.mibandConnection = connectionState);
         });
 
       if (!(await this.ble.isEnabled()).isEnabled) {

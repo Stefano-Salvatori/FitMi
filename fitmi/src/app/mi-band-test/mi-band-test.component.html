@@ -6,37 +6,105 @@
 
 <ion-content>
   <ion-list>
+    <ion-list-header>
+      <ion-label>Device Info</ion-label>
+    </ion-list-header>
     <ion-item>
-      <ion-label>Date:</ion-label>
+        <ion-label>Device Name</ion-label>
+        <ion-label color="medium" text-wrap>{{this?.deviceName}}</ion-label>
+      </ion-item>
+    <ion-item>
+      <ion-label>Serial</ion-label>
+      <ion-label color="medium" text-wrap>{{this?.serial}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label text-wrap>Hardware Version</ion-label>
+      <ion-label color="medium" text-wrap>{{this?.hwVersion}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label text-wrap>Software Version</ion-label>
+      <ion-label color="medium" text-wrap>{{this?.swVersion}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Date</ion-label>
       <ion-label color="medium" text-wrap>{{this?.date}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Battery:</ion-label>
+      <ion-label>Battery</ion-label>
       <ion-label color="medium">{{this?.battery}}%</ion-label>
     </ion-item>
+
+    <ion-list-header>
+      <ion-label>Session Info</ion-label>
+    </ion-list-header>
     <ion-item>
-      <ion-label>Steps:</ion-label>
+      <ion-label>Steps</ion-label>
       <ion-label color="medium">{{this?.steps}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Calories:</ion-label>
+      <ion-label>Calories</ion-label>
       <ion-label color="medium">{{this?.calories}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>Distance:</ion-label>
+      <ion-label>Distance</ion-label>
       <ion-label color="medium">{{this?.distance}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-label>HeartRate:</ion-label>
+      <ion-label>HeartRate</ion-label>
       <ion-label color="medium">{{this?.heartRate}}</ion-label>
     </ion-item>
+
+    <ion-list-header>
+      <ion-label>Misc</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Click Count</ion-label>
+      <ion-label color="medium">{{this?.clickCount}}</ion-label>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-label>Set User Info</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <form #form="ngForm" (ngSubmit)="setUserInfo(form)" class="container">
+        <ion-item>
+          <ion-input name="id" [(ngModel)]="id" type="number" required="true" placeholder="Id" value='10'>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-datetime displayFormat="DD/MM/YYYY" name="date" ngModel placeholder="DD/MM/YYYY">
+          </ion-datetime>
+        </ion-item>
+        <ion-radio-group name="gender" ngModel>
+          <ion-item>
+            <ion-radio value="male" checked></ion-radio>
+            <ion-label>M</ion-label>
+            <ion-radio value="female"></ion-radio>
+            <ion-label>F</ion-label>
+          </ion-item>
+        </ion-radio-group>
+        <ion-item>
+          <ion-input name="height" [(ngModel)]="height" type="number" required="true" placeholder="Altezza" value='1.62'>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input name="weight" [(ngModel)]="weight" type="number" required="true" placeholder="Peso" value='63'>
+          </ion-input>
+        </ion-item>
+        <ion-button type="submit">Set User</ion-button>
+      </form>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-label>Notifications</ion-label>
+    </ion-list-header>
     <ion-item>
       <ion-segment>
-        <ion-segment-button *ngFor="let item of this.notificationsList" [value]="item" (ionSelect)="this.miBand.sendNotification(this.notification(item))">
-            <ion-icon [name]="this.iconOf(item)"></ion-icon>
-          </ion-segment-button>
+        <ion-segment-button *ngFor="let item of this.notificationsList" [value]="item"
+          (ionSelect)="this.miBand.sendNotification(this.notification(item))">
+          <ion-icon [name]="this.iconOf(item)"></ion-icon>
+        </ion-segment-button>
       </ion-segment>
     </ion-item>
   </ion-list>
-
 </ion-content>
