@@ -11,13 +11,13 @@ import { AuthService } from '../auth/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  private registrationRoute = 'sign-in';
-  private tabsRoute = 'tabs';
+  registrationRoute = 'sign-in';
+  tabsRoute = 'tabs';
 
-  private username: string;
-  private password: string;
+  username: string;
+  password: string;
 
-  private errorString = '';
+  errorString = '';
   private readonly incorrectFields = 'Username o Password non corretti';
   private readonly connectionError = 'Errore di connessione al server';
 

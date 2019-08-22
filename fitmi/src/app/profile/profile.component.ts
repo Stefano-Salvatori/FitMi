@@ -12,14 +12,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CircleProgressComponent, {static: false}) progress!: CircleProgressComponent;
 
-  private firstName: string;
-  private lastName: string;
-  private score: number;
-  private badges = [0, 1, 2, 3];
-  private gender: string;
-  private age: number;
-  private height: number;
-  private weight: number;
+  firstName: string;
+  lastName: string;
+  score: number;
+  badges = [0, 1, 2, 3];
+  gender: string;
+  age: number;
+  height: number;
+  weight: number;
 
   constructor(private auth: AuthService) {
     const user = this.auth.getUser();

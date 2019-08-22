@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
 
 export class DeviceConnectionComponent implements OnInit {
 
-  private mibandConnection = ''
-  private spinnerHidden = false;
+  mibandConnection = ''
+  spinnerHidden = false;
 
   constructor(private miBand: MiBandService,
     private ble: BluetoothLE,

@@ -13,10 +13,10 @@ export class GoalSettingsComponent implements OnInit {
 
   private readonly goalType = GoalType;
 
-  private goal: Goal = new Goal(GoalType.TIME, 0);
-  private possibleGoal: boolean[];
+  goal: Goal = new Goal(GoalType.TIME, 0);
+  possibleGoal: boolean[];
 
-  private title: string;
+  title: string;
 
   constructor(private router: Router,
     private route: ActivatedRoute,

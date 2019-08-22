@@ -68,7 +68,7 @@
     <ion-item>
       <form #form="ngForm" (ngSubmit)="setUserInfo(form)" class="container">
         <ion-item>
-          <ion-input name="id" [(ngModel)]="id" type="number" required="true" placeholder="Id" value='10'>
+          <ion-input name="id" ngModel type="number" required="true" placeholder="Id" value='10'>
           </ion-input>
         </ion-item>
         <ion-item>
@@ -84,11 +84,11 @@
           </ion-item>
         </ion-radio-group>
         <ion-item>
-          <ion-input name="height" [(ngModel)]="height" type="number" required="true" placeholder="Altezza" value='1.62'>
+          <ion-input name="height" ngModel type="number" required="true" placeholder="Altezza" value='1.62'>
           </ion-input>
         </ion-item>
         <ion-item>
-          <ion-input name="weight" [(ngModel)]="weight" type="number" required="true" placeholder="Peso" value='63'>
+          <ion-input name="weight" ngModel type="number" required="true" placeholder="Peso" value='63'>
           </ion-input>
         </ion-item>
         <ion-button type="submit">Set User</ion-button>

@@ -15,9 +15,9 @@ import { AuthService } from '../auth/auth.service';
 
 export class LeaderboardComponent implements OnInit {
 
-  private users: User[] = USERS.sort((u1, u2) => u2.fitnessPoints - u1.fitnessPoints);
-  private currentUserRank = 8;
-  private currentUser = USERS[0];
+  users: User[] = USERS.sort((u1, u2) => u2.fitnessPoints - u1.fitnessPoints);
+  currentUserRank = 8;
+  currentUser = USERS[0];
 
   constructor(private httpClient: HttpClientService, private auth: AuthService) {
     // currentUser = auth.getUser();

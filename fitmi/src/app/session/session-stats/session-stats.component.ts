@@ -8,7 +8,7 @@ import { SessionDataService } from '../session-data.service';
 })
 export class SessionStatsComponent implements OnInit {
 
-  private title: string;
+  title: string;
 
   constructor(private sessionData: SessionDataService) {
     this.title = this.sessionData.name;

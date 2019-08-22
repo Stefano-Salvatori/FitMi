@@ -14,21 +14,18 @@ import { PedometerData } from '../miband/pedometer-data';
 export class MiBandTestComponent implements OnInit, OnDestroy {
 
 
-  private date: Date;
-  private battery: number;
-  private pedometerData: PedometerData;
-  private heartRate: number;
-  private clickCount: number = 0;
-  private serial: string;
-  private deviceName: string;
+  date: Date;
+  battery: number;
+  pedometerData: PedometerData;
+  heartRate: number;
+  clickCount: number = 0;
+  serial: string;
+  deviceName: string;
 
-  private hwVersion: string;
-  private swVersion: string;
+  hwVersion: string;
+  swVersion: string;
 
-
-
-
-  private notificationsList: string[] =
+  notificationsList: string[] =
     Object.keys(Notification).filter(key => !isNaN(Number(Notification[key])));
 
 
@@ -100,7 +97,7 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
     this.miBand.unsubscribeButtonClick();
   }
 
-  private setUserInfo(form) {
+  setUserInfo(form) {
     console.log(form);
     this.miBand.setUserInfo(form.value);
   }
@@ -109,7 +106,7 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
    * Returns the name of the icon to use foreach notification type
    * @param notification 
    */
-  private iconOf(notification: string) {
+  iconOf(notification: string) {
     switch (notification) {
       case Notification[Notification.MESSAGE]:
         return "text";

@@ -10,16 +10,16 @@ import { SessionDataService } from '../session-data.service';
 export class SessionDataComponent implements OnInit, OnDestroy {
 
   private chrono;
-  private elapsedSec: number = 0;
-  private elapsedMin: number = 0;
-  private elapsedHour: number = 0;
+  elapsedSec: number = 0;
+  elapsedMin: number = 0;
+  elapsedHour: number = 0;
 
-  private steps: number = 0;
-  private distance: number = 0;
-  private calories: number = 0;
-  private currHeartbeat: number = 70;
-  private minHeartbeat: number = 60;
-  private maxHeartbeat: number = 100;
+  steps: number = 0;
+  distance: number = 0;
+  calories: number = 0;
+  currHeartbeat: number = 70;
+  minHeartbeat: number = 60;
+  maxHeartbeat: number = 100;
 
 
   constructor(private session: SessionDataService,

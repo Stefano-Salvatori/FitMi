@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
 
   private  BASE_ICON_PATH = '../../assets/icon/fit_activities_icons';
   private  ICON_EXTENSION = '.png';
-  private activities = [
+  activities = [
     {
       name: 'Corsa',
       icon: this.BASE_ICON_PATH + '/running' + this.ICON_EXTENSION,

@@ -14,6 +14,10 @@ const routes: Routes = [
     component: TabsComponent,
     children: [
       {
+        path: '',
+        component: HomeComponent
+      },
+      {
         path: 'home',
         component: HomeComponent
       },
