@@ -5,6 +5,7 @@ import { Authentication } from './authentication';
 import { MiBandGatt } from './mibandGatt';
 import { StorageService } from '../storage.service';
 import { map, filter } from 'rxjs/operators';
+import { PedometerData } from './pedometer-data';
 
 export enum Notification {
     MESSAGE = 1,
@@ -357,11 +358,7 @@ export class MiBandService {
     /**
      * Read steps, distance and calories.
      */
-    public getPedometerStats(): Promise<{
-        steps: number;
-        distance: number;
-        calories: number;
-    }> {
+    public getPedometerData(): Promise<PedometerData> {
         return this.ble.read({
             address: this.address,
             service: MiBandGatt.UUID_SERVICE_MIBAND_1,

@@ -44,7 +44,7 @@ export class DeviceConnectionComponent implements OnInit {
         .then(() => {
           this.hideSpinner();
           this.miBand.sendNotification(Notification.VIBRATE);
-          this.router.navigateByUrl("tabs/test");
+          this.router.navigateByUrl("tabs/home");
         })
         .catch(() => this.hideSpinner());
     });

@@ -4,6 +4,7 @@ import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Platform } from '@ionic/angular';
 import { from } from 'rxjs';
 import { Form } from '@angular/forms';
+import { PedometerData } from '../miband/pedometer-data';
 
 @Component({
   selector: 'app-mi-band-test',
@@ -15,9 +16,7 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
 
   private date: Date;
   private battery: number;
-  private steps: number;
-  private calories: number;
-  private distance: number;
+  private pedometerData: PedometerData;
   private heartRate: number;
   private clickCount: number = 0;
   private serial: string;
@@ -80,11 +79,7 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
 
       this.miBand.getBatteryInfo().then(d => this.battery = d)
 
-      this.miBand.getPedometerStats().then(p => {
-        this.steps = p.steps;
-        this.calories = p.calories;
-        this.distance = p.distance;
-      });
+      this.miBand.getPedometerData().then(p => this.pedometerData = p);
 
       this.miBand.subscribeHeartRate()
         .subscribe(hr => this.ngZone.run(() => this.heartRate = hr),
