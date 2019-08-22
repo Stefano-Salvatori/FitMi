@@ -1,37 +1,79 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Goal } from './goal';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Goal, GoalType } from './goal';
+import { MiBandService } from '../miband/miband.service';
+import { PedometerData } from '../miband/pedometer-data';
 
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Contains all the information about the current session.
+ * In particular this is used to setup the goal of the session and to retrieve all the information from the smart band (current steps, calories, distance, heart rate...)
+ */
 export class SessionDataService {
+  //Polling frequency for pedometer data
+  private static readonly POLLING_FREQ = 1000; //ms
 
-  private currentGoalSource = new BehaviorSubject(new Goal("", 0));
-  currentGoal = this.currentGoalSource.asObservable();
+  private currentGoalSource = new BehaviorSubject(new Goal(GoalType.TIME, 0));
+  private _currentGoal = this.currentGoalSource.asObservable();
 
-  private possibleGoal: boolean[] = [true, true, true, true];
-  private name: string = "";
+  private pedometerData = new BehaviorSubject<PedometerData>(new PedometerData());
+  private pedometerDataTimer;
 
-  constructor() { }
+  private _possibleGoal: boolean[] = [true, true, true, true];// time, distance, calories, steps
+  private _name: string = "";
 
-  setGoal(message: Goal) {
-    this.currentGoalSource.next(message);
+  constructor(private miBand: MiBandService) {
+    this.miBand.findMiBand().then(() => {
+
+      this.pedometerDataTimer = setInterval(async () => {
+        this.pedometerData.next(await this.miBand.getPedometerData());
+      }, SessionDataService.POLLING_FREQ)
+    })
   }
 
-  setPossibleGoal(possibleGoal: boolean[]) {
-    this.possibleGoal = possibleGoal;
+  startSession(): void {
+    this.miBand.startHeartRateMonitoring();
   }
 
-  getPossibleGoal(): boolean[] {
-    return this.possibleGoal;
+  stopSession(): void {
+    this.miBand.stopHeartRateMonitoring();
+    this.miBand.unsubscribeHeartRate();
+    clearInterval(this.pedometerDataTimer);
   }
 
-  setName(name: string) {
-    this.name = name;
+  heartRateObservable(): Observable<number> {
+    return this.miBand.subscribeHeartRate();
   }
 
-  getName(): string {
-    return this.name;
+  pedometerDataObservable(): Observable<PedometerData>{
+    return this.pedometerData.asObservable();
   }
+
+
+  get currentGoal(): Goal {
+    return this.currentGoalSource.getValue();
+  }
+
+  set currentGoal(goal: Goal) {
+    this.currentGoalSource.next(goal);
+  }
+
+  set possibleGoal(possibleGoal: boolean[]) {
+    this._possibleGoal = possibleGoal;
+  }
+
+  get possibleGoal(): boolean[] {
+    return this._possibleGoal;
+  }
+
+  set name(value: string) {
+    this._name = value;
+  }
+
+  get name() {
+    return this._name;
+  }
+
 }

@@ -11,7 +11,7 @@ export class SessionStatsComponent implements OnInit {
   private title: string;
 
   constructor(private sessionData: SessionDataService) {
-    this.title = this.sessionData.getName();
+    this.title = this.sessionData.name;
   }
 
   ngOnInit() {}

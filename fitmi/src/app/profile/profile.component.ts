@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
 import { AuthService } from '../auth/auth.service';
 import { CircleProgressComponent } from 'ng-circle-progress';
@@ -8,7 +8,7 @@ import { CircleProgressComponent } from 'ng-circle-progress';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CircleProgressComponent, {static: false}) progress!: CircleProgressComponent;
 

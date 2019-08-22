@@ -7,23 +7,23 @@
 
 <!-- Should use for loop but there might be an issue that permits multiple choices -->
       <ion-item *ngIf="possibleGoal[0]">
-        <ion-radio value={{goalType[0].name}} slot="start" margin checked></ion-radio>
-        <ion-label>{{goalType[0].label}}</ion-label>
+        <ion-radio value={{goalType.TIME}} slot="start" margin checked></ion-radio>
+        <ion-label>{{goalType.TIME}}</ion-label>
       </ion-item>
 
       <ion-item *ngIf="possibleGoal[1]">
-        <ion-radio value={{goalType[1].name}}  slot="start" margin></ion-radio>
-        <ion-label>{{goalType[1].label}}</ion-label>
+        <ion-radio value={{goalType.DISTANCE}} slot="start" margin></ion-radio>
+        <ion-label>{{goalType.DISTANCE}}</ion-label>
       </ion-item>
 
       <ion-item *ngIf="possibleGoal[2]">
-        <ion-radio value={{goalType[2].name}}  slot="start" margin></ion-radio>
-        <ion-label>{{goalType[2].label}}</ion-label>
+        <ion-radio value={{goalType.STEPS}} slot="start" margin></ion-radio>
+        <ion-label>{{goalType.STEPS}}</ion-label>
       </ion-item>
 
       <ion-item *ngIf="possibleGoal[3]">
-        <ion-radio value={{goalType[3].name}}  slot="start" margin></ion-radio>
-        <ion-label>{{goalType[3].label}}</ion-label>
+        <ion-radio value={{goalType.CALORIES}} slot="start" margin></ion-radio>
+        <ion-label>{{goalType.CALORIES}}</ion-label>
       </ion-item>
     </ion-radio-group>
   </ion-list>
@@ -33,7 +33,7 @@
     <ion-col align-items-center justify-content-center size="4">
       <ion-input name="goal" [(ngModel)]="goal.threshold" type="number" required="true"></ion-input>
     </ion-col>
-    <ion-col align-items-center justify-content-center size="4"> {{selectUnit()}} </ion-col>
+    <ion-col align-items-center justify-content-center size="4" > {{this.goal.unit}} </ion-col>
   </ion-row>
 </ion-content>
 

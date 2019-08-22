@@ -57,8 +57,8 @@ export class HomeComponent implements OnInit {
 
   startSession(activity: string) {
     var activityData = this.activities.find(a => a.name === activity);
-    this.sessionData.setPossibleGoal(activityData.possibleGoal);
-    this.sessionData.setName(activityData.name);
+    this.sessionData.possibleGoal = activityData.possibleGoal;
+    this.sessionData.name = activityData.name;
     this.router.navigateByUrl(activityData.route);
   }
 
