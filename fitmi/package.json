@@ -29,6 +29,7 @@
     "@ionic/storage": "^2.2.0",
     "aes-js": "^3.1.2",
     "cordova-android": "8.0.0",
+    "cordova-ios": "^5.0.1",
     "cordova-plugin-bluetoothle": "^4.5.5",
     "cordova-plugin-ionic-webview": "^4.1.1",
     "core-js": "^2.5.4",
@@ -84,7 +85,8 @@
       }
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
