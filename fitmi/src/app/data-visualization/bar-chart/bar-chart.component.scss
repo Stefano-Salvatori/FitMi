@@ -1,0 +1,42 @@
+svg {
+  font: 10px sans-serif;
+}
+
+
+.bar {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+  
+.subBar { 
+  fill: gray;
+  opacity: 0.5;
+  padding: 10px;
+  margin: 10px;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: lightgray;
+    stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+.axis text{
+  fill: gray;
+}
+
+
+.brush .extent {
+  stroke: #fff;
+  fill: steelblue;
+  fill-opacity: .25;
+  shape-rendering: crispEdges;
+}
+
+  rect.mover {
+            stroke: red;
+            stroke-opacity: .1;
+            fill: lightSteelBlue;
+            fill-opacity: .5;
+        }

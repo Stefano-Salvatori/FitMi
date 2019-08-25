@@ -12,6 +12,9 @@ import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
 import { DeviceConnectionComponent } from '../device-connection/device-connection.component';
 import { MiBandTestComponent } from '../mi-band-test/mi-band-test.component';
+import { LineChartComponentModule } from '../data-visualization/line-chart/line-chart.module';
+import { BarChartComponentModule } from '../data-visualization/bar-chart/bar-chart.module';
+import { DynamicLineChartComponentModule } from '../data-visualization/dynamic-line-chart/dynamic-line-chart.module';
 
 
 @NgModule({
@@ -20,6 +23,9 @@ import { MiBandTestComponent } from '../mi-band-test/mi-band-test.component';
     CommonModule,
     FormsModule,
     TabsComponentRoutingModule,
+    LineChartComponentModule,
+    BarChartComponentModule,
+    DynamicLineChartComponentModule,
     NgCircleProgressModule.forRoot({})
   ],
   declarations: [
@@ -29,7 +35,7 @@ import { MiBandTestComponent } from '../mi-band-test/mi-band-test.component';
     StatisticsComponent,
     ProfileComponent,
     DeviceConnectionComponent,
-    MiBandTestComponent
+    MiBandTestComponent,
   ]
 })
 export class TabsPageModule {

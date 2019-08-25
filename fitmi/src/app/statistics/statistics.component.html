@@ -1,5 +1,29 @@
-<ion-content color="primary">
+<ion-content>
+  <!-- Segment with default selection -->
+  <ion-segment (ionChange)="segmentChanged($event)" value="javascript">
+    <ion-segment-button value="last">
+      <ion-label>Last</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="general">
+      <ion-label>general</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
   <h2>{{ title }}</h2>
-  <svg width="350" height="500"></svg>
+
+  <h2>Heart Rate</h2>
+  <line-chart>
+
+  </line-chart>
+
+  <h2>Calories</h2>
+  <bar-chart>
+
+  </bar-chart>
+
+  <h2>Dynamic line chart</h2>
+  <dynamic-line-chart>
+
+  </dynamic-line-chart>
 </ion-content>
 
