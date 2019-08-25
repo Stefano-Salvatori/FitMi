@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { SessionDataService } from '../session-data.service';
-import { Goal, GoalType } from '../goal';
+import { Goal, GoalType } from '../../../model/goal';
 
 @Component({
   selector: 'app-complete-goal-settings',
@@ -11,10 +11,10 @@ import { Goal, GoalType } from '../goal';
 })
 export class GoalSettingsComponent implements OnInit {
 
-  private readonly goalType = GoalType;
+  readonly goalType = GoalType;
 
   goal: Goal = new Goal(GoalType.TIME, 0);
-  possibleGoal: boolean[];
+  possibleGoal: GoalType[];
 
   title: string;
 
@@ -33,6 +33,7 @@ export class GoalSettingsComponent implements OnInit {
 
   startSession() {
     this.sessionData.currentGoal = this.goal;
+    this.sessionData.startSession();
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

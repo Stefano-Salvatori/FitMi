@@ -1,4 +1,5 @@
 import { HttpRequest, HttpResponse } from '../../http-msg';
+import { User } from 'src/model/user';
 
 export interface AuthRequest extends HttpRequest {
   username: string;
@@ -6,9 +7,4 @@ export interface AuthRequest extends HttpRequest {
 
 }
 
-export interface AuthResponse extends HttpResponse {
-  accessToken: {
-    id: string,
-    expirationTime: number
-  };
-}
+export interface AuthResponse extends HttpResponse, User { }
