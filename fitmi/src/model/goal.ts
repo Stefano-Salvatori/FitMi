@@ -17,8 +17,7 @@ export namespace GoalType {
       case GoalType.CALORIES:
         return "kCal";
       default:
-        "";
-        break;
+        return "";
     }
   }
 }
