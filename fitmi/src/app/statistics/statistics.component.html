@@ -1,29 +1,117 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-title>Statistics</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Out of ion-content to keep it fixed at top-->
+<!-- Segment with default selection -->
+<ion-segment (ionChange)="segmentChanged($event)" value="last">
+  <ion-segment-button value="last">
+    <ion-label>Last</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="general">
+    <ion-label>general</ion-label>
+  </ion-segment-button>
+</ion-segment>
 <ion-content>
-  <!-- Segment with default selection -->
-  <ion-segment (ionChange)="segmentChanged($event)" value="javascript">
-    <ion-segment-button value="last">
-      <ion-label>Last</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="general">
-      <ion-label>general</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+ 
 
-  <h2>{{ title }}</h2>
+<div *ngIf="last; then thenBlock else elseBlock"></div>
 
-  <h2>Heart Rate</h2>
-  <line-chart>
+<!-- LAST staticstics template-->
 
-  </line-chart>
+<ng-template #thenBlock><h1>Last Session</h1>
+<h1>Duration: {{ lastSessionDuration() }}</h1>
+<ion-grid fixed>
+  <ion-row>
+    <ion-col size="12">
+      <h2>Heart Rate</h2>
+      <div id="heartRateLineChart">
+        {{ initHeartRateLineChart() }}
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row size="12">
+    <ion-col size="6">
+      <h2>{{ minMaxHeartRate()[0] }}</h2>
+      <h4>Min Heart Rate</h4>
+    </ion-col>
 
-  <h2>Calories</h2>
-  <bar-chart>
+        <ion-col size="6">
+          <h2>{{ minMaxHeartRate()[1] }}</h2>
+          <h4>Max Heart Rate</h4>
+        </ion-col>
+  </ion-row>
+  <ion-row size="12">
+    <ion-col size="6">
+      <h2>{{ lastSession.type }}</h2>
+      <h4>Type</h4>
+    </ion-col>
+    <ion-col size="6">
+      <h2>{{ lastSession.calories }}</h2>
+      <h4>Calories</h4>
+    </ion-col>
+  </ion-row>
 
-  </bar-chart>
+  <ion-row size="12">
+    <ion-col size="6">
+      <h2>{{ lastSession.steps }}</h2>
+      <h4>Steps</h4>
+    </ion-col>
+    <ion-col size="6">
+      <h2>{{ lastSession.distance }}</h2>
+      <h4>Distance</h4>
+    </ion-col>
+  </ion-row>
+</ion-grid></ng-template>
 
-  <h2>Dynamic line chart</h2>
-  <dynamic-line-chart>
+<!-- GENERAL staticstics template-->
+<ng-template #elseBlock>
+  <h1>General Statistics</h1>
+  <h1>Sessions: {{ allSessions.length }}</h1>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <h2>Calories</h2>
+        <bar-chart></bar-chart>
 
-  </dynamic-line-chart>
+      </ion-col>
+    </ion-row>
+    <ion-row size="12">
+      <ion-col size="6" >
+        <h2>{{ favoriteSessionType() }}</h2>
+        <h4>Favorite Session</h4>
+      </ion-col>
+      <ion-col size="6">
+        <h2>{{ allCalories() }}</h2>
+        <h4> Total Calories</h4>
+      </ion-col>
+    </ion-row>
+
+    <ion-row size="12">
+      <ion-col size="6">
+        <h2>{{ allSteps() }}</h2>
+        <h4>Total Steps</h4>
+      </ion-col>
+      <ion-col size="6">
+        <h2>{{ allDistance() }}</h2>
+        <h4>Total Distance</h4>
+      </ion-col>
+    </ion-row>
+
+    <ion-row size="12">
+      <ion-col size="6">
+        <h2>{{ allSteps() }}</h2>
+        <h4>Total Steps</h4>
+      </ion-col>
+      <ion-col size="6">
+        <h2>{{ wholeTimeSpentOnSessions() }} </h2>
+        <h4>Time On Session</h4>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ng-template>
+
+
 </ion-content>
-

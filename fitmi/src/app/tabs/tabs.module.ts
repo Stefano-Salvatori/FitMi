@@ -14,7 +14,6 @@ import { DeviceConnectionComponent } from '../device-connection/device-connectio
 import { MiBandTestComponent } from '../mi-band-test/mi-band-test.component';
 import { LineChartComponentModule } from '../data-visualization/line-chart/line-chart.module';
 import { BarChartComponentModule } from '../data-visualization/bar-chart/bar-chart.module';
-import { DynamicLineChartComponentModule } from '../data-visualization/dynamic-line-chart/dynamic-line-chart.module';
 
 
 @NgModule({
@@ -25,7 +24,6 @@ import { DynamicLineChartComponentModule } from '../data-visualization/dynamic-l
     TabsComponentRoutingModule,
     LineChartComponentModule,
     BarChartComponentModule,
-    DynamicLineChartComponentModule,
     NgCircleProgressModule.forRoot({})
   ],
   declarations: [

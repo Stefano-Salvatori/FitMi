@@ -1,10 +1,12 @@
-import { Component, OnInit, NgZone, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { MiBandService } from 'src/app/miband/miband.service';
+import { Component, OnInit, NgZone, OnDestroy, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { SessionDataService } from '../session-data.service';
+import { LineChartService } from 'src/app/data-visualization/line-chart/line-chart.service';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'app-session-data',
   templateUrl: './session-data.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./session-data.component.scss'],
 })
 export class SessionDataComponent implements OnInit, OnDestroy {
@@ -20,10 +22,22 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   currHeartbeat: number;
   minHeartbeat: number;
   maxHeartbeat: number;
+  private heartRateLineChart: LineChartService;
 
 
-  constructor(private session: SessionDataService,
-    private ngZone: NgZone) {
+  constructor(private session: SessionDataService, private ngZone: NgZone) {
+
+
+
+
+    /*this.heartRateLineChart.setup('#heartRateLineChart');
+    this.heartRateLineChart.populate([]);*/
+
+
+  }
+
+  private getRandom(min, max): number {
+    return Math.floor(Math.random() * (max - min) + min);
   }
 
   ngOnDestroy() {
@@ -32,10 +46,31 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.heartRateLineChart = new LineChartService();
+
+
+
+    this.heartRateLineChart.setup('#heartRateLineChart');
+    this.heartRateLineChart.populate([]);
+
+
     this.startChrono();
 
+    this.heartRateLineChart = new LineChartService();
+
+
+
+    this.heartRateLineChart.setup('#heartRateLineChart');
+    this.heartRateLineChart.populate([]);
+
+
     this.session.heartRateObservable
-      .subscribe(hrv => this.ngZone.run(() => this.setHeartbeat(hrv)));
+      .subscribe(hrv => {
+        this.ngZone.run(() => {
+          this.setHeartbeat(hrv);
+          this.heartRateLineChart.pushDynamic([new Date(), hrv]);
+        });
+      });
 
 
     this.session.pedometerDataObservable()
@@ -43,7 +78,7 @@ export class SessionDataComponent implements OnInit, OnDestroy {
         this.setDistance(newStats.distance);
         this.setCalories(newStats.calories);
         this.setSteps(newStats.steps);
-      })
+      });
   }
 
   private startChrono() {
@@ -80,14 +115,14 @@ export class SessionDataComponent implements OnInit, OnDestroy {
 
   private setHeartbeat(newHeartbeat: number) {
     this.currHeartbeat = newHeartbeat;
-    if (this.minHeartbeat == undefined) {
+    if (this.minHeartbeat === undefined) {
       this.minHeartbeat = this.currHeartbeat;
     } else {
       this.minHeartbeat = Math.min(this.currHeartbeat, this.minHeartbeat);
     }
 
-    if (this.maxHeartbeat == undefined) {
-      this.maxHeartbeat = this.currHeartbeat
+    if (this.maxHeartbeat === undefined) {
+      this.maxHeartbeat = this.currHeartbeat;
     } else {
       this.maxHeartbeat = Math.max(this.currHeartbeat, this.maxHeartbeat);
     }

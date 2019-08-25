@@ -1,15 +1,18 @@
-import {  Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
 
+
+//TODO: https://bl.ocks.org/EfratVil/92f894ac0ba265192411e73f633a3e2f
+// brush and zoom
 @Injectable()
 export class LineChartService {
   private host: any;
   private margin: {
-     top: number;
-     right: number;
-     bottom: number;
-     left: number;
-   };
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+  };
   private width: number;
   private height: number;
   private xScale: d3.ScaleTime<number, number>;
@@ -26,11 +29,11 @@ export class LineChartService {
   private x: d3.ScaleTime<number, number>;
   private y: d3.ScaleLinear<number, number>;
   yGridiLines: any;
-  
+
   constructor() {
     this.data = [];
   }
-  
+
   public setXTicks(n: number): LineChartService {
     this.xTicks = n;
     return this;
@@ -61,22 +64,24 @@ export class LineChartService {
       };
     });
 
-    this.x = this.xScale.domain(d3.extent(this.data, d => d.date));
-    this.y = this.yScale.domain([0, d3.max(this.data, d => d.close)]);
+    const dataWindow = this.data.slice(0, Math.min(this.data.length, this.dataWindowSize));
+
+    this.x = this.xScale.domain(d3.extent(dataWindow, d => d.date));
+    this.y = this.yScale.domain([0, d3.max(dataWindow, d => d.close)]);
 
     // add the Y gridlines
     this.yGridiLines = this.svg.append('g').attr('class', 'grid');
     this.yGridiLines.call(
-        d3.axisLeft(this.yScale)
-          .ticks(this.yTicks)
-          .tickSize(-this.width)
-      );
+      d3.axisLeft(this.yScale)
+        .ticks(this.yTicks)
+        .tickSize(-this.width)
+    );
 
 
     this.path = this.svg.append('g')
       .attr('clip-path', 'url(#clip)')
       .append('path')
-      .datum(this.data)
+      .datum(dataWindow)
       .attr('class', 'line')
       .attr('d', this.line);
 
@@ -96,11 +101,10 @@ export class LineChartService {
 
   public pushDynamic(newValue: [Date, number]) {
     const val = { date: newValue[0], close: +newValue[1] };
-    
     this.data.unshift(val);
-    const dataWindow =  this.data.slice(0, Math.min(this.data.length, this.dataWindowSize));
+    const dataWindow = this.data.slice(0, Math.min(this.data.length, this.dataWindowSize));
     this.x = this.xScale.domain(d3.extent(dataWindow, d => d.date));
-    this.y = this.yScale.domain([0, d3.max(dataWindow, d => d.close)]);
+    this.y = this.yScale.domain([0, 250]);
     this.xAxis.call(d3.axisBottom(this.xScale).ticks(this.xTicks).tickFormat(d3.timeFormat('')));
     this.yAxis.call(d3.axisLeft(this.yScale).ticks(0));
     this.yGridiLines.call(

@@ -27,4 +27,9 @@ export class HttpClientService {
   get<T>(path)  {
     return this.httpClient.get<T>(this.baseUrl + path, httpOptions);
   }
+
+  // to retrive mock data from assets
+  getMock<T>(path) {
+    return this.httpClient.get<T>(path);
+  }
 }

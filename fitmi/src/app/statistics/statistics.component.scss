@@ -1,1 +1,40 @@
  
+.line {
+    fill: none;
+    stroke: red;
+    stroke-width: 2px;
+  }
+
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+.grid text {
+ fill: gray;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+.axisGray line{
+  stroke: lightgray;
+}
+
+.axisGray path{
+  stroke: lightgray;
+}
+
+.axisGray text{
+  fill: gray;
+}  
+
+  rect.mover {
+            stroke: red;
+            stroke-opacity: .1;
+            fill: lightSteelBlue;
+            fill-opacity: .5;
+        }
+
+

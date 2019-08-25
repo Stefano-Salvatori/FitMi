@@ -25,7 +25,7 @@ export class SessionDataService {
   private pedometerData = new BehaviorSubject<PedometerData>(new PedometerData());
   private pedometerDataTimer;
 
-  private _heartRateObservable: Observable<number>;
+  private _heartRateObservable: Observable<number> = Observable.create();
   private heartRateFreq: HeartRateValue[] = [];
 
   private _possibleGoal: GoalType[] = Object.values(GoalType).filter(k => typeof k !== "function");
