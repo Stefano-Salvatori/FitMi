@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose')
 var Users = require('./src/models/usersModel')
+var Sessions = require('./src/models/sessionModel')
 var cors = require('cors')
 
 //Creo istanza di express (web server)
