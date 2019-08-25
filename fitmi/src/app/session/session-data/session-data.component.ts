@@ -9,7 +9,7 @@ import { SessionDataService } from '../session-data.service';
 })
 export class SessionDataComponent implements OnInit, OnDestroy {
 
-  private chrono;
+  private chrono: NodeJS.Timer;
   elapsedSec: number = 0;
   elapsedMin: number = 0;
   elapsedHour: number = 0;
@@ -17,9 +17,9 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   steps: number = 0;
   distance: number = 0;
   calories: number = 0;
-  currHeartbeat: number = 70;
-  minHeartbeat: number = 60;
-  maxHeartbeat: number = 100;
+  currHeartbeat: number;
+  minHeartbeat: number;
+  maxHeartbeat: number;
 
 
   constructor(private session: SessionDataService,
@@ -33,10 +33,10 @@ export class SessionDataComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.startChrono();
-    //await this.miBand.findMiBand();
 
-    this.session.heartRateObservable()
+    this.session.heartRateObservable
       .subscribe(hrv => this.ngZone.run(() => this.setHeartbeat(hrv)));
+
 
     this.session.pedometerDataObservable()
       .subscribe(newStats => {
@@ -80,7 +80,16 @@ export class SessionDataComponent implements OnInit, OnDestroy {
 
   private setHeartbeat(newHeartbeat: number) {
     this.currHeartbeat = newHeartbeat;
-    this.minHeartbeat = Math.min(this.currHeartbeat, this.minHeartbeat);
-    this.maxHeartbeat = Math.max(this.currHeartbeat, this.maxHeartbeat);
+    if (this.minHeartbeat == undefined) {
+      this.minHeartbeat = this.currHeartbeat;
+    } else {
+      this.minHeartbeat = Math.min(this.currHeartbeat, this.minHeartbeat);
+    }
+
+    if (this.maxHeartbeat == undefined) {
+      this.maxHeartbeat = this.currHeartbeat
+    } else {
+      this.maxHeartbeat = Math.max(this.currHeartbeat, this.maxHeartbeat);
+    }
   }
 }

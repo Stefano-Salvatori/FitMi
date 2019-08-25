@@ -9,10 +9,10 @@
     <ion-row  justify-content-center >
       <ion-col size-xs="6" size-md="4" size-lg="4" *ngFor="let activity of this.activities" no-padding>
         <ion-card justify-content-center routerLink="/home" routerDirection="root" button="true" 
-        (click)="startSession(activity.name)" no-margin >
+        (click)="startSession(activity)" no-margin >
           <ion-card-content text-center>
-            <ion-img src={{activity.icon}}></ion-img>
-            <h2>{{activity.name}}</h2>        
+            <ion-img src={{sessionType.getIcon(activity)}}></ion-img>
+            <h2>{{activity}}</h2>        
           </ion-card-content>
         </ion-card>
       </ion-col>

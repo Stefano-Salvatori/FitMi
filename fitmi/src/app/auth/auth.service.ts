@@ -7,6 +7,7 @@ import { StorageService } from '../storage.service';
 import { AuthRequest, AuthResponse } from './auth-msg';
 import { HttpClientService } from '../http-client.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { User } from 'src/model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 export class AuthService {
 
   // private authSubject = new BehaviorSubject(false);
-  private user;
+  private user: User;
 
   @Output() loginErrorNumberEmitter: EventEmitter<number> = new EventEmitter();
 
@@ -69,11 +70,11 @@ export class AuthService {
   private loginRequest(payload) {
     this.httpClient.post('/users/login', payload).pipe(
       tap(async (res: AuthResponse) => {
-        await this.storage.store(this.storage.getAccessTokenName(), res.accessToken).then(v => {
-          this.user = res;
-          // this.authSubject.next(true);
-          this.router.navigateByUrl(this.tabsRoute);
-        });
+        await this.storage.store(this.storage.getAccessTokenName(), res.accessToken);
+        console.log(res);
+        this.user = res;
+        // this.authSubject.next(true);
+        this.router.navigateByUrl(this.tabsRoute);
       })
     ).subscribe(() => {
 
@@ -83,7 +84,7 @@ export class AuthService {
       });
   }
 
-  public getUser() {
+  public getUser(): User {
     return this.user;
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { CircleProgressComponent } from 'ng-circle-progress';
 import { SessionDataService } from '../session-data.service';
-import { Goal, GoalType } from '../goal';
+import { Goal, GoalType } from '../../../model/goal';
 
 @Component({
   selector: 'app-session-goal',
@@ -24,12 +24,14 @@ export class SessionGoalComponent implements OnInit {
   }
 
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     this.progress.units = this.goal.unit;
     this.progress.render();
     this.progress.draw(this.progress.percent);
 
     const step = 100 / this.goal.threshold;
+
+    const previousPedometerData = await this.sessionData.readPedometerData();
 
 
     switch (this.goal.type) {
@@ -37,15 +39,15 @@ export class SessionGoalComponent implements OnInit {
         setInterval(() => this.updateProgressBar(step), 60000);
         break;
       case GoalType.STEPS:
-        var previosuSteps: number = 0;
+        var previousSteps: number = previousPedometerData.steps;
         this.sessionData.pedometerDataObservable()
           .subscribe(pedometerData => {
-            this.updateProgressBar((pedometerData.steps - previosuSteps) * step);
-            previosuSteps = pedometerData.steps;
+            this.updateProgressBar((pedometerData.steps - previousSteps) * step);
+            previousSteps = pedometerData.steps;
           })
         break;
       case GoalType.DISTANCE:
-        var previousDistance: number = 0;
+        var previousDistance: number = previousPedometerData.distance;
         this.sessionData.pedometerDataObservable()
           .subscribe(pedometerData => {
             this.updateProgressBar((pedometerData.distance - previousDistance) * step);
@@ -53,7 +55,7 @@ export class SessionGoalComponent implements OnInit {
           })
         break;
       case GoalType.CALORIES:
-        var previousCalories: number = 0;
+        var previousCalories: number = previousPedometerData.calories;
         this.sessionData.pedometerDataObservable()
           .subscribe(pedometerData => {
             this.updateProgressBar((pedometerData.calories - previousCalories) * step);
@@ -61,15 +63,18 @@ export class SessionGoalComponent implements OnInit {
           })
         break;
 
+      default: break;
+
     }
 
   }
 
   private updateProgressBar(value: number) {
+    const previousPrecent = this.progress.percent;
     this.progress.percent += value;
     const step = 100 / this.goal.threshold;
     this.progress.title = "" + this.progress.percent / step;
     this.progress.render();
-    this.progress.draw(this.progress.percent);
+    this.progress.animate(previousPrecent, this.progress.percent);
   }
 }

@@ -255,7 +255,6 @@ export class MiBandService {
 
         //ping to avoid automatic stop
         this.heartRateTimer = setInterval(() => {
-            console.log("writing");
             this.write([0x16], MiBandGatt.UUID_SERVICE_HART_RATE,
                 MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
         }, 12000);

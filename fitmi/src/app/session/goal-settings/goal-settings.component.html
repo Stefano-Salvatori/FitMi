@@ -6,22 +6,22 @@
       <ion-list-header>Tipo obiettivo</ion-list-header>
 
 <!-- Should use for loop but there might be an issue that permits multiple choices -->
-      <ion-item *ngIf="possibleGoal[0]">
+      <ion-item *ngIf="possibleGoal.includes(goalType.TIME)">
         <ion-radio value={{goalType.TIME}} slot="start" margin checked></ion-radio>
         <ion-label>{{goalType.TIME}}</ion-label>
       </ion-item>
 
-      <ion-item *ngIf="possibleGoal[1]">
+      <ion-item *ngIf="possibleGoal.includes(goalType.DISTANCE)">
         <ion-radio value={{goalType.DISTANCE}} slot="start" margin></ion-radio>
         <ion-label>{{goalType.DISTANCE}}</ion-label>
       </ion-item>
 
-      <ion-item *ngIf="possibleGoal[2]">
+      <ion-item *ngIf="possibleGoal.includes(goalType.STEPS)">
         <ion-radio value={{goalType.STEPS}} slot="start" margin></ion-radio>
         <ion-label>{{goalType.STEPS}}</ion-label>
       </ion-item>
 
-      <ion-item *ngIf="possibleGoal[3]">
+      <ion-item *ngIf="possibleGoal.includes(goalType.CALORIES)">
         <ion-radio value={{goalType.CALORIES}} slot="start" margin></ion-radio>
         <ion-label>{{goalType.CALORIES}}</ion-label>
       </ion-item>
