@@ -18,7 +18,7 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
   battery: number;
   pedometerData: PedometerData;
   heartRate: number;
-  clickCount: number = 0;
+  clickCount = 0;
   serial: string;
   deviceName: string;
 
@@ -33,9 +33,9 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
 
 
   constructor(private miBand: MiBandService,
-    private platform: Platform,
-    private ble: BluetoothLE,
-    private ngZone: NgZone) {
+              private platform: Platform,
+              private ble: BluetoothLE,
+              private ngZone: NgZone) {
   }
 
 
@@ -49,32 +49,32 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
 
       this.miBand.discoverServices().then(device => {
         console.log(device);
-      })
+      });
       this.miBand.subscribeButtonClick().subscribe(() => {
-        this.ngZone.run(() => this.clickCount++)
-      })
+        this.ngZone.run(() => this.clickCount++);
+      });
 
       this.miBand.getDeviceName()
         .then(s => this.deviceName = s)
-        .catch(() => this.deviceName = "unknown");
+        .catch(() => this.deviceName = 'unknown');
 
 
       this.miBand.getSerial()
         .then(s => this.serial = s)
-        .catch(() => this.serial = "unknown");
+        .catch(() => this.serial = 'unknown');
 
       this.miBand.getHardwareVersion()
         .then(h => this.hwVersion = h.slice(1))
-        .catch(() => this.hwVersion = "unknown");
+        .catch(() => this.hwVersion = 'unknown');
 
       this.miBand.getSoftwareVersion()
         .then(s => this.swVersion = s.slice(1))
-        .catch(() => this.hwVersion = "unknown");
+        .catch(() => this.hwVersion = 'unknown');
 
 
-      this.miBand.getDate().then(d => this.date = d)
+      this.miBand.getDate().then(d => this.date = d);
 
-      this.miBand.getBatteryInfo().then(d => this.battery = d)
+      this.miBand.getBatteryInfo().then(d => this.battery = d);
 
       this.miBand.getPedometerData().then(p => this.pedometerData = p);
 
@@ -104,18 +104,19 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
 
   /**
    * Returns the name of the icon to use foreach notification type
-   * @param notification 
+   * @param notification
+   * the notification for which you want the icon
    */
   iconOf(notification: string) {
     switch (notification) {
       case Notification[Notification.MESSAGE]:
-        return "text";
+        return 'text';
       case Notification[Notification.OFF]:
-        return "power";
+        return 'power';
       case Notification[Notification.PHONE]:
-        return "call";
+        return 'call';
       case Notification[Notification.VIBRATE]:
-        return "notifications";
+        return 'notifications';
     }
 
   }
@@ -123,7 +124,7 @@ export class MiBandTestComponent implements OnInit, OnDestroy {
   private notifications() { return Notification; }
 
   private notification(s: string): Notification {
-    return Notification[s]
+    return Notification[s];
   }
 
 }

@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClientService } from '../http-client.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { serverAddress, serverBaseUrl } from '../../server-data';
 
 import { AuthService } from '../auth/auth.service';
 
@@ -14,8 +12,6 @@ import { AuthService } from '../auth/auth.service';
 export class SignInComponent implements OnInit {
 
   constructor(
-    private httpClient: HttpClient,
-    private router: Router,
     private auth: AuthService) { }
 
   ngOnInit() { }

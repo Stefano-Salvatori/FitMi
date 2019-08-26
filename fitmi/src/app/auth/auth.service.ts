@@ -1,12 +1,11 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { StorageService } from '../storage.service';
 import { AuthRequest, AuthResponse } from './auth-msg';
 import { HttpClientService } from '../http-client.service';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/model/user';
 
 @Injectable({
@@ -38,7 +37,7 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    if (username === "admin" && password === "admin") {
+    if (username === 'admin' && password === 'admin') {
       this.router.navigateByUrl(this.tabsRoute);
     } else {
       this.loginRequest({

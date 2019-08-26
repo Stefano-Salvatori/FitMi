@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { CircleProgressComponent } from 'ng-circle-progress';
 import { User } from 'src/model/user';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +24,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.progress.animate(0, 85);
+    this.progress.animate(0, this.user.score % 100);
   }
 
 
@@ -40,6 +39,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     const month = splitDate[1];
     const day = splitDate[2];
     const date = new Date();
+
+    // tslint:disable: radix
     let age = date.getFullYear() - parseInt(year);
     if (((date.getMonth() + 1) - parseInt(month) < 0)
       || ((date.getMonth() + 1) === parseInt(month) && date.getDate() - parseInt(day) < 0)) {

@@ -10,7 +10,7 @@ import { SessionDataService } from '../session-data.service';
 export class SessionFooterComponent implements OnInit {
 
   constructor(private router: Router,
-    private session: SessionDataService) { }
+              private session: SessionDataService) { }
 
   ngOnInit() {}
 

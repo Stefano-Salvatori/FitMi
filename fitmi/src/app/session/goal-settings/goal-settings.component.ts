@@ -19,10 +19,10 @@ export class GoalSettingsComponent implements OnInit {
   title: string;
 
   constructor(private router: Router,
-    private route: ActivatedRoute,
-    private sessionData: SessionDataService) {
+              private route: ActivatedRoute,
+              private sessionData: SessionDataService) {
     this.possibleGoal = this.sessionData.possibleGoal;
-    this.title = this.sessionData.name;    
+    this.title = this.sessionData.name;
   }
 
   ngOnInit() { }

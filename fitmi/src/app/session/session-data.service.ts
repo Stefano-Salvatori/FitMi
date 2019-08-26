@@ -11,13 +11,17 @@ import { SessionType } from 'src/model/session-type';
 @Injectable({
   providedIn: 'root'
 })
+// tslint:disable: variable-name
+
+
 /**
  * Contains all the information about the current session.
- * In particular this is used to setup the goal of the session and to retrieve all the information from the smart band (current steps, calories, distance, heart rate...)
+ * In particular this is used to setup the goal of the session and to retrieve all the
+ * information from the smart band (current steps, calories, distance, heart rate...)
  */
 export class SessionDataService {
-  //Polling frequency for pedometer data
-  private static readonly POLLING_FREQ = 1000; //ms
+  // Polling frequency for pedometer data
+  private static readonly POLLING_FREQ = 1000; // ms
 
   private currentGoalSource = new BehaviorSubject(new Goal(GoalType.TIME, 0));
   private _currentGoal = this.currentGoalSource.asObservable();
@@ -25,21 +29,22 @@ export class SessionDataService {
   private pedometerData = new BehaviorSubject<PedometerData>(new PedometerData());
   private pedometerDataTimer;
 
-  private _heartRateObservable: Observable<number> = Observable.create();
+  private _heartRateObservable: Observable<number> = new Observable();
   private heartRateFreq: HeartRateValue[] = [];
 
-  private _possibleGoal: GoalType[] = Object.values(GoalType).filter(k => typeof k !== "function");
+  private _possibleGoal: GoalType[] =
+    Object.values(GoalType).filter(k => typeof k !== 'function');
 
-  
-  private _name: string = "";
+
+  private _name = '';
 
   private _start: Date;
   private _end: Date;
 
 
   constructor(private miBand: MiBandService,
-    private http: HttpClientService,
-    private auth: AuthService) {
+              private http: HttpClientService,
+              private auth: AuthService) {
 
   }
 
@@ -52,12 +57,12 @@ export class SessionDataService {
       this.heartRateFreq.push({
         timestamp: new Date(),
         value: hr
-      })
+      });
+    });
 
-    })
     this.pedometerDataTimer = setInterval(async () => {
       this.pedometerData.next(await this.miBand.getPedometerData());
-    }, SessionDataService.POLLING_FREQ)
+    }, SessionDataService.POLLING_FREQ);
 
   }
 
@@ -76,12 +81,12 @@ export class SessionDataService {
       distance: this.pedometerData.getValue().distance,
       steps: this.pedometerData.getValue().steps,
       heart_frequency: this.heartRateFreq
-    }
+    };
 
     this.http.post('/users/' + currentUser._id + '/sessions', session)
       .subscribe(res => {
         console.log(res);
-        console.log(session + " saved");
+        console.log(session + ' saved');
       });
 
   }

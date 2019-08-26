@@ -1,13 +1,13 @@
 import { SessionType } from './session-type';
 
-export interface HeartRateValue{
-    timestamp: string;
-    value: number
+export interface HeartRateValue {
+    timestamp: Date;
+    value: number;
 }
 
 export interface Session {
-    start: string;
-    end: string;
+    start: Date;
+    end: Date;
     type: SessionType;
     steps: number;
     calories: number;
