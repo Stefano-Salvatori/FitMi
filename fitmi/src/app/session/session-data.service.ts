@@ -7,6 +7,7 @@ import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateValue } from 'src/model/session';
 import { SessionType } from 'src/model/session-type';
+import { publishReplay, refCount } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,9 @@ export class SessionDataService {
   private pedometerData = new BehaviorSubject<PedometerData>(new PedometerData());
   private pedometerDataTimer;
 
-  private _heartRateObservable: Observable<number> = new Observable();
+  private _heartRateObservable =  new BehaviorSubject<HeartRateValue>({
+    timestamp: new Date(), value: 0
+  });
   private heartRateFreq: HeartRateValue[] = [];
 
   private _possibleGoal: GoalType[] =
@@ -52,12 +55,13 @@ export class SessionDataService {
     this._start = new Date();
     await this.miBand.findMiBand();
     this.miBand.startHeartRateMonitoring();
-    this._heartRateObservable = this.miBand.subscribeHeartRate();
-    this._heartRateObservable.subscribe(hr => {
-      this.heartRateFreq.push({
+    this.miBand.subscribeHeartRate().subscribe(hr => {
+      const newValue = {
         timestamp: new Date(),
         value: hr
-      });
+      };
+      this.heartRateFreq.push(newValue);
+      this._heartRateObservable.next(newValue);
     });
 
     this.pedometerDataTimer = setInterval(async () => {
@@ -91,7 +95,7 @@ export class SessionDataService {
 
   }
 
-  get heartRateObservable(): Observable<number> {
+  get heartRateObservable(): Observable<HeartRateValue> {
     return this._heartRateObservable;
   }
 

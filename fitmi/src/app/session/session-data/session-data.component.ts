@@ -67,8 +67,8 @@ export class SessionDataComponent implements OnInit, OnDestroy {
     this.session.heartRateObservable
       .subscribe(hrv => {
         this.ngZone.run(() => {
-          this.setHeartbeat(hrv);
-          this.heartRateLineChart.pushDynamic([new Date(), hrv]);
+          this.setHeartbeat(hrv.value);
+          this.heartRateLineChart.pushDynamic([new Date(), hrv.value]);
         });
       });
 
