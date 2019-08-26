@@ -10,21 +10,25 @@
   <ion-segment-button value="last">
     <ion-label>Last</ion-label>
   </ion-segment-button>
-  <ion-segment-button value="general">
-    <ion-label>general</ion-label>
+  <ion-segment-button value="month">
+    <ion-label>Month</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="year">
+    <ion-label>Year</ion-label>
   </ion-segment-button>
 </ion-segment>
 <ion-content>
  
 
-<div *ngIf="last; then thenBlock else elseBlock"></div>
+<div *ngIf="timePeriod==='last'; then thenBlock else elseBlock"></div>
 
 <!-- LAST staticstics template-->
 
 <ng-template #thenBlock><h1>Last Session</h1>
+<h1>Start: {{ lastSession.start }}</h1>
 <h1>Duration: {{ lastSessionDuration() }}</h1>
-<ion-grid fixed>
-  <ion-row>
+<ion-grid align-items-center  justify-content-center >
+  <ion-row justify-content-center>
     <ion-col size="12">
       <h2>Heart Rate</h2>
       <div id="heartRateLineChart">
@@ -32,82 +36,82 @@
       </div>
     </ion-col>
   </ion-row>
-  <ion-row size="12">
+  <ion-row size="12"  justify-content-center>
     <ion-col size="6">
-      <h2>{{ minMaxHeartRate()[0] }}</h2>
-      <h4>Min Heart Rate</h4>
+      <h2 class="value" >{{ minHeartRate() }} bpm</h2>
+      <h4 class="label">Min Heart Rate</h4>
     </ion-col>
 
-        <ion-col size="6">
-          <h2>{{ minMaxHeartRate()[1] }}</h2>
-          <h4>Max Heart Rate</h4>
+        <ion-col size="6" >
+          <h2 class="value">{{ maxHeartRate() }} bpm</h2>
+          <h4 class="label">Max Heart Rate</h4>
         </ion-col>
   </ion-row>
-  <ion-row size="12">
-    <ion-col size="6">
-      <h2>{{ lastSession.type }}</h2>
-      <h4>Type</h4>
+  <ion-row size="12"  justify-content-center>
+    <ion-col size="6" >
+      <h2 class="value">{{ lastSession.type }}</h2>
+      <h4 class="label">Type</h4>
     </ion-col>
-    <ion-col size="6">
-      <h2>{{ lastSession.calories }}</h2>
-      <h4>Calories</h4>
+    <ion-col size="6" >
+      <h2 class="value">{{ lastSession.calories }} kcal</h2>
+      <h4 class="label">Calories</h4>
     </ion-col>
   </ion-row>
 
-  <ion-row size="12">
-    <ion-col size="6">
-      <h2>{{ lastSession.steps }}</h2>
-      <h4>Steps</h4>
+  <ion-row size="12" justify-content-center>
+    <ion-col size="6" >
+      <h2 class="value">{{ lastSession.steps }}</h2>
+      <h4 class="label">Steps</h4>
     </ion-col>
-    <ion-col size="6">
-      <h2>{{ lastSession.distance }}</h2>
-      <h4>Distance</h4>
+    <ion-col size="6" >
+      <h2 class="value">{{ lastSession.distance }} m</h2>
+      <h4 class="label">Distance</h4>
     </ion-col>
   </ion-row>
 </ion-grid></ng-template>
 
 <!-- GENERAL staticstics template-->
-<ng-template #elseBlock>
+<ng-template #elseBlock>  
   <h1>General Statistics</h1>
-  <h1>Sessions: {{ allSessions.length }}</h1>
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col size="12">
+  <h1>Sessions this {{ timePeriod }}: {{ getAllSessionsInSelectedPeriod().length }}</h1>
+  <ion-grid  align-items-center  justify-content-center>
+    <ion-row  justify-content-center>
+      <ion-col>
         <h2>Calories</h2>
         <bar-chart></bar-chart>
 
       </ion-col>
     </ion-row>
-    <ion-row size="12">
-      <ion-col size="6" >
-        <h2>{{ favoriteSessionType() }}</h2>
-        <h4>Favorite Session</h4>
+    <ion-row size="12"  justify-content-center>
+      <ion-col size="6">
+        <h2 class="value">{{ favoriteSessionType() }}</h2>
+        <h4 class="label">Favorite Session</h4>
       </ion-col>
       <ion-col size="6">
-        <h2>{{ allCalories() }}</h2>
-        <h4> Total Calories</h4>
-      </ion-col>
-    </ion-row>
-
-    <ion-row size="12">
-      <ion-col size="6">
-        <h2>{{ allSteps() }}</h2>
-        <h4>Total Steps</h4>
-      </ion-col>
-      <ion-col size="6">
-        <h2>{{ allDistance() }}</h2>
-        <h4>Total Distance</h4>
+        <h2 class="value">{{ allCalories() }} kCal</h2>
+        <h4 class="label"> Total Calories</h4>
       </ion-col>
     </ion-row>
 
-    <ion-row size="12">
+    <ion-row size="12"  justify-content-center>
       <ion-col size="6">
-        <h2>{{ allSteps() }}</h2>
-        <h4>Total Steps</h4>
+        <h2 class="value">{{ allSteps() }}</h2>
+        <h4 class="label">Total Steps</h4>
       </ion-col>
       <ion-col size="6">
-        <h2>{{ wholeTimeSpentOnSessions() }} </h2>
-        <h4>Time On Session</h4>
+        <h2 class="value">{{ allDistance() }} m</h2>
+        <h4 class="label">Total Distance</h4>
+      </ion-col>
+    </ion-row>
+
+    <ion-row size="12" justify-content-center>
+      <ion-col size="6">
+        <h2 class="value">{{ allSteps() }}</h2>
+        <h4 class="label">Total Steps</h4>
+      </ion-col>
+      <ion-col size="6">
+        <h2 class="value">{{ wholeTimeSpentOnSessions() }} </h2>
+        <h4 class="label">Time On Session</h4>
       </ion-col>
     </ion-row>
   </ion-grid>

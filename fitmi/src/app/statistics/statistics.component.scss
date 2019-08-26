@@ -37,4 +37,18 @@
             fill-opacity: .5;
         }
 
+ion-col {
+  border: thin solid lightgray;
+}
 
+ion-row {
+text-align: center;
+}
+
+.value {
+  font-weight: bold;
+}
+
+.label {
+  color: gray;
+}
