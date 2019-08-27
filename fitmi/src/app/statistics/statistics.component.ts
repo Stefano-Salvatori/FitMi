@@ -5,6 +5,7 @@ import { Session } from 'src/model/session';
 import * as d3 from 'd3';
 import { LineChartService } from '../data-visualization/line-chart/line-chart.service';
 import { SessionType } from 'src/model/session-type';
+import { BarChartService } from '../data-visualization/bar-chart/bar-chart.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class StatisticsComponent implements OnInit {
   public allSessions: Session[];
   public timePeriod = 'last';
   private dataPath = 'assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
-  heartRateLineChart: any;
+  private heartRateLineChart: LineChartService;
+  private caloriesBarChart: BarChartService;
 
   // return the more freq elem in an array of string
   private mode(arr: string[]) {
@@ -62,6 +64,12 @@ export class StatisticsComponent implements OnInit {
       default:
       return [];
     }
+  }
+
+  public lastSessionDate(): string {
+    const date = new Date(this.lastSession.start);
+    return date.toLocaleDateString() + ' ' +
+    date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
   public lastSessionDuration() {
     return new Date(this.sessionDuration(this.lastSession) * 1000).toISOString().substr(11, 8);
@@ -150,6 +158,20 @@ export class StatisticsComponent implements OnInit {
     this.heartRateLineChart = new LineChartService().setDataWindowSize(50);
     this.heartRateLineChart.setup('#heartRateLineChart');
     this.heartRateLineChart.populate(array);
+  }
+
+  public initCaloriesBarChart() {
+    // generates ordered date to simulate heartrates timestamp
+    const dates = this.getAllSessionsInSelectedPeriod().map(s => new Date(s.start));
+    const array: Array<[Date, number]> = [];
+    let j = 0;
+    this.getAllSessionsInSelectedPeriod().forEach(s => {
+      array.push([dates[j++], +s.calories]);
+    });
+
+    this.caloriesBarChart = new BarChartService();
+    this.caloriesBarChart.setup('#caloriesBarChart');
+    this.caloriesBarChart.populate(array);
   }
 
   private createOrderedRandomDates(n: number): Date[] {

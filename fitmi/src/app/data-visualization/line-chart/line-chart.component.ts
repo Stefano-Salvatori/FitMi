@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
 import { LineChartService } from './line-chart.service';
 
 
@@ -12,10 +12,12 @@ import { LineChartService } from './line-chart.service';
 export class LineChartComponent  {
   private lineChart: LineChartService;
 
+  @Input() src = 'assets/testdata.csv';
+  @Input() timeFormat = '%d-%b-%y';
   constructor() {
 
     this.lineChart = new LineChartService();
-    this.lineChart.setup('lineChart');
+    this.lineChart.setup('.lineChart');
 
   }
 
