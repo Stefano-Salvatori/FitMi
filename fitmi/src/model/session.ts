@@ -1,8 +1,8 @@
 import { SessionType } from './session-type';
 
-export interface HeartRateValue{
+export interface HeartRateValue {
     timestamp: Date;
-    value: number
+    value: number;
 }
 
 export interface Session {

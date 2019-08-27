@@ -2,7 +2,7 @@ import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { MiBandGatt } from './mibandGatt';
 
-export enum AuthenticationState{
+export enum AuthenticationState {
     STEP0,
     STEP1,
     STEP2,
@@ -10,7 +10,7 @@ export enum AuthenticationState{
 }
 
 export class Authentication {
-    //Authentication constants
+    // Authentication constants
     private SECRET_KEY_STRING = '0123456789@ABCDE';
     private SECRET_KEY_BYTES = this.ble.stringToBytes(this.SECRET_KEY_STRING);
     private STEP1_MESSAGE = [0x01, 0x08].concat(Array.from(this.SECRET_KEY_BYTES));
@@ -25,39 +25,38 @@ export class Authentication {
     constructor(private address: string, private ble: BluetoothLE) {
     }
 
-    public getAuthenticationStateObservable(): Observable<AuthenticationState>{
+    public getAuthenticationStateObservable(): Observable<AuthenticationState> {
         return this.authenticationState;
     }
 
-  
+
     public async authenticate(): Promise<void> {
-        console.log("Starting auth");
+        console.log('Starting auth');
         return new Promise((resolve, reject) => {
             this.ble.subscribe({
                 address: this.address,
                 service: MiBandGatt.UUID_SERVICE_AUTH,
                 characteristic: MiBandGatt.UUID_CHARACTERISTIC_AUTH
             }).subscribe(async (res) => {
-                if (res.status == 'subscribed') {
-                    console.log("STEP 1");
+                if (res.status === 'subscribed') {
+                    console.log('STEP 1');
                     this.authenticationState.next(AuthenticationState.STEP1);
                     await this.step1();
-                }
-                else {
+                } else {
                     const resBytes = this.ble.encodedStringToBytes(res.value).slice(0, 3);
                     switch (resBytes.toString()) {
                         case this.SEND_SECRET_KEY_RESPONSE.toString():
-                            console.log("STEP 2");
+                            console.log('STEP 2');
                             this.authenticationState.next(AuthenticationState.STEP2);
                             await this.step2();
                             break;
                         case this.REQ_AUTH_KEY_RESPONSE.toString():
-                            console.log("STEP 3");
+                            console.log('STEP 3');
                             this.authenticationState.next(AuthenticationState.STEP3);
                             await this.step3(this.ble.encodedStringToBytes(res.value).slice(3, 19));
                             break;
                         case this.AUTH_OK.toString():
-                            console.log("authenticated");
+                            console.log('authenticated');
                             resolve();
                             break;
                     }
@@ -75,7 +74,7 @@ export class Authentication {
         await this.writeWithoutResponse(this.STEP2_MESSAGE, MiBandGatt.UUID_SERVICE_AUTH, MiBandGatt.UUID_CHARACTERISTIC_AUTH);
     }
     private async step3(bytesToEncode: Uint8Array) {
-        var aesjs = require('aes-js');
+        const aesjs = require('aes-js');
         const aesCtr = new aesjs.ModeOfOperation.ecb(this.SECRET_KEY_BYTES);
         const encryptedBytes = aesCtr.encrypt(bytesToEncode);
         const bytesToSend = Array.from(this.STEP3_MESSAGE).concat(Array.from(encryptedBytes));
@@ -84,8 +83,8 @@ export class Authentication {
     private async writeWithoutResponse(value: number[], service: string, characteristic: string): Promise<void> {
         this.ble.write({
             address: this.address,
-            service: service,
-            characteristic: characteristic,
+            service,
+            characteristic,
             type: 'noResponse',
             value: this.ble.bytesToEncodedString(Uint8Array.from(value))
         });

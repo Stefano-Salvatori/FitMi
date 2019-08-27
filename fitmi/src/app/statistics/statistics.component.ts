@@ -100,12 +100,13 @@ export class StatisticsComponent implements OnInit {
   //#endregion
 
 
-  constructor(private http: HttpClientService, private auth: AuthService) {
+  constructor(private http: HttpClientService,
+              private auth: AuthService) {
 
     // init lastSession
     this.lastSession = {
-      start: new Date(),
-      end: new Date(),
+      start: new Date('01-01-1970 00:00:00'),
+      end: new Date('01-01-1970 00:00:00'),
       type: SessionType.RUN,
       steps: 0,
       calories: 0,

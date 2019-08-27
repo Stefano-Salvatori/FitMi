@@ -3,14 +3,15 @@ import { GoalType } from './goal';
 
 
 export enum SessionType {
-    RUN = "Corsa",
-    WALK = "Camminata",
-    CYCLING = "Ciclismo",
-    GYM = "Palestra",
-    SWIM = "Nuoto",
-    RUN_INDOOR = "Indoor"
+    RUN = 'Corsa',
+    WALK = 'Camminata',
+    CYCLING = 'Ciclismo',
+    GYM = 'Palestra',
+    SWIM = 'Nuoto',
+    RUN_INDOOR = 'Indoor'
 }
 
+// tslint:disable-next-line: no-namespace
 export namespace SessionType {
     const BASE_ICON_PATH = '../../assets/icon/fit_activities_icons';
     const ICON_EXTENSION = '.png';
@@ -49,7 +50,7 @@ export namespace SessionType {
             case SessionType.RUN_INDOOR:
                 return BASE_ICON_PATH + '/training' + ICON_EXTENSION;
             default:
-                return "";
+                return '';
         }
     }
 
@@ -68,7 +69,7 @@ export namespace SessionType {
             case SessionType.RUN_INDOOR:
                 return 'indoor-run/goal_settings';
             default:
-                return "";
+                return '';
         }
 
     }

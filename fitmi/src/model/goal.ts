@@ -1,29 +1,31 @@
 export enum GoalType {
-  STEPS = "Passi",
-  DISTANCE = "Distanza",
-  TIME = "Tempo",
-  CALORIES = "Calorie"
+  STEPS = 'Passi',
+  DISTANCE = 'Distanza',
+  TIME = 'Tempo',
+  CALORIES = 'Calorie'
 }
 
+// tslint:disable-next-line: no-namespace
 export namespace GoalType {
   export function getUnit(goalType: GoalType): string {
     switch (goalType) {
       case GoalType.STEPS:
-        return "passi";
+        return 'passi';
       case GoalType.DISTANCE:
-        return "km";
+        return 'km';
       case GoalType.TIME:
-        return "min";
+        return 'min';
       case GoalType.CALORIES:
-        return "kCal";
+        return 'kCal';
       default:
-        return "";
+        return '';
     }
   }
 }
 
 export class Goal {
 
+  // tslint:disable-next-line: variable-name
   constructor(private _type: GoalType, private _threshold: number) { }
 
   get type(): GoalType {

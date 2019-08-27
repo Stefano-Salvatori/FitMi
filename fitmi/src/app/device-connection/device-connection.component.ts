@@ -13,14 +13,14 @@ import { Router } from '@angular/router';
 
 export class DeviceConnectionComponent implements OnInit {
 
-  mibandConnection = ''
+  mibandConnection = '';
   spinnerHidden = false;
 
   constructor(private miBand: MiBandService,
-    private ble: BluetoothLE,
-    private platform: Platform,
-    private router: Router,
-    private ngZone: NgZone) { }
+              private ble: BluetoothLE,
+              private platform: Platform,
+              private router: Router,
+              private ngZone: NgZone) { }
 
 
 
@@ -44,7 +44,7 @@ export class DeviceConnectionComponent implements OnInit {
         .then(() => {
           this.hideSpinner();
           this.miBand.sendNotification(Notification.VIBRATE);
-          this.router.navigateByUrl("tabs/home");
+          this.router.navigateByUrl('tabs/home');
         })
         .catch(() => this.hideSpinner());
     });
@@ -52,7 +52,7 @@ export class DeviceConnectionComponent implements OnInit {
 
 
   private hideSpinner() {
-    this.spinnerHidden = true
+    this.spinnerHidden = true;
 
   }
 

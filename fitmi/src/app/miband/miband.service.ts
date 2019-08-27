@@ -16,16 +16,16 @@ export enum Notification {
 }
 
 export enum ConnectionState {
-    IDLE = "Idle",
-    SEARCHING_DEVICE = "Searching Device...",
-    CONNECTING = "Connecting...",
-    CONNECTED = "Connected",
-    AUTHENTICATING = "Authenticating...",
-    AUTHENTICATED = "Authenticated",
-    DISCONNECTING = "Disconnecting...",
-    DISCONNECTED = "Disconnected",
-    NOT_FOUND = "Device Not Found",
-    ERROR = "An Error Occured"
+    IDLE = 'Idle',
+    SEARCHING_DEVICE = 'Searching Device...',
+    CONNECTING = 'Connecting...',
+    CONNECTED = 'Connected',
+    AUTHENTICATING = 'Authenticating...',
+    AUTHENTICATED = 'Authenticated',
+    DISCONNECTING = 'Disconnecting...',
+    DISCONNECTED = 'Disconnected',
+    NOT_FOUND = 'Device Not Found',
+    ERROR = 'An Error Occured'
 }
 
 @Injectable({
@@ -33,15 +33,15 @@ export enum ConnectionState {
 })
 export class MiBandService {
 
-    private readonly MAX_SCAN_TIME = 30000 //ms
-    private readonly MI_BAND_ADDRESS_KEY = "miband-address"
+    private readonly MAX_SCAN_TIME = 30000; // ms
+    private readonly MI_BAND_ADDRESS_KEY = 'miband-address';
 
 
     private heartRateTimer;
-    private address: string
+    private address: string;
     private connectionState: ConnectionState = ConnectionState.IDLE;
     private connectionStateBehaviour: BehaviorSubject<ConnectionState> =
-        new BehaviorSubject(this.connectionState)
+        new BehaviorSubject(this.connectionState);
 
 
     constructor(private ble: BluetoothLE, private storage: StorageService) {
@@ -50,13 +50,15 @@ export class MiBandService {
 
 
     /**
-     * Look for the MiBand address. If the band is already connected the address can be found in the local storage; otherwise start ble Scan and find the address of the MiBand searching for a device that expose the miband's authentication service.
-     * This must always be called the first time we use this service so that the adress of the band is correctly set up. 
+     * Look for the MiBand address. If the band is already connected the address can be
+     * found in the local storage; otherwise start ble Scan and find the address of the
+     * MiBand searching for a device that expose the miband's authentication service.
+     * This must always be called the first time we use this service so that the adress of the band is correctly set up.
      */
     public async findMiBand() {
         return new Promise<void>(async (resolve, reject) => {
-            if ((await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)) != undefined) {
-                this.address = await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)
+            if ((await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)) !== undefined) {
+                this.address = await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY);
                 resolve();
             } else {
                 this.notifyNewConnectionState(ConnectionState.SEARCHING_DEVICE);
@@ -64,24 +66,24 @@ export class MiBandService {
                     this.ble.stopScan();
                     this.notifyNewConnectionState(ConnectionState.NOT_FOUND);
                     reject();
-                }, this.MAX_SCAN_TIME)
+                }, this.MAX_SCAN_TIME);
 
                 if ((await this.ble.isScanning()).isScanning) {
                     await this.ble.stopScan();
                 }
                 this.ble.startScan({}).subscribe(async device => {
                     if (device.name === MiBandGatt.DEVICE_NAME) {
-                        clearTimeout(timer)
+                        clearTimeout(timer);
                         this.address = device.address;
                         this.storage.store(this.MI_BAND_ADDRESS_KEY, this.address);
-                        this.ble.stopScan()
+                        this.ble.stopScan();
                         resolve();
                     }
                 }, err => {
                     console.log(err);
                     this.notifyNewConnectionState(ConnectionState.ERROR);
                     reject();
-                })
+                });
             }
         });
     }
@@ -96,8 +98,8 @@ export class MiBandService {
         if (wasConnected.wasConnected) {
             const isConnected = await this.ble.isConnected({ address: this.address });
             if (isConnected.isConnected) {
-                await this.ble.disconnect({ address: this.address }).catch(() => { })
-                await this.ble.close({ address: this.address }).catch(() => { })
+                await this.ble.disconnect({ address: this.address }).catch(() => { });
+                await this.ble.close({ address: this.address }).catch(() => { });
             }
             this.notifyNewConnectionState(ConnectionState.DISCONNECTED);
         }
@@ -112,15 +114,15 @@ export class MiBandService {
             this.notifyNewConnectionState(ConnectionState.CONNECTING);
             const wasConnected = await this.ble.wasConnected({ address: this.address });
             if (wasConnected.wasConnected) {
-                console.log("Was Connected");
+                console.log('Was Connected');
                 const isConnected = await this.ble.isConnected({ address: this.address });
-                //If the device is already connected we don't need to perform authentication
+                // If the device is already connected we don't need to perform authentication
                 if (isConnected.isConnected) {
                     await this.discoverServices();
                     this.notifyNewConnectionState(ConnectionState.CONNECTED);
                     resolve();
                 } else {
-                    console.log("RECONNECTING...");
+                    console.log('RECONNECTING...');
                     this.ble.reconnect({ address: this.address })
                         .subscribe(async () => {
                             this.notifyNewConnectionState(ConnectionState.CONNECTED);
@@ -135,7 +137,7 @@ export class MiBandService {
                         });
                 }
             } else {
-                console.log("First Connection");
+                console.log('First Connection');
                 this.ble.connect({ address: this.address, autoConnect: true })
                     .subscribe(async () => {
                         this.notifyNewConnectionState(ConnectionState.CONNECTED);
@@ -143,10 +145,10 @@ export class MiBandService {
                         this.notifyNewConnectionState(ConnectionState.AUTHENTICATING);
                         await new Authentication(this.address, this.ble).authenticate();
                         this.notifyNewConnectionState(ConnectionState.AUTHENTICATED);
-                        resolve()
+                        resolve();
                     }, err => console.log(err));
             }
-        })
+        });
     }
 
 
@@ -165,24 +167,24 @@ export class MiBandService {
         id: number
     }) {
         const data = new Buffer(16);
-        data.writeUInt8(0x4f, 0) // Set user info command
+        data.writeUInt8(0x4f, 0); // Set user info command
 
         const date: Date = new Date(user.date);
-        data.writeUInt16LE(date.getFullYear(), 3)
-        data.writeUInt8(date.getMonth() + 1, 5)
-        data.writeUInt8(date.getDate(), 6)
+        data.writeUInt16LE(date.getFullYear(), 3);
+        data.writeUInt8(date.getMonth() + 1, 5);
+        data.writeUInt8(date.getDate(), 6);
         switch (user.gender) {
             case 'male': data.writeUInt8(0, 7); break;
             case 'female': data.writeUInt8(1, 7); break;
             default: data.writeUInt8(2, 7); break;
         }
-        data.writeUInt16LE(user.height, 8) // cm
-        data.writeUInt16LE(user.weight, 10) // kg
-        data.writeUInt32LE(user.id, 12) // id
+        data.writeUInt16LE(user.height, 8); // cm
+        data.writeUInt16LE(user.weight, 10); // kg
+        data.writeUInt32LE(user.id, 12); // id
 
         this.write(Array.prototype.slice.call(data, 0),
             MiBandGatt.UUID_SERVICE_MIBAND_1,
-            MiBandGatt.UUID_CHARACTERISTIC_USER_INFO)
+            MiBandGatt.UUID_CHARACTERISTIC_USER_INFO);
     }
 
     /**
@@ -194,7 +196,7 @@ export class MiBandService {
             service: MiBandGatt.UUID_SERVICE_MIBAND_1,
             characteristic: MiBandGatt.UUID_CHARATERISTIC_BUTTON_EVENT
         })
-            .pipe(filter(value => value.status != 'subscribed'))
+            .pipe(filter(value => value.status !== 'subscribed'));
 
     }
 
@@ -214,7 +216,7 @@ export class MiBandService {
             address: this.address,
             service: MiBandGatt.UUID_SERVICE_HART_RATE,
             characteristic: MiBandGatt.UUID_CHARATERISTIC_HRM_DATA
-        }).catch(() => { })
+        }).catch(() => { });
 
 
     }
@@ -229,34 +231,34 @@ export class MiBandService {
             service: MiBandGatt.UUID_SERVICE_HART_RATE,
             characteristic: MiBandGatt.UUID_CHARATERISTIC_HRM_DATA
         })
-            .pipe(filter(heartRateValue => heartRateValue.status != 'subscribed'))
+            .pipe(filter(heartRateValue => heartRateValue.status !== 'subscribed'))
             .pipe(map(heartRateValue => {
                 const data = this.ble.encodedStringToBytes(heartRateValue.value);
-                return Buffer.from(data).readUInt16BE(0)
-            }))
+                return Buffer.from(data).readUInt16BE(0);
+            }));
     }
 
     /**
      * Tells the smart band to start monitoring heart rate continously.
      */
     public async startHeartRateMonitoring() {
-        //Stop previous measurements
+        // Stop previous measurements
         await this.write([0x15, 0x02, 0x00],
             MiBandGatt.UUID_SERVICE_HART_RATE,
-            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
+            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL);
         await this.write([0x15, 0x01, 0x00],
             MiBandGatt.UUID_SERVICE_HART_RATE,
-            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
+            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL);
 
-        //Start continuous
+        // Start continuous
         await this.write([0x15, 0x01, 0x01],
             MiBandGatt.UUID_SERVICE_HART_RATE,
-            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
+            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL);
 
-        //ping to avoid automatic stop
+        // ping to avoid automatic stop
         this.heartRateTimer = setInterval(() => {
             this.write([0x16], MiBandGatt.UUID_SERVICE_HART_RATE,
-                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
+                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL);
         }, 12000);
     }
 
@@ -267,7 +269,7 @@ export class MiBandService {
         clearTimeout(this.heartRateTimer);
         await this.write([0x15, 0x01, 0x00],
             MiBandGatt.UUID_SERVICE_HART_RATE,
-            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
+            MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL);
     }
 
     /**
@@ -281,7 +283,7 @@ export class MiBandService {
         }).then(res => {
             return this.ble.bytesToString(this.ble.encodedStringToBytes(res.value));
         });
-        
+
 
     }
 
@@ -339,17 +341,17 @@ export class MiBandService {
                 }, err => {
                     console.log(err);
                     reject();
-                })
+                });
 
             await this.write([0x15, 0x01, 0x00],
                 MiBandGatt.UUID_SERVICE_HART_RATE,
-                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
+                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL);
             await this.write([0x15, 0x02, 0x00],
                 MiBandGatt.UUID_SERVICE_HART_RATE,
-                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
+                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL);
             await this.write([0x15, 0x02, 0x01],
                 MiBandGatt.UUID_SERVICE_HART_RATE,
-                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL)
+                MiBandGatt.UUID_CHARATERISTIC_HRM_CONTROL);
         });
 
     }
@@ -363,13 +365,13 @@ export class MiBandService {
             service: MiBandGatt.UUID_SERVICE_MIBAND_1,
             characteristic: MiBandGatt.UUID_CHARACTERISTIC_STEPS
         }).then(res => {
-            const data = Buffer.from(this.ble.encodedStringToBytes(res.value))
-            let result = { steps: 0, distance: 0, calories: 0 }
-            //unknown = data.readUInt8(0)
-            result.steps = data.readUInt16LE(1)
-            //unknown = data.readUInt16LE(3) // 2 more bytes for steps? ;)
-            if (data.length >= 8) result.distance = data.readUInt32LE(5)
-            if (data.length >= 12) result.calories = data.readUInt32LE(9)
+            const data = Buffer.from(this.ble.encodedStringToBytes(res.value));
+            const result = { steps: 0, distance: 0, calories: 0 };
+            // unknown = data.readUInt8(0)
+            result.steps = data.readUInt16LE(1);
+            // unknown = data.readUInt16LE(3) // 2 more bytes for steps? ;)
+            if (data.length >= 8) { result.distance = data.readUInt32LE(5); }
+            if (data.length >= 12) { result.calories = data.readUInt32LE(9); }
             return result;
         });
     }
@@ -384,7 +386,7 @@ export class MiBandService {
             characteristic: MiBandGatt.UUID_CHARACTERISTIC_TIME
         }).then(res => {
             return this.parseDate(Buffer.from(this.ble.encodedStringToBytes(res.value)));
-        })
+        });
     }
 
     /**
@@ -396,14 +398,17 @@ export class MiBandService {
             service: MiBandGatt.UUID_SERVICE_MIBAND_1,
             characteristic: MiBandGatt.UUID_CHARACTERISTIC_BATTERY
         }).then(res => {
-            if (res.value.length <= 2) return -1;
-            else return this.ble.encodedStringToBytes(res.value)[1]
-        })
+            if (res.value.length <= 2) {
+                return -1;
+            } else {
+                return this.ble.encodedStringToBytes(res.value)[1];
+            }
+        });
     }
 
     /**
      * Send a notification to the smart band.
-     * @param notificationType 
+     * @param notificationType
      * The type of notification to send
      */
     public async sendNotification(notificationType: Notification): Promise<void> {
@@ -423,8 +428,8 @@ export class MiBandService {
     private async write(value: number[], service: string, characteristic: string): Promise<void> {
         this.ble.write({
             address: this.address,
-            service: service,
-            characteristic: characteristic,
+            service,
+            characteristic,
             value: this.ble.bytesToEncodedString(Uint8Array.from(value))
         });
     }
@@ -432,26 +437,26 @@ export class MiBandService {
     private async writeWithoutResponse(value: number[], service: string, characteristic: string): Promise<void> {
         this.ble.write({
             address: this.address,
-            service: service,
-            characteristic: characteristic,
+            service,
+            characteristic,
             type: 'noResponse',
             value: this.ble.bytesToEncodedString(Uint8Array.from(value))
-        })
+        });
     }
 
 
     private parseDate(buff: Buffer): Date {
-        let year = buff.readUInt16LE(0),
+        const year = buff.readUInt16LE(0),
             mon = buff[2] - 1,
             day = buff[3],
             hrs = buff[4],
             min = buff[5],
             sec = buff[6];
-        return new Date(year, mon, day, hrs, min, sec)
+        return new Date(year, mon, day, hrs, min, sec);
     }
 
     private notifyNewConnectionState(newState: ConnectionState) {
-        //notify observers
+        // notify observers
         this.connectionState = newState;
         this.connectionStateBehaviour.next(this.connectionState);
     }

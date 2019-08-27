@@ -12,13 +12,13 @@ import * as d3 from 'd3';
 export class SessionDataComponent implements OnInit, OnDestroy {
 
   private chrono: NodeJS.Timer;
-  elapsedSec: number = 0;
-  elapsedMin: number = 0;
-  elapsedHour: number = 0;
+  elapsedSec = 0;
+  elapsedMin = 0;
+  elapsedHour = 0;
 
-  steps: number = 0;
-  distance: number = 0;
-  calories: number = 0;
+  steps = 0;
+  distance = 0;
+  calories = 0;
   currHeartbeat: number;
   minHeartbeat: number;
   maxHeartbeat: number;
@@ -41,8 +41,8 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //this.miBand.unsubscribeHeartRate();
-    //this.miBand.stopHeartRateMonitoring();
+    // this.miBand.unsubscribeHeartRate();
+    // this.miBand.stopHeartRateMonitoring();
   }
 
   async ngOnInit() {
@@ -58,8 +58,8 @@ export class SessionDataComponent implements OnInit, OnDestroy {
     this.session.heartRateObservable
       .subscribe(hrv => {
         this.ngZone.run(() => {
-          this.setHeartbeat(hrv);
-          this.heartRateLineChart.pushDynamic([new Date(), hrv]);
+          this.setHeartbeat(hrv.value);
+          this.heartRateLineChart.pushDynamic([new Date(), hrv.value]);
         });
       });
 

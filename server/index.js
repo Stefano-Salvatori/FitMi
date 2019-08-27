@@ -16,6 +16,10 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+var path = require('path');
+global.appRoot = path.resolve(__dirname);
+
+
 // aspetto che il container di mongo sia su
 function pausecomp(millis) {
 	var date = new Date();
@@ -43,6 +47,9 @@ mongoose
 var userRoutes = require('./src/routes/userRoutes');
 userRoutes(app);
 
+/*app.use((req, res) => {
+	res.sendFile(appRoot + "/www/index.html");
+});*/
 
 //metto in ascolto il web server
 app.listen(3000, function () {

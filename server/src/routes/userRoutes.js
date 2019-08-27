@@ -9,13 +9,11 @@ module.exports = function (app) {
 	app.route('/users/login')
 		.post(usersController.login_user);
 
-
 	app.route('/users/:id/sessions')
 		.post(sessionsController.add_session)
 		.get(sessionsController.list_sessions)
 
-	app.get('/', function (req, res) {
-		res.send("Hello World!");
-	});
+	app.route('/users/:id/sessions/last')
+		.get(sessionsController.last_session)
 
 };

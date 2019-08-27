@@ -12,26 +12,26 @@ export class HomeComponent implements OnInit {
   readonly sessionType = SessionType;
 
 
-  activities: SessionType[] = 
+  activities: SessionType[] =
     Object.values(SessionType)
-    .filter(k => typeof k !== "function"); 
-    //the filter 'k !=== "function"' is needed to remove SessionType utility functions from the array
-  
-  constructor(private router: Router, 
-    private sessionData: SessionDataService) { 
+    .filter(k => typeof k !== 'function');
+    // the filter 'k !=== "function"' is needed to remove SessionType utility functions from the array
+
+  constructor(private router: Router,
+              private sessionData: SessionDataService) {
     }
 
-  ngOnInit() { 
+  ngOnInit() {
   }
 
   startSession(activity: SessionType) {
     this.sessionData.possibleGoal = SessionType.getPossibleGoals(activity);
-    this.sessionData.name = SessionType[activity];
+    this.sessionData.sessionType = activity;
     this.router.navigateByUrl(SessionType.getRoute(activity));
   }
 
   navigateToDeviceConnectionPage() {
-    console.log("Device Connection");
+    console.log('Device Connection');
     this.router.navigateByUrl('tabs/device-connection');
   }
 }

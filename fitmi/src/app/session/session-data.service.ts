@@ -7,39 +7,49 @@ import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateValue } from 'src/model/session';
 import { SessionType } from 'src/model/session-type';
+import { publishReplay, refCount } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
+// tslint:disable: variable-name
+
+
 /**
  * Contains all the information about the current session.
- * In particular this is used to setup the goal of the session and to retrieve all the information from the smart band (current steps, calories, distance, heart rate...)
+ * In particular this is used to setup the goal of the session and to retrieve all the
+ * information from the smart band (current steps, calories, distance, heart rate...)
  */
 export class SessionDataService {
-  //Polling frequency for pedometer data
-  private static readonly POLLING_FREQ = 1000; //ms
+  // Polling frequency for pedometer data
+  private static readonly POLLING_FREQ = 500; // ms
 
   private currentGoalSource = new BehaviorSubject(new Goal(GoalType.TIME, 0));
   private _currentGoal = this.currentGoalSource.asObservable();
 
-  private pedometerData = new BehaviorSubject<PedometerData>(new PedometerData());
-  private pedometerDataTimer;
 
-  private _heartRateObservable: Observable<number> = Observable.create();
+  private startPedometerData: PedometerData;
+  private pedometerData = new BehaviorSubject<PedometerData>(new PedometerData());
+  private pedometerDataTimer: NodeJS.Timer;
+
+  private _heartRateObservable = new BehaviorSubject<HeartRateValue>({
+    timestamp: new Date(), value: 0
+  });
   private heartRateFreq: HeartRateValue[] = [];
 
-  private _possibleGoal: GoalType[] = Object.values(GoalType).filter(k => typeof k !== "function");
+  private _possibleGoal: GoalType[] =
+    Object.values(GoalType).filter(k => typeof k !== 'function');
 
-  
-  private _name: string = "";
+
+  private _sessionType: SessionType;
 
   private _start: Date;
   private _end: Date;
 
 
   constructor(private miBand: MiBandService,
-    private http: HttpClientService,
-    private auth: AuthService) {
+              private http: HttpClientService,
+              private auth: AuthService) {
 
   }
 
@@ -47,17 +57,24 @@ export class SessionDataService {
     this._start = new Date();
     await this.miBand.findMiBand();
     this.miBand.startHeartRateMonitoring();
-    this._heartRateObservable = this.miBand.subscribeHeartRate();
-    this._heartRateObservable.subscribe(hr => {
-      this.heartRateFreq.push({
+    this.miBand.subscribeHeartRate().subscribe(hr => {
+      const newValue = {
         timestamp: new Date(),
         value: hr
-      })
+      };
+      this.heartRateFreq.push(newValue);
+      this._heartRateObservable.next(newValue);
+    });
 
-    })
+    this.startPedometerData = await this.miBand.getPedometerData();
     this.pedometerDataTimer = setInterval(async () => {
-      this.pedometerData.next(await this.miBand.getPedometerData());
-    }, SessionDataService.POLLING_FREQ)
+      const nextPedometerData = await this.miBand.getPedometerData();
+      this.pedometerData.next({
+        calories: nextPedometerData.calories - this.startPedometerData.calories,
+        distance: nextPedometerData.distance - this.startPedometerData.distance,
+        steps: nextPedometerData.steps - this.startPedometerData.steps,
+      });
+    }, SessionDataService.POLLING_FREQ);
 
   }
 
@@ -66,27 +83,10 @@ export class SessionDataService {
     this.miBand.stopHeartRateMonitoring();
     this.miBand.unsubscribeHeartRate();
     clearInterval(this.pedometerDataTimer);
-
-    const currentUser = this.auth.getUser();
-    const session: Session = {
-      start: this._start,
-      end: this._end,
-      type: SessionType[this.name],
-      calories: this.pedometerData.getValue().calories,
-      distance: this.pedometerData.getValue().distance,
-      steps: this.pedometerData.getValue().steps,
-      heart_frequency: this.heartRateFreq
-    }
-
-    this.http.post('/users/' + currentUser._id + '/sessions', session)
-      .subscribe(res => {
-        console.log(res);
-        console.log(session + " saved");
-      });
-
+    this.saveCurrentSession();
   }
 
-  get heartRateObservable(): Observable<number> {
+  get heartRateObservable(): Observable<HeartRateValue> {
     return this._heartRateObservable;
   }
 
@@ -116,12 +116,12 @@ export class SessionDataService {
     return this._possibleGoal;
   }
 
-  set name(value: string) {
-    this._name = value;
+  set sessionType(value: SessionType) {
+    this._sessionType = value;
   }
 
-  get name() {
-    return this._name;
+  get sessionType() {
+    return this._sessionType;
   }
 
   get startTime() {
@@ -132,4 +132,21 @@ export class SessionDataService {
     return this._end;
   }
 
+  private saveCurrentSession(): void {
+    const currentUser = this.auth.getUser();
+    const session: Session = {
+      start: this._start,
+      end: this._end,
+      type: this._sessionType,
+      calories: this.pedometerData.getValue().calories,
+      distance: this.pedometerData.getValue().distance,
+      steps: this.pedometerData.getValue().steps,
+      heart_frequency: this.heartRateFreq
+    };
+
+    this.http.post('/users/' + currentUser._id + '/sessions', session)
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
 }
