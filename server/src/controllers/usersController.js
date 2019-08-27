@@ -8,9 +8,8 @@ var aesCtr = new aes.ModeOfOperation.ctr(key_256, new aes.Counter(5)); // counte
 
 exports.list_users = (req, res) => {
 	User.find({}, (err, user) => {
-		if (err)
-			res.send(err);
-		res.json(user);
+		if (err) res.send(err);
+		else res.json(user);
 	});
 };
 
