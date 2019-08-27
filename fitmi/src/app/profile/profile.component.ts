@@ -32,18 +32,15 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.auth.logout();
   }
 
-  calculateAge(birthDate: string): number {
-    birthDate = birthDate.split('T')[0];
-    const splitDate = birthDate.split('-');
-    const year = splitDate[0];
-    const month = splitDate[1];
-    const day = splitDate[2];
+  calculateAge(birthDate: Date): number {
+    const year = birthDate.getFullYear();
+    const month = birthDate.getMonth();
+    const day = birthDate.getDate();
     const date = new Date();
 
-    // tslint:disable: radix
-    let age = date.getFullYear() - parseInt(year);
-    if (((date.getMonth() + 1) - parseInt(month) < 0)
-      || ((date.getMonth() + 1) === parseInt(month) && date.getDate() - parseInt(day) < 0)) {
+    let age = date.getFullYear() - year;
+    if (((date.getMonth() + 1) - month < 0)
+      || ((date.getMonth() + 1) === month && date.getDate() - day < 0)) {
       age -= 1;
     }
     return age;

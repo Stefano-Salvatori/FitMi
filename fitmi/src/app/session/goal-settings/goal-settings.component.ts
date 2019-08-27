@@ -22,7 +22,7 @@ export class GoalSettingsComponent implements OnInit {
               private route: ActivatedRoute,
               private sessionData: SessionDataService) {
     this.possibleGoal = this.sessionData.possibleGoal;
-    this.title = this.sessionData.name;
+    this.title = this.sessionData.sessionType;
   }
 
   ngOnInit() { }

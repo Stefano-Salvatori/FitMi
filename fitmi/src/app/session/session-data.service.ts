@@ -22,15 +22,17 @@ import { publishReplay, refCount } from 'rxjs/operators';
  */
 export class SessionDataService {
   // Polling frequency for pedometer data
-  private static readonly POLLING_FREQ = 1000; // ms
+  private static readonly POLLING_FREQ = 500; // ms
 
   private currentGoalSource = new BehaviorSubject(new Goal(GoalType.TIME, 0));
   private _currentGoal = this.currentGoalSource.asObservable();
 
-  private pedometerData = new BehaviorSubject<PedometerData>(new PedometerData());
-  private pedometerDataTimer;
 
-  private _heartRateObservable =  new BehaviorSubject<HeartRateValue>({
+  private startPedometerData: PedometerData;
+  private pedometerData = new BehaviorSubject<PedometerData>(new PedometerData());
+  private pedometerDataTimer: NodeJS.Timer;
+
+  private _heartRateObservable = new BehaviorSubject<HeartRateValue>({
     timestamp: new Date(), value: 0
   });
   private heartRateFreq: HeartRateValue[] = [];
@@ -39,7 +41,7 @@ export class SessionDataService {
     Object.values(GoalType).filter(k => typeof k !== 'function');
 
 
-  private _name = '';
+  private _sessionType: SessionType;
 
   private _start: Date;
   private _end: Date;
@@ -64,8 +66,14 @@ export class SessionDataService {
       this._heartRateObservable.next(newValue);
     });
 
+    this.startPedometerData = await this.miBand.getPedometerData();
     this.pedometerDataTimer = setInterval(async () => {
-      this.pedometerData.next(await this.miBand.getPedometerData());
+      const nextPedometerData = await this.miBand.getPedometerData();
+      this.pedometerData.next({
+        calories: nextPedometerData.calories - this.startPedometerData.calories,
+        distance: nextPedometerData.distance - this.startPedometerData.distance,
+        steps: nextPedometerData.steps - this.startPedometerData.steps,
+      });
     }, SessionDataService.POLLING_FREQ);
 
   }
@@ -75,24 +83,7 @@ export class SessionDataService {
     this.miBand.stopHeartRateMonitoring();
     this.miBand.unsubscribeHeartRate();
     clearInterval(this.pedometerDataTimer);
-
-    const currentUser = this.auth.getUser();
-    const session: Session = {
-      start: this._start,
-      end: this._end,
-      type: SessionType[this.name],
-      calories: this.pedometerData.getValue().calories,
-      distance: this.pedometerData.getValue().distance,
-      steps: this.pedometerData.getValue().steps,
-      heart_frequency: this.heartRateFreq
-    };
-
-    this.http.post('/users/' + currentUser._id + '/sessions', session)
-      .subscribe(res => {
-        console.log(res);
-        console.log(session + ' saved');
-      });
-
+    this.saveCurrentSession();
   }
 
   get heartRateObservable(): Observable<HeartRateValue> {
@@ -125,12 +116,12 @@ export class SessionDataService {
     return this._possibleGoal;
   }
 
-  set name(value: string) {
-    this._name = value;
+  set sessionType(value: SessionType) {
+    this._sessionType = value;
   }
 
-  get name() {
-    return this._name;
+  get sessionType() {
+    return this._sessionType;
   }
 
   get startTime() {
@@ -141,4 +132,21 @@ export class SessionDataService {
     return this._end;
   }
 
+  private saveCurrentSession(): void {
+    const currentUser = this.auth.getUser();
+    const session: Session = {
+      start: this._start,
+      end: this._end,
+      type: this._sessionType,
+      calories: this.pedometerData.getValue().calories,
+      distance: this.pedometerData.getValue().distance,
+      steps: this.pedometerData.getValue().steps,
+      heart_frequency: this.heartRateFreq
+    };
+
+    this.http.post('/users/' + currentUser._id + '/sessions', session)
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
 }

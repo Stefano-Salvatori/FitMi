@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
 
   startSession(activity: SessionType) {
     this.sessionData.possibleGoal = SessionType.getPossibleGoals(activity);
-    this.sessionData.name = SessionType[activity];
+    this.sessionData.sessionType = activity;
     this.router.navigateByUrl(SessionType.getRoute(activity));
   }
 

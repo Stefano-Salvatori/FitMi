@@ -56,7 +56,7 @@
   <div padding class="badges">
     <ion-label padding><strong>Badges</strong></ion-label>
     <ion-row nowrap>
-      <ion-col *ngFor="let badge of badges">
+      <ion-col *ngFor="let badge of this.user.badges">
         <ion-item lines="none">
           <ion-avatar slot="start">
             <img src="https://cdn0.iconfinder.com/data/icons/gamification-flat-awards-and-badges/500/star13-512.png">
@@ -85,7 +85,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Età</ion-label>
-              <ion-label color="dark"><strong>{{this.user.age}}</strong></ion-label>
+              <ion-label color="dark"><strong>{{calculateAge(this.user.birthDate)}}</strong></ion-label>
             </ion-col>
           </ion-item>
 

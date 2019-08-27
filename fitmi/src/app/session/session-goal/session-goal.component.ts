@@ -31,15 +31,12 @@ export class SessionGoalComponent implements OnInit, AfterViewInit {
 
     const step = 100 / this.goal.threshold;
 
-    const previousPedometerData = await this.sessionData.readPedometerData();
-
-
     switch (this.goal.type) {
       case GoalType.TIME:
         setInterval(() => this.updateProgressBar(step), 60000);
         break;
       case GoalType.STEPS:
-        let previousSteps: number = previousPedometerData.steps;
+        let previousSteps = 0;
         this.sessionData.pedometerDataObservable()
           .subscribe(pedometerData => {
             this.updateProgressBar((pedometerData.steps - previousSteps) * step);
@@ -47,7 +44,7 @@ export class SessionGoalComponent implements OnInit, AfterViewInit {
           });
         break;
       case GoalType.DISTANCE:
-        let previousDistance: number = previousPedometerData.distance;
+        let previousDistance = 0;
         this.sessionData.pedometerDataObservable()
           .subscribe(pedometerData => {
             this.updateProgressBar((pedometerData.distance - previousDistance) * step);
@@ -55,7 +52,7 @@ export class SessionGoalComponent implements OnInit, AfterViewInit {
           });
         break;
       case GoalType.CALORIES:
-        let previousCalories: number = previousPedometerData.calories;
+        let previousCalories = 0;
         this.sessionData.pedometerDataObservable()
           .subscribe(pedometerData => {
             this.updateProgressBar((pedometerData.calories - previousCalories) * step);
