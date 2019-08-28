@@ -1,4 +1,5 @@
 import { SessionType } from './session-type';
+import { PedometerData } from 'src/app/miband/pedometer-data';
 
 export interface HeartRateValue {
     timestamp: Date;
@@ -9,8 +10,6 @@ export interface Session {
     start: Date;
     end: Date;
     type: SessionType;
-    steps: number;
-    calories: number;
-    distance: number;
+    pedometer: PedometerData;
     heart_frequency: HeartRateValue[];
 }

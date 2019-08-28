@@ -3,6 +3,9 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { CircleProgressComponent } from 'ng-circle-progress';
 import { User } from 'src/model/user';
+import { Badge } from 'src/model/badge';
+import { Session } from 'src/model/session';
+import { serverAddress } from 'src/server-data';
 
 @Component({
   selector: 'app-profile',
@@ -15,6 +18,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
 
   user: User;
+  badges: Badge<User | Session>[];
+  server = serverAddress;
 
   constructor(private auth: AuthService) {
     this.user = this.auth.getUser();
@@ -32,7 +37,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.auth.logout();
   }
 
-  calculateAge(birthDate: Date): number {
+  // tslint:disable-next-line: variable-name
+  calculateAge(_birthDate: Date): number {
+    const birthDate = new Date(_birthDate);
     const year = birthDate.getFullYear();
     const month = birthDate.getMonth();
     const day = birthDate.getDate();

@@ -5,6 +5,7 @@ import { Session } from 'src/model/session';
 import * as d3 from 'd3';
 import { LineChartService } from '../data-visualization/line-chart/line-chart.service';
 import { SessionType } from 'src/model/session-type';
+import { PedometerData } from '../miband/pedometer-data';
 
 @Component({
   selector: 'app-home',
@@ -78,9 +79,7 @@ export class StatisticsComponent implements OnInit {
       start: new Date('01-01-1970 00:00:00'),
       end: new Date('01-01-1970 00:00:00'),
       type: SessionType.RUN,
-      steps: 0,
-      calories: 0,
-      distance: 0,
+      pedometer: new PedometerData(),
       heart_frequency: []
     };
 

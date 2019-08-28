@@ -1,3 +1,5 @@
+import { Badge } from './badge';
+
 export interface User {
     _id: string;
     username: string;
@@ -9,7 +11,7 @@ export interface User {
     height: number;
     weight: number;
     score: number;
-    badges: [];
+    badges: Badge<any>[];
     statistics: {
         totalCalories: number,
         totalSteps: number,
