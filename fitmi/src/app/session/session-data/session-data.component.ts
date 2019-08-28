@@ -46,20 +46,11 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.heartRateLineChart = new LineChartService();
-
-
-
-    this.heartRateLineChart.setup('#heartRateLineChart');
-    this.heartRateLineChart.populate([]);
-
+   
 
     this.startChrono();
 
     this.heartRateLineChart = new LineChartService();
-
-
-
     this.heartRateLineChart.setup('#heartRateLineChart');
     this.heartRateLineChart.populate([]);
 

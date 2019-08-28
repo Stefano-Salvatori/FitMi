@@ -12,6 +12,7 @@ import { serverAddress } from 'src/server-data';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
+
 export class ProfileComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CircleProgressComponent, { static: false }) progress!: CircleProgressComponent;
@@ -22,7 +23,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   server = serverAddress;
 
   constructor(private auth: AuthService) {
-    this.user = this.auth.getUser();
+
+    if (auth) {
+      this.user = this.auth.getUser();
+
+    }
   }
 
   ngOnInit() {

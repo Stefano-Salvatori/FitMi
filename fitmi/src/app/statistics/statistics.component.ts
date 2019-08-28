@@ -6,6 +6,7 @@ import * as d3 from 'd3';
 import { LineChartService } from '../data-visualization/line-chart/line-chart.service';
 import { SessionType } from 'src/model/session-type';
 import { PedometerData } from '../miband/pedometer-data';
+import { BarChartService } from '../data-visualization/bar-chart/bar-chart.service';
 
 @Component({
   selector: 'app-home',
@@ -20,9 +21,10 @@ export class StatisticsComponent implements OnInit {
 
   public lastSession: Session;
   public allSessions: Session[];
-  public last = true;
+  public timePeriod = 'last';
   private dataPath = 'assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
-  heartRateLineChart: any;
+  private heartRateLineChart: LineChartService;
+  private caloriesBarChart: BarChartService;
 
   // return the more freq elem in an array of string
   private mode(arr: string[]) {
@@ -31,20 +33,56 @@ export class StatisticsComponent implements OnInit {
     ).pop();
   }
 
+
   private sessionDuration(s: Session): number {
     return Math.abs((new Date(s.end).getTime() - new Date(s.start).getTime()) / 1000);
   }
-  private sumOnAllSessions(mapFunction: (Session) => number): number {
-    return this.allSessions.map(mapFunction).reduce((total, amount) => total + amount);
+  private sumOnAllSelectedSessions(mapFunction: (arg0: Session) => number): number {
+
+    const allSessionsInSelectedPeriod = this.getAllSessionsInSelectedPeriod();
+    if (allSessionsInSelectedPeriod.length > 0) {
+      return allSessionsInSelectedPeriod
+        .map(mapFunction)
+        .reduce((total, amount) => total + amount);
+    } else {
+      return 0;
+    }
+
   }
 
   //#region "Binded Html"
+
+
+  public getAllSessionsInSelectedPeriod(): Session[] {
+    switch (this.timePeriod) {
+      case 'month':
+        return this.allSessions
+        .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear())
+        .filter(s => new Date(s.start).getMonth() === new Date().getMonth());
+      case 'year':
+        return this.allSessions
+        .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear());
+      default:
+      return [];
+    }
+  }
+
+  public lastSessionDate(): string {
+    const date = new Date(this.lastSession.start);
+    return date.toLocaleDateString() + ' ' +
+    date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
   public lastSessionDuration() {
     return new Date(this.sessionDuration(this.lastSession) * 1000).toISOString().substr(11, 8);
   }
-  public minMaxHeartRate(): [number, number] {
+  public minHeartRate(): number {
     const hfValues = this.lastSession.heart_frequency.map(hf => hf.value);
-    return [Math.min(...hfValues), Math.max(...hfValues)];
+    return Math.min(...hfValues);
+  }
+
+  public maxHeartRate(): number {
+    const hfValues = this.lastSession.heart_frequency.map(hf => hf.value);
+    return Math.max(...hfValues);
   }
 
   public favoriteSessionType(): string {
@@ -52,19 +90,19 @@ export class StatisticsComponent implements OnInit {
   }
 
   public allSteps(): number {
-    return this.sumOnAllSessions(s => s.steps);
+    return this.sumOnAllSelectedSessions(s => s.pedometer.steps);
   }
 
   public allCalories(): number {
-    return this.sumOnAllSessions(s => s.calories);
+    return this.sumOnAllSelectedSessions(s => s.pedometer.calories);
   }
 
   public allDistance(): number {
-    return this.sumOnAllSessions(s => s.distance);
+    return this.sumOnAllSelectedSessions(s => s.pedometer.distance);
   }
 
-  public wholeTimeSpentOnSession(): string {
-    const totSeconds = this.sumOnAllSessions(s => this.sessionDuration(s));
+  public wholeTimeSpentOnSessions(): string {
+    const totSeconds = this.sumOnAllSelectedSessions(s => this.sessionDuration(s));
     return new Date(totSeconds * 1000).toISOString().substr(11, 8);
   }
 
@@ -116,9 +154,28 @@ export class StatisticsComponent implements OnInit {
       array.push([dates[j++], +hf.value]);
     });
 
-    this.heartRateLineChart = new LineChartService().setDataWindowSize(50);
+    this.heartRateLineChart = new LineChartService();
     this.heartRateLineChart.setup('#heartRateLineChart');
     this.heartRateLineChart.populate(array);
+  }
+
+  public initCaloriesBarChart() {
+    // generates ordered date to simulate heartrates timestamp
+    const dates = this.getAllSessionsInSelectedPeriod().map(s => new Date(s.start));
+    const array: Array<[Date, number]> = [];
+    let j = 0;
+    this.getAllSessionsInSelectedPeriod().forEach(s => {
+      array.push([dates[j++], +s.pedometer.calories]);
+    });
+
+    this.caloriesBarChart = new BarChartService();
+    if (this.timePeriod === 'month') {
+      this.caloriesBarChart.setXAxisTimeFormat('%d');
+    } else if (this.timePeriod === 'year') {
+      this.caloriesBarChart.setXAxisTimeFormat('%d-%m');
+    }
+    this.caloriesBarChart.setup('#caloriesBarChart');
+    this.caloriesBarChart.populate(array);
   }
 
   private createOrderedRandomDates(n: number): Date[] {
@@ -137,7 +194,8 @@ export class StatisticsComponent implements OnInit {
   }
 
   segmentChanged(event) {
-    this.last = event.detail.value === 'last';
+    this.timePeriod = event.detail.value;
   }
+
 
 }

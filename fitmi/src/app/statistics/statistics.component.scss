@@ -37,4 +37,45 @@
             fill-opacity: .5;
         }
 
+ion-col {
+  border: thin solid lightgray;
+}
 
+ion-row {
+text-align: center;
+}
+
+.value {
+  font-weight: bold;
+}
+
+.label {
+  color: gray;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill: steelblue;
+  fill-opacity: .25;
+  shape-rendering: crispEdges;
+}
+
+  rect.mover {
+            stroke: red;
+            stroke-opacity: .1;
+            fill: lightSteelBlue;
+            fill-opacity: .5;
+        }
+
+
+.bar {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+  
+.subBar { 
+  fill: gray;
+  opacity: 0.5;
+  padding: 10px;
+  margin: 10px;
+}

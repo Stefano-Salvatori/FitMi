@@ -3,40 +3,52 @@
     <ion-title>Leaderboard</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content fullsreen>
+  <ion-list>
+    <ion-item-divider>
+      <ion-label>
+        Leader
+      </ion-label>
+    </ion-item-divider>
+    <ion-list-header>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src={{this.users[0].profileImg}}>
+        </ion-avatar>
+        <ion-label>
+          <h2>1 {{this.users[0].firstName}} {{this.users[0].lastName}}</h2>
+          <h3>Fitness Points: <b>{{this.users[0].score}}</b></h3>
+        </ion-label>
+        <ion-icon slot="end" name="md-star"></ion-icon>
+      </ion-item>
+    </ion-list-header>
+<ion-item-divider>
+  <ion-label>
+    Others
+  </ion-label>
+</ion-item-divider>
 
-<ion-content align-items-center justify-content-center id="leaderboard">
-  <table width="100%" height="70%">
-    <tr>
-      <th>Rank</th>
-      <th>User</th>
-      <th></th>
-      <th>Fitness Points</th>
-    </tr>
-    
-    <tr *ngFor="let user of this.users; index as i" class="otherRow" (click)="onUserClick()">
-      <!--
-      <div *ngIf="i==0; then thenBlock else elseBlock">
-      <ng-template #thenBlock>
-        <td><img src="../../assets/icon/fit_activities_icons/running.png" id="leaderImg"></td>
-      </ng-template>
-      </div>
-      -->
-      <td>{{i+1}}</td>
-      <td><img src={{user.profileImg}} class="otherUserProfileImg" /></td>
-      <td style="padding: 15px">{{user.name}}</td>
-      <td>{{user.fitnessPoints}}</td>
-    </tr>
+      <ion-item *ngFor="let user of this.users | slice:1; index as i" class="otherRow" (click)="onUserClick(i)">
+        <ion-avatar slot="start">
+          <img src={{user.profileImg}}>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{i+2}} {{user.firstName}} {{user.lastName}}</h2>
+          <h3>Fitness Points: <b>{{user.score}}</b></h3>
+        </ion-label>
+      </ion-item>
 
 
-    
-    </table>
 
-    <footer id="userRow" class="flex-container">
-      <div>{{currentUserRank + 1}}</div>
-      <div><img src={{currentUser.profileImg}} id="userImg" /></div>
-      <div>{{currentUser.name}}</div>
-      <div>{{currentUser.fitnessPoints}}</div>
-    </footer>
+
+  </ion-list>
+
+  <footer id="userRow" class="flex-container">
+    <div>{{currentUserRank + 1}}</div>
+    <div><img src={{currentUser.profileImg}} id="userImg" /></div>
+    <div>{{currentUser.firstName}} {{currentUser.lastName}}</div>
+    <div>{{currentUser.score}}</div>
+  </footer>
 
 
 </ion-content>
