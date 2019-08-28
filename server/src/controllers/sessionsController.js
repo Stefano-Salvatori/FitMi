@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('Users');
 var Session = mongoose.model('Sessions');
 
-mongoose.set('debug', true);
+
 
 exports.list_sessions = (req, res) => {
 	User.findById(req.params.id, (err, user) => {

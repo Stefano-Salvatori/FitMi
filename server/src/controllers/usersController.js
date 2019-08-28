@@ -6,12 +6,23 @@ var aes = require('aes-js');
 var key_256 = Array(32).fill(0).map(Number.call, Number); // 32 * 8 = 256
 var aesCtr = new aes.ModeOfOperation.ctr(key_256, new aes.Counter(5)); // counter start is arbitrary
 
+
+
 exports.list_users = (req, res) => {
 	User.find({}, (err, user) => {
 		if (err) res.send(err);
 		else res.json(user);
 	});
 };
+
+exports.get_user = (req, res) => {
+	User.findById(req.params.id, (err, user) => {
+		if (err) res.status(500).send("User not found");
+		else {
+			res.status(200).json(user);
+		}
+	});
+}
 
 exports.login_user = (req, res) => {
 
