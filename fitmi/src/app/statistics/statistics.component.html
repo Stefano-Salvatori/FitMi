@@ -17,22 +17,27 @@
     <ion-label>Year</ion-label>
   </ion-segment-button>
 </ion-segment>
-<ion-content>
-
+<ion-content ion-justify-content-center>
 
   <div *ngIf="timePeriod==='last'; then thenBlock else elseBlock"></div>
 
   <!-- LAST staticstics template-->
 
-  <ng-template #thenBlock>
-    <ion-item>
-      <ion-label>Date: {{ lastSessionDate() }}</ion-label>
-    </ion-item>
+  <ng-template #thenBlock >
+    <ion-card>
+      <ion-item>
+        <ion-icon name="md-calendar" slot="start"></ion-icon>
+        <ion-label>{{ lastSessionDate() }}</ion-label>
+      </ion-item>
+    </ion-card>
 
-    <ion-item>
-      <ion-label slot="start">Duration: {{ lastSessionDuration() }}</ion-label>
-      <ion-icon slot="end" name="md-alarm"></ion-icon>
-    </ion-item>
+        <ion-card>
+          <ion-item>
+            <ion-icon name="md-time" slot="start"></ion-icon>
+            <ion-label>{{ lastSessionDuration() }}</ion-label>
+          </ion-item>
+        </ion-card>
+
 
 
     <ion-grid align-items-center justify-content-center>
@@ -94,13 +99,20 @@
 
   <!-- GENERAL staticstics template-->
   <ng-template #elseBlock>
-    <ion-item>
-      <ion-label>Sessions this {{ timePeriod }}: {{ getAllSessionsInSelectedPeriod().length }}</ion-label>
-    </ion-item>
+    <ion-card>
+        <ion-item>
+          <ion-icon slot="start" name="md-fitness"></ion-icon>
+          <ion-label>Sessions this {{ timePeriod }}: {{ getAllSessionsInSelectedPeriod().length }}</ion-label>
+        </ion-item>
+    </ion-card>
+  
 
     <ion-grid align-items-center justify-content-center>
       <ion-row justify-content-center>
         <ion-col>
+          <ion-card>
+            
+          </ion-card>
           <h2>Calories</h2>
           <div id="caloriesBarChart">
             {{ initCaloriesBarChart() }}

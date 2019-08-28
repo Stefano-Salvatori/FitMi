@@ -155,7 +155,7 @@ export class StatisticsComponent implements OnInit {
       array.push([dates[j++], +hf.value]);
     });
 
-    this.heartRateLineChart = new LineChartService().setDataWindowSize(50);
+    this.heartRateLineChart = new LineChartService();
     this.heartRateLineChart.setup('#heartRateLineChart');
     this.heartRateLineChart.populate(array);
   }
@@ -170,6 +170,11 @@ export class StatisticsComponent implements OnInit {
     });
 
     this.caloriesBarChart = new BarChartService();
+    if (this.timePeriod === 'month') {
+      this.caloriesBarChart.setXAxisTimeFormat('%d');
+    } else if (this.timePeriod === 'year') {
+      this.caloriesBarChart.setXAxisTimeFormat('%d-%m');
+    }
     this.caloriesBarChart.setup('#caloriesBarChart');
     this.caloriesBarChart.populate(array);
   }

@@ -9,15 +9,20 @@ import { User } from 'src/model/user';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
+
 export class ProfileComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CircleProgressComponent, { static: false }) progress!: CircleProgressComponent;
 
 
-  user: User;
+  public user: User;
 
   constructor(private auth: AuthService) {
-    this.user = this.auth.getUser();
+
+    if (auth) {
+      this.user = this.auth.getUser();
+
+    }
   }
 
   ngOnInit() {

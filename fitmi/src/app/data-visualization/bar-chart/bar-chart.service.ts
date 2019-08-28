@@ -25,6 +25,7 @@ export class BarChartService {
   private diagram: any;
   private bars: any;
 
+  private xAxisTimeFormat = '%d-%m-%y';
   constructor() {
     this.data = [];
   }
@@ -37,6 +38,10 @@ export class BarChartService {
     this.marginOverview = { top: 30, right: 10, bottom: 20, left: 40 };
     this.selectorHeight = 40;
     this.heightOverview = 80 - this.marginOverview.top - this.marginOverview.bottom;
+  }
+
+  public setXAxisTimeFormat(format: string): void {
+    this.xAxisTimeFormat = format;
   }
 
   public populate(values: Array<[Date, number]>) {
@@ -143,7 +148,7 @@ export class BarChartService {
   }
 
   private xAxisAttr(x) {
-    x.call(d3.axisBottom(this.xScale).tickFormat(d3.timeFormat('%d-%m')));
+    x.call(d3.axisBottom(this.xScale).tickFormat(d3.timeFormat(this.xAxisTimeFormat)));
 
   }
 
