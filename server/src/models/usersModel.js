@@ -9,6 +9,7 @@ var UserSchema = new Schema({
   password: { type: String, required: 'password is required' },
   firstName: String,
   lastName: String,
+  profileImg: String,
   gender: String,
   birthDate: Date,
   height: Number,

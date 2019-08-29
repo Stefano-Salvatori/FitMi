@@ -12,7 +12,8 @@ module.exports = function (app) {
 		.post(usersController.login_user);
 
 	app.route('/users/:id')
-		.get(usersController.get_user);
+		.get(usersController.get_user)
+		.put(usersController.edit_user);
 
 	app.route('/users/:id/badges')
 		.get(badgesController.get_user_badges)

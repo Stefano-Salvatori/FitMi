@@ -24,6 +24,13 @@ exports.get_user = (req, res) => {
 	});
 }
 
+exports.edit_user = (req, res) => {
+	User.findByIdAndUpdate(req.params.id, req.body, (err, doc) => {
+		if (err) res.status(500).send("User not found");
+		else res.status(200).json(doc);
+	});
+}
+
 exports.login_user = (req, res) => {
 
   var body = req.body;
