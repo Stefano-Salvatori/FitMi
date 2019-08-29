@@ -11,15 +11,15 @@
       </ion-label>
     </ion-item-divider>
     <ion-list-header>
-      <ion-item>
-        <ion-avatar slot="start">
+      <ion-item (click)="onUserClick(0)">
+        <ion-avatar slot="start" >
           <img src={{this.users[0].profileImg}}>
         </ion-avatar>
         <ion-label>
           <h2>1 {{this.users[0].firstName}} {{this.users[0].lastName}}</h2>
           <h3>Fitness Points: <b>{{this.users[0].score}}</b></h3>
         </ion-label>
-        <ion-icon slot="end" name="md-star"></ion-icon>
+        <ion-icon slot="end" name="md-star" id="leaderStarIcon"></ion-icon>
       </ion-item>
     </ion-list-header>
 <ion-item-divider>
@@ -43,8 +43,9 @@
 
   </ion-list>
 
+
   <footer id="userRow" class="flex-container">
-    <div>{{currentUserRank + 1}}</div>
+    <div>{{currentUserRank}}</div>
     <div><img src={{currentUser.profileImg}} id="userImg" /></div>
     <div>{{currentUser.firstName}} {{currentUser.lastName}}</div>
     <div>{{currentUser.score}}</div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionDataService } from '../session/session-data.service';
 import { SessionType } from 'src/model/session-type';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +32,6 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToDeviceConnectionPage() {
-    console.log('Device Connection');
     this.router.navigateByUrl('tabs/device-connection');
   }
 }

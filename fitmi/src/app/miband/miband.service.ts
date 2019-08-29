@@ -55,7 +55,7 @@ export class MiBandService {
      * MiBand searching for a device that expose the miband's authentication service.
      * This must always be called the first time we use this service so that the adress of the band is correctly set up.
      */
-    public async findMiBand() {
+    public async findMiBand(): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if ((await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)) !== undefined) {
                 this.address = await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY);

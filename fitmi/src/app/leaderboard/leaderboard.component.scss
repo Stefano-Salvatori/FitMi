@@ -1,8 +1,8 @@
 
 footer {
-      background: rgb(93, 165, 223);
-      color: #FAFAFA;
-          height: 12%;
+  background: var(--ion-color-dark);
+color: white;
+ height: 12%;
 }
 
 .flex-container {
@@ -27,6 +27,9 @@ footer {
   height:100px;
 }
 
+#leaderStarIcon {
+  color: gold;
+}
 
 
 
