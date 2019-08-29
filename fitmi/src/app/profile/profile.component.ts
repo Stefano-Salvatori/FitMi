@@ -10,6 +10,7 @@ import { ModalController } from '@ionic/angular';
 import { ProfileImageComponent } from './profile-image/profile-image.component';
 import { Router } from '@angular/router';
 import { HttpClientService } from '../http-client.service';
+import { BadgeService } from '../badge.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,21 +24,23 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
 
   user: User = new User();
-  badges: Badge<User | Session>[];
+  userBadges: Badge<any>[] = [];
   server = serverAddress;
 
 
   constructor(private auth: AuthService,
               private http: HttpClientService,
+              private badgeService: BadgeService,
               public modalController: ModalController) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.user = this.auth.getUser();
-
-
-
+    const allBadges = await this.badgeService.allBadges;
+    this.user.badges.forEach(badgeId => {
+      this.userBadges.push(allBadges.find(badge => badge._id === badgeId));
+    });
   }
 
   ngAfterViewInit() {

@@ -7,9 +7,8 @@ import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateValue } from 'src/model/session';
 import { SessionType } from 'src/model/session-type';
-import { publishReplay, refCount } from 'rxjs/operators';
-import { Badges } from 'src/model/badges';
-import { del } from 'selenium-webdriver/http';
+import { BadgeService } from '../badge.service';
+import { SessionBadge, GlobalBadge } from 'src/model/badge';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +50,7 @@ export class SessionDataService {
 
   constructor(private miBand: MiBandService,
               private http: HttpClientService,
+              private badgesService: BadgeService,
               private auth: AuthService) {
 
   }
@@ -105,7 +105,6 @@ export class SessionDataService {
 
   }
 
-
   get currentGoal(): Goal {
     return this.currentGoalSource.getValue();
   }
@@ -149,20 +148,25 @@ export class SessionDataService {
     });
   }
 
-  private checkBadges(): void {
+  private async checkBadges() {
     const currentUser = this.auth.getUser();
-    Badges.SESSION_BADGES.forEach(badge => {
-      if (badge.checkSuccess(this.currentSession)) {
-        currentUser.badges.push(badge);
-        this.http.post('/users/' + currentUser._id + '/badges', badge)
-          .subscribe(res => { });
-      }
-    });
-    Badges.GLOBAL_BADGES.forEach(badge => {
-      if (badge.checkSuccess(currentUser)) {
-        currentUser.badges.push(badge);
-        this.http.post('/users/' + currentUser._id + '/badges', badge)
-          .subscribe(res => { });
+    const allBadges = await this.badgesService.allBadges;
+    allBadges.forEach(badge => {
+      if (!currentUser.badges.includes(badge._id)) {
+        if (badge instanceof SessionBadge) {
+          if (badge.check(this.currentSession)) {
+            currentUser.badges.push(badge._id);
+            this.http.post('/users/' + currentUser._id + '/badges', badge)
+              .subscribe(res => this.badgesService.newBadge());
+          }
+        } else if (badge instanceof GlobalBadge) {
+          if (badge.check(currentUser)) {
+            console.log('streak');
+            currentUser.badges.push(badge._id);
+            this.http.post('/users/' + currentUser._id + '/badges', badge)
+              .subscribe(res => this.badgesService.newBadge());
+          }
+        }
       }
     });
   }
