@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { ModalController } from '@ionic/angular';
-import { ProfileComponent } from '../profile/profile.component';
+import { PublicProfileComponent } from '../profile/public/public-profile.component';
 import { USERS } from './mock_users';
 import { User } from 'src/model/user';
 import { serverAddress } from 'src/server-data';
@@ -33,7 +33,7 @@ export class LeaderboardComponent implements OnInit {
   onUserClick(userIndex: number) {
 
     this.modalController.create({
-      component: ProfileComponent,
+      component: PublicProfileComponent,
       componentProps: {
         user: this.users[userIndex]
       }

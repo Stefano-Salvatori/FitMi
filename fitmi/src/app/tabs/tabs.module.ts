@@ -7,7 +7,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { TabsComponentRoutingModule } from './tabs.router.module';
 import { TabsComponent } from './tabs.component';
 import { HomeComponent } from '../home/home.component';
-import { ProfileComponent } from '../profile/profile.component';
+import { ProfileComponent } from '../profile/private/profile.component';
+
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
 import { DeviceConnectionComponent } from '../device-connection/device-connection.component';

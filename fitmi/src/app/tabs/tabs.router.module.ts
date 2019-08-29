@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsComponent } from './tabs.component';
 import { HomeComponent } from '../home/home.component';
-import { ProfileComponent } from '../profile/profile.component';
+import { ProfileComponent } from '../profile/private/profile.component';
+import { PublicProfileComponent } from '../profile/public/public-profile.component';
+
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
 import { DeviceConnectionComponent } from '../device-connection/device-connection.component';

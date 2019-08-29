@@ -1,16 +1,14 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
 
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { CircleProgressComponent } from 'ng-circle-progress';
-import { User } from 'src/model/user';
 import { Badge } from 'src/model/badge';
-import { Session } from 'src/model/session';
 import { serverAddress } from 'src/server-data';
 import { ModalController } from '@ionic/angular';
-import { ProfileImageComponent } from './profile-image/profile-image.component';
-import { Router } from '@angular/router';
-import { HttpClientService } from '../http-client.service';
-import { BadgeService } from '../badge.service';
+import { ProfileImageComponent } from './../profile-image/profile-image.component';
+import { HttpClientService } from '../../http-client.service';
+import { BadgeService } from '../../badge.service';
+import { User } from 'src/model/user';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +21,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   @ViewChild(CircleProgressComponent, { static: false }) progress!: CircleProgressComponent;
 
 
-  user: User = new User();
+  user: User = null;
   userBadges: Badge<any>[] = [];
   server = serverAddress;
 

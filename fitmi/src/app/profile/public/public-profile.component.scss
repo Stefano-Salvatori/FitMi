@@ -1,0 +1,43 @@
+.profile-photo {
+    max-width: 300px;
+    background-position: center;
+}
+
+.profile-photo-div {
+    display: block;
+    margin: auto;
+    position: relative;
+    max-width: 300px;
+    height: auto;
+}
+
+.profile-img {
+    top:7.5%;
+    left:7.5%;
+    border-radius: 50%;
+    width:85%;
+    position: absolute;
+    cursor: pointer;
+}
+
+.profile-top-info{
+    display: block;
+    margin: auto;
+
+}
+
+
+.informations {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.badges ion-row {
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+
+ion-modal {
+    width:50%;
+}

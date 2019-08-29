@@ -29,13 +29,15 @@ import { SessionMapComponent } from './session/session-map/session-map.component
 import { AgmCoreModule } from '@agm/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { LineChartComponentModule } from './data-visualization/line-chart/line-chart.module';
-import { LineChartComponent } from './data-visualization/line-chart/line-chart.component';
+import { PublicProfileComponent } from './profile/public/public-profile.component';
 
 @NgModule({
+  entryComponents: [PublicProfileComponent],
   declarations: [
     AppComponent,
     NotFoundResourceComponent,
     LoginComponent,
+    PublicProfileComponent,
     SignInComponent,
     SessionStatsComponent,
     SessionHeaderComponent,
@@ -53,7 +55,6 @@ import { LineChartComponent } from './data-visualization/line-chart/line-chart.c
     FormsModule,
     HttpClientModule,
     AuthModule,
-    LineChartComponentModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCubnab2Mn3cbhQH3CDWpmHYGgt5iB8MP4'
     }),

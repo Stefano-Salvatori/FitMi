@@ -6,6 +6,7 @@ import { LineChartService } from '../data-visualization/line-chart/line-chart.se
 import { SessionType } from 'src/model/session-type';
 import { PedometerData } from '../miband/pedometer-data';
 import { BarChartService } from '../data-visualization/bar-chart/bar-chart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,9 +17,15 @@ import { BarChartService } from '../data-visualization/bar-chart/bar-chart.servi
 
 
 export class StatisticsComponent implements OnInit {
+  readonly SessionPeriods = {
+    LAST: 'ultima',
+    MONTH: 'mese',
+    YEAR: 'anno',
+  };
   public lastSession: Session;
   public allSessions: Session[] = [];
-  public timePeriod = 'last';
+  public timePeriod = this.SessionPeriods.LAST;
+
   private dataPath = '../assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
 
   // return the more freq elem in an array of string
@@ -48,11 +55,11 @@ export class StatisticsComponent implements OnInit {
   //#region "Binded Html"
   public getAllSessionsInSelectedPeriod(): Session[] {
     switch (this.timePeriod) {
-      case 'month':
+      case this.SessionPeriods.MONTH:
         return this.allSessions
         .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear())
         .filter(s => new Date(s.start).getMonth() === new Date().getMonth());
-      case 'year':
+      case this.SessionPeriods.YEAR:
         return this.allSessions
         .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear());
       default:
@@ -102,7 +109,8 @@ export class StatisticsComponent implements OnInit {
   //#endregion
 
 
-  constructor(private http: HttpClientService,
+  constructor(private router: Router,
+              private http: HttpClientService,
               private auth: AuthService) {
 
     // init lastSession
@@ -138,6 +146,11 @@ export class StatisticsComponent implements OnInit {
       });
   }
 
+
+  public navigateToHomePage() {
+    this.router.navigateByUrl('tabs/home');
+  }
+
   public heartRateData(): Array<[Date, number]> {
     // generates ordered date to simulate heartrates timestamp
     const dates = this.createOrderedRandomDates(this.lastSession.heart_frequency.length);
@@ -162,11 +175,12 @@ export class StatisticsComponent implements OnInit {
 
   public caloriesBarChartDateFormat(): string {
     switch (this.timePeriod) {
-      case 'month': return '%d';
-      case 'year': return '%m-%y';
+      case this.SessionPeriods.MONTH: return '%d';
+      case this.SessionPeriods.YEAR: return '%m-%y';
       default: return '%d-%m-%y';
     }
   }
+
 
 
 
@@ -186,6 +200,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   segmentChanged(event) {
+  
     this.timePeriod = event.detail.value;
   }
 
