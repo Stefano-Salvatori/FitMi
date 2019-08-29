@@ -72,7 +72,7 @@ export class BarChartService {
       .attr('class', 'bar')
       .attr('x', (d: any) => this.xScale(d.date))
       .attr('y', (d: any) => this.yScale(d.value))
-      .attr('width', (this.width / this.data.length) - 5)
+      .attr('width', (this.width / this.data.length) - 2)
       .attr('height', (d: any) => this.height - this.yScale(d.value));
 
 

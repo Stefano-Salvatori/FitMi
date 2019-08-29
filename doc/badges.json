@@ -1,7 +1,10 @@
 {
     "_id": "",
     "name":"",
-    "description":""
+    "description":"",
+    "type": "",
+    "threshold":"",
+    "image": ""
 }
 
 BADGE DISTANZA

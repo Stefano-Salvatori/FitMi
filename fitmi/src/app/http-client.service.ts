@@ -5,7 +5,7 @@ import { serverAddress, serverBaseUrl } from '../server-data';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json'
+    'Content-Type': 'application/json'
   })
 };
 
@@ -24,7 +24,11 @@ export class HttpClientService {
     return this.httpClient.post(this.baseUrl + path, payload, httpOptions);
   }
 
-  get<T>(path)  {
+  put(path, payload): Observable<any> {
+    return this.httpClient.put(this.baseUrl + path, payload, httpOptions);
+  }
+
+  get<T>(path) {
     return this.httpClient.get<T>(this.baseUrl + path, httpOptions);
   }
 

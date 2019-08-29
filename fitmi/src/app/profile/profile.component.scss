@@ -17,6 +17,7 @@
     border-radius: 50%;
     width:85%;
     position: absolute;
+    cursor: pointer;
 }
 
 .profile-top-info{
@@ -25,11 +26,6 @@
 
 }
 
-.badges {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
 
 .informations {
     display: flex;
@@ -40,4 +36,8 @@
 .badges ion-row {
     overflow-y: hidden;
     overflow-x: visible;
+}
+
+ion-modal {
+    width:50%;
 }

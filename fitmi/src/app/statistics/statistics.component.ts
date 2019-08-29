@@ -1,29 +1,25 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session } from 'src/model/session';
-import * as d3 from 'd3';
 import { LineChartService } from '../data-visualization/line-chart/line-chart.service';
 import { SessionType } from 'src/model/session-type';
+import { PedometerData } from '../miband/pedometer-data';
 import { BarChartService } from '../data-visualization/bar-chart/bar-chart.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './statistics.component.html',
-  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./statistics.component.scss']
 })
 
 
 
 export class StatisticsComponent implements OnInit {
-
   public lastSession: Session;
-  public allSessions: Session[];
+  public allSessions: Session[] = [];
   public timePeriod = 'last';
-  private dataPath = 'assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
-  private heartRateLineChart: LineChartService;
-  private caloriesBarChart: BarChartService;
+  private dataPath = '../assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
 
   // return the more freq elem in an array of string
   private mode(arr: string[]) {
@@ -32,7 +28,7 @@ export class StatisticsComponent implements OnInit {
     ).pop();
   }
 
-  
+
   private sessionDuration(s: Session): number {
     return Math.abs((new Date(s.end).getTime() - new Date(s.start).getTime()) / 1000);
   }
@@ -46,12 +42,10 @@ export class StatisticsComponent implements OnInit {
     } else {
       return 0;
     }
-   
+
   }
 
   //#region "Binded Html"
-
-
   public getAllSessionsInSelectedPeriod(): Session[] {
     switch (this.timePeriod) {
       case 'month':
@@ -89,15 +83,15 @@ export class StatisticsComponent implements OnInit {
   }
 
   public allSteps(): number {
-    return this.sumOnAllSelectedSessions(s => s.steps);
+    return this.sumOnAllSelectedSessions(s => s.pedometer.steps);
   }
 
   public allCalories(): number {
-    return this.sumOnAllSelectedSessions(s => s.calories);
+    return this.sumOnAllSelectedSessions(s => s.pedometer.calories);
   }
 
   public allDistance(): number {
-    return this.sumOnAllSelectedSessions(s => s.distance);
+    return this.sumOnAllSelectedSessions(s => s.pedometer.distance);
   }
 
   public wholeTimeSpentOnSessions(): string {
@@ -116,13 +110,10 @@ export class StatisticsComponent implements OnInit {
       start: new Date('01-01-1970 00:00:00'),
       end: new Date('01-01-1970 00:00:00'),
       type: SessionType.RUN,
-      steps: 0,
-      calories: 0,
-      distance: 0,
+      pedometer: new PedometerData(),
       heart_frequency: []
     };
 
-    this.allSessions = [];
 
     // get sessions data
     this.http.getMock<Session[]>(this.dataPath)
@@ -130,6 +121,7 @@ export class StatisticsComponent implements OnInit {
       .then(sessions => {
 
         this.allSessions = sessions;
+
         // sort by date
         sessions.sort((s1, s2) => {
           const a = new Date(s1.start);
@@ -138,6 +130,7 @@ export class StatisticsComponent implements OnInit {
         });
 
         this.lastSession = sessions[sessions.length - 1];
+
       })
       .catch(err => {
         console.log('Error occured while retriving sessions');
@@ -145,8 +138,7 @@ export class StatisticsComponent implements OnInit {
       });
   }
 
-
-  public initHeartRateLineChart() {
+  public heartRateData(): Array<[Date, number]> {
     // generates ordered date to simulate heartrates timestamp
     const dates = this.createOrderedRandomDates(this.lastSession.heart_frequency.length);
     const array: Array<[Date, number]> = [];
@@ -154,30 +146,29 @@ export class StatisticsComponent implements OnInit {
     this.lastSession.heart_frequency.forEach(hf => {
       array.push([dates[j++], +hf.value]);
     });
+    return array;
+}
+  public caloriesBarChartData(): Array<[Date, number]> {
+   // generates ordered date to simulate heartrates timestamp
+   const dates = this.getAllSessionsInSelectedPeriod().map(s => new Date(s.start));
+   const array: Array<[Date, number]> = [];
+   let j = 0;
+   this.getAllSessionsInSelectedPeriod().forEach(s => {
+     array.push([dates[j++], +s.pedometer.calories]);
+   });
 
-    this.heartRateLineChart = new LineChartService();
-    this.heartRateLineChart.setup('#heartRateLineChart');
-    this.heartRateLineChart.populate(array);
+   return array;
   }
 
-  public initCaloriesBarChart() {
-    // generates ordered date to simulate heartrates timestamp
-    const dates = this.getAllSessionsInSelectedPeriod().map(s => new Date(s.start));
-    const array: Array<[Date, number]> = [];
-    let j = 0;
-    this.getAllSessionsInSelectedPeriod().forEach(s => {
-      array.push([dates[j++], +s.calories]);
-    });
-
-    this.caloriesBarChart = new BarChartService();
-    if (this.timePeriod === 'month') {
-      this.caloriesBarChart.setXAxisTimeFormat('%d');
-    } else if (this.timePeriod === 'year') {
-      this.caloriesBarChart.setXAxisTimeFormat('%d-%m');
+  public caloriesBarChartDateFormat(): string {
+    switch (this.timePeriod) {
+      case 'month': return '%d';
+      case 'year': return '%m-%y';
+      default: return '%d-%m-%y';
     }
-    this.caloriesBarChart.setup('#caloriesBarChart');
-    this.caloriesBarChart.populate(array);
   }
+
+
 
   private createOrderedRandomDates(n: number): Date[] {
     const dates = [];

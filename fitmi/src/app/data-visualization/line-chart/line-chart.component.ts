@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input } from '@angular/core';
+import { Component, ViewEncapsulation, Input, OnChanges, OnInit, AfterViewInit } from '@angular/core';
 import { LineChartService } from './line-chart.service';
 
 
@@ -9,17 +9,29 @@ import { LineChartService } from './line-chart.service';
   styleUrls: ['./line-chart.component.scss'],
 
 })
-export class LineChartComponent  {
+export class LineChartComponent implements AfterViewInit, OnChanges {
   private lineChart: LineChartService;
 
-  @Input() src = 'assets/testdata.csv';
-  @Input() timeFormat = '%d-%b-%y';
+  @Input() src: Array<[Date, number]> = [];
   constructor() {
 
+  }
+
+  private createGraph() {
     this.lineChart = new LineChartService();
-    this.lineChart.setup('.lineChart');
+    this.lineChart.setup('#lineChart');
+    this.lineChart.populate(this.src);
+  }
+  ngOnChanges() {
+    if (this.src.length > 0) {
+      this.createGraph();
+    }
 
   }
+  ngAfterViewInit() {
+    this.createGraph();
+  }
+
 
 
 

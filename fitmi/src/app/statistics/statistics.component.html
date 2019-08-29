@@ -44,9 +44,9 @@
       <ion-row justify-content-center>
         <ion-col size="12">
           <h2>Heart Rate</h2>
-          <div id="heartRateLineChart">
-            {{ initHeartRateLineChart() }}
-          </div>
+            <line-chart [src]="heartRateData()">
+
+            </line-chart>
         </ion-col>
       </ion-row>
       <ion-row size="12" justify-content-center>
@@ -73,7 +73,7 @@
         </ion-col>
         <ion-col size="6">
           <ion-text>
-            <h2 class="value">{{ lastSession.calories }} kcal</h2>
+            <h2 class="value">{{ lastSession.pedometer.calories }} kcal</h2>
             <h4 class="label">Calories</h4>
           </ion-text>
         </ion-col>
@@ -83,13 +83,13 @@
         <ion-col size="6">
 
           <ion-text>
-            <h2 class="value">{{ lastSession.steps }}</h2>
+            <h2 class="value">{{ lastSession.pedometer.steps }}</h2>
             <h4 class="label">Steps</h4>
           </ion-text>
         </ion-col>
         <ion-col size="6">
           <ion-text>
-            <h2 class="value">{{ lastSession.distance }} m</h2>
+            <h2 class="value">{{ lastSession.pedometer.distance }} m</h2>
             <h4 class="label">Distance</h4>
           </ion-text>
         </ion-col>
@@ -114,9 +114,9 @@
             
           </ion-card>
           <h2>Calories</h2>
-          <div id="caloriesBarChart">
-            {{ initCaloriesBarChart() }}
-          </div>
+          <bar-chart [src]="caloriesBarChartData()" [xAxisDateFormat]="caloriesBarChartDateFormat()">
+
+          </bar-chart>
         </ion-col>
       </ion-row>
       <ion-row size="12" justify-content-center>

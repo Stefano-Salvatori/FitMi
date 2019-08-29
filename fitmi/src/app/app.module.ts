@@ -28,6 +28,8 @@ import { SessionTabsComponent } from './session/session-tabs/session-tabs.compon
 import { SessionMapComponent } from './session/session-map/session-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { LineChartComponentModule } from './data-visualization/line-chart/line-chart.module';
+import { LineChartComponent } from './data-visualization/line-chart/line-chart.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     SessionMapComponent,
     SessionTabsComponent,
     GoalSettingsComponent
-    ],
+      ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -51,6 +53,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     FormsModule,
     HttpClientModule,
     AuthModule,
+    LineChartComponentModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCubnab2Mn3cbhQH3CDWpmHYGgt5iB8MP4'
     }),

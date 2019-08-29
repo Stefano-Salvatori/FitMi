@@ -37,4 +37,8 @@
             fill-opacity: .5;
         }
 
-
+.zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
+}

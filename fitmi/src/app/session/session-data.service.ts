@@ -7,7 +7,8 @@ import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateValue } from 'src/model/session';
 import { SessionType } from 'src/model/session-type';
-import { publishReplay, refCount } from 'rxjs/operators';
+import { BadgeService } from '../badge.service';
+import { SessionBadge, GlobalBadge } from 'src/model/badge';
 
 @Injectable({
   providedIn: 'root'
@@ -35,26 +36,27 @@ export class SessionDataService {
   private _heartRateObservable = new BehaviorSubject<HeartRateValue>({
     timestamp: new Date(), value: 0
   });
-  private heartRateFreq: HeartRateValue[] = [];
 
   private _possibleGoal: GoalType[] =
     Object.values(GoalType).filter(k => typeof k !== 'function');
 
-
-  private _sessionType: SessionType;
-
-  private _start: Date;
-  private _end: Date;
-
+  private currentSession: Session = {
+    start: new Date(),
+    end: new Date(),
+    type: SessionType.RUN,
+    pedometer: new PedometerData(),
+    heart_frequency: []
+  };
 
   constructor(private miBand: MiBandService,
               private http: HttpClientService,
+              private badgesService: BadgeService,
               private auth: AuthService) {
 
   }
 
   async startSession() {
-    this._start = new Date();
+    this.currentSession.start = new Date();
     await this.miBand.findMiBand();
     this.miBand.startHeartRateMonitoring();
     this.miBand.subscribeHeartRate().subscribe(hr => {
@@ -62,28 +64,32 @@ export class SessionDataService {
         timestamp: new Date(),
         value: hr
       };
-      this.heartRateFreq.push(newValue);
+      this.currentSession.heart_frequency.push(newValue);
       this._heartRateObservable.next(newValue);
     });
 
     this.startPedometerData = await this.miBand.getPedometerData();
     this.pedometerDataTimer = setInterval(async () => {
       const nextPedometerData = await this.miBand.getPedometerData();
-      this.pedometerData.next({
+      const deltaPedometerData = {
         calories: nextPedometerData.calories - this.startPedometerData.calories,
         distance: nextPedometerData.distance - this.startPedometerData.distance,
         steps: nextPedometerData.steps - this.startPedometerData.steps,
-      });
+      };
+      this.currentSession.pedometer = deltaPedometerData;
+      this.pedometerData.next(deltaPedometerData);
     }, SessionDataService.POLLING_FREQ);
 
   }
 
   stopSession(): void {
-    this._end = new Date();
+    this.currentSession.end = new Date();
     this.miBand.stopHeartRateMonitoring();
     this.miBand.unsubscribeHeartRate();
     clearInterval(this.pedometerDataTimer);
-    this.saveCurrentSession();
+    this.saveCurrentSession()
+      .then(() => this.checkBadges());
+
   }
 
   get heartRateObservable(): Observable<HeartRateValue> {
@@ -98,7 +104,6 @@ export class SessionDataService {
     return this.miBand.getPedometerData();
 
   }
-
 
   get currentGoal(): Goal {
     return this.currentGoalSource.getValue();
@@ -117,36 +122,52 @@ export class SessionDataService {
   }
 
   set sessionType(value: SessionType) {
-    this._sessionType = value;
+    this.currentSession.type = value;
   }
 
   get sessionType() {
-    return this._sessionType;
+    return this.currentSession.type;
   }
 
   get startTime() {
-    return this._start;
+    return this.currentSession.start;
   }
 
   get endTime() {
-    return this._end;
+    return this.currentSession.end;
   }
 
-  private saveCurrentSession(): void {
+  private saveCurrentSession(): Promise<void> {
     const currentUser = this.auth.getUser();
-    const session: Session = {
-      start: this._start,
-      end: this._end,
-      type: this._sessionType,
-      calories: this.pedometerData.getValue().calories,
-      distance: this.pedometerData.getValue().distance,
-      steps: this.pedometerData.getValue().steps,
-      heart_frequency: this.heartRateFreq
-    };
+    return new Promise((resolve, reject) => {
+      this.http.post('/users/' + currentUser._id + '/sessions', this.currentSession)
+        .subscribe(async res => {
+          await this.auth.updateCurrentUser().catch(() => reject());
+          resolve();
+        }, error => reject());
+    });
+  }
 
-    this.http.post('/users/' + currentUser._id + '/sessions', session)
-      .subscribe(res => {
-        console.log(res);
-      });
+  private async checkBadges() {
+    const currentUser = this.auth.getUser();
+    const allBadges = await this.badgesService.allBadges;
+    allBadges.forEach(badge => {
+      if (!currentUser.badges.includes(badge._id)) {
+        if (badge instanceof SessionBadge) {
+          if (badge.check(this.currentSession)) {
+            currentUser.badges.push(badge._id);
+            this.http.post('/users/' + currentUser._id + '/badges', badge)
+              .subscribe(res => this.badgesService.newBadge());
+          }
+        } else if (badge instanceof GlobalBadge) {
+          if (badge.check(currentUser)) {
+            console.log('streak');
+            currentUser.badges.push(badge._id);
+            this.http.post('/users/' + currentUser._id + '/badges', badge)
+              .subscribe(res => this.badgesService.newBadge());
+          }
+        }
+      }
+    });
   }
 }

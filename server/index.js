@@ -3,6 +3,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose')
 var Users = require('./src/models/usersModel')
 var Sessions = require('./src/models/sessionModel')
+var Badges = require('./src/models/badgesModel')
+
 var cors = require('cors')
 
 //Creo istanza di express (web server)
@@ -15,6 +17,8 @@ app.use(cors())
 //importo parser per leggere i parametri passati in POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(express.static('public'));
 
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
@@ -32,6 +36,7 @@ console.log('Waiting MongoDB...');
 pausecomp(0);
 
 //connessione al db
+mongoose.set('debug', true); //Print Debug informations
 mongoose.set('useFindAndModify', false);
 mongoose.set('connectTimeoutMS', 30);
 mongoose
@@ -45,7 +50,10 @@ mongoose
 
 
 var userRoutes = require('./src/routes/userRoutes');
+var badgeRoutes = require('./src/routes/badgesRoutes');
+
 userRoutes(app);
+badgeRoutes(app);
 
 /*app.use((req, res) => {
 	res.sendFile(appRoot + "/www/index.html");

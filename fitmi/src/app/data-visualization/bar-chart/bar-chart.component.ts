@@ -1,33 +1,39 @@
-import { Component, AfterViewInit, ViewEncapsulation, Input } from '@angular/core';
-import * as d3 from 'd3';
+import { Component, AfterViewInit, ViewEncapsulation, Input, OnChanges, OnInit } from '@angular/core';
 import { BarChartService } from './bar-chart.service';
 
 @Component({
   selector: 'bar-chart',
-  encapsulation: ViewEncapsulation.None,
   templateUrl: './bar-chart.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./bar-chart.component.scss'],
 })
-export class BarChartComponent implements AfterViewInit {
+export class BarChartComponent implements OnChanges, AfterViewInit {
 
 
-  @Input() src = 'assets/testdata.csv';
-  @Input() timeFormat = '%d-%b-%y';
+  @Input() src: Array<[Date, number]> = [];
+  @Input() xAxisDateFormat = '%d-%m-%y';
+
   private barChart: BarChartService;
 
   constructor() { }
 
-
-  ngAfterViewInit() {
+  private createGraph() {
     this.barChart = new BarChartService();
-    this.barChart.setup('.barChart');
-    d3.csv(this.src).then(data => {
-      const mappedData = data.map(d => [d3.timeParse(this.timeFormat)(d.date), d.close]);
-      console.log(mappedData);
-      this.barChart.populate(mappedData);
-
-    });
+    this.barChart.setXAxisTimeFormat(this.xAxisDateFormat);
+    this.barChart.setup('#barChart');
+    this.barChart.populate(this.src);
   }
+
+  ngOnChanges() {
+    if (this.src.length > 0) {
+      this.createGraph();
+    }
+
+  }
+  ngAfterViewInit() {
+    this.createGraph();
+  }
+
 
  
 }

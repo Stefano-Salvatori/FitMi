@@ -9,23 +9,22 @@
     <ion-row align-items-center justify-content-center>
       <ion-col align-items-center justify-content-center size="7">
         <div class="profile-photo-div">
-          <circle-progress class="profile-photo"
-          [percent]="85"
-          [backgroundOpacity]="1"
-          [radius]="100"
+          <circle-progress class="profile-photo" 
+          [percent]="85" 
+          [backgroundOpacity]="1" 
+          [radius]="100" 
           [toFixed]="0"
-          [maxPercent]="100"
-          [outerStrokeWidth]="5"
-          [outerStrokeColor]="'#058dba'"
+          [maxPercent]="100" 
+          [outerStrokeWidth]="5" 
+          [outerStrokeColor]="'#058dba'" 
           [animationDuration]="800"
-          [showTitle]="false"
-          [showSubtitle]="false"
-          [showUnits]="false"
+          [showTitle]="false" 
+          [showSubtitle]="false" 
+          [showUnits]="false" 
           [showInnerStroke]="false"
-          [responsive]="true">
+           [responsive]="true">
           </circle-progress>
-          <img class="profile-img" src="{{this.user.profileImg}}"
-            alt="Profile image">
+          <img (click)="editImage()" class="profile-img" src="{{profileImage()}}" alt="Profile image">
         </div>
 
 
@@ -55,21 +54,15 @@
 
   <div padding class="badges">
     <ion-label padding><strong>Badges</strong></ion-label>
-    <ion-row nowrap>
-      <ion-col *ngFor="let badge of this.user.badges">
-        <ion-item lines="none">
-          <ion-avatar slot="start">
-            <img src="https://cdn0.iconfinder.com/data/icons/gamification-flat-awards-and-badges/500/star13-512.png">
-          </ion-avatar>
-          <ion-label>Run 50km</ion-label>
-        </ion-item>
+    <ion-row nowrap padding>
+      <ion-col *ngFor="let badge of this.userBadges" size-xl="2" size-lg="2" size-md="2" size-sm="3" size-xs="3">
+          <ion-img [src]="server+'/images/badges/'+badge.image"></ion-img>        
       </ion-col>
-
     </ion-row>
   </div>
 
   <div padding class="informations">
-    <ion-label padding><strong>Informations</strong></ion-label>
+    <ion-label padding><strong>Informazioni</strong></ion-label>
     <ion-grid fixed no-margin>
       <ion-row>
         <ion-col size="6">

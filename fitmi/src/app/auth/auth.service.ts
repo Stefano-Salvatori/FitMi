@@ -25,6 +25,27 @@ export class AuthService {
     private storage: StorageService,
     private router: Router) { }
 
+  /**
+   * Update the current user by asking for a newer version to the server.
+   *
+   * This is needed because (by the time of writing) some updates on the user's 
+   * informations are performed server-side and if we don't call this function could   
+   * not be seen by the client
+   */
+  updateCurrentUser(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.user !== undefined) {
+        this.httpClient.get('/users/' + this.user._id).subscribe((updatedUser: User) => {
+          this.user = updatedUser;
+          resolve();
+        }, error => reject());
+      } else {
+        resolve();
+      }
+    });
+
+  }
+
   signIn(payload: AuthRequest) {
     this.httpClient.post(`/users`, payload).pipe(
       tap(async (res: AuthResponse) => {
@@ -37,14 +58,10 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    if (username === 'admin' && password === 'admin') {
-      this.router.navigateByUrl(this.tabsRoute);
-    } else {
-      this.loginRequest({
-        username,
-        password
-      });
-    }
+    this.loginRequest({
+      username,
+      password
+    });
   }
 
   tryAutoLogin() {

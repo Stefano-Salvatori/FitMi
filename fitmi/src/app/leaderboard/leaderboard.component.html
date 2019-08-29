@@ -11,9 +11,9 @@
       </ion-label>
     </ion-item-divider>
     <ion-list-header>
-      <ion-item (click)="onUserClick(0)">
-        <ion-avatar slot="start" >
-          <img src={{this.users[0].profileImg}}>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src={{profileImage(this.users[0])}}>
         </ion-avatar>
         <ion-label>
           <h2>1 {{this.users[0].firstName}} {{this.users[0].lastName}}</h2>
@@ -30,7 +30,7 @@
 
       <ion-item *ngFor="let user of this.users | slice:1; index as i" class="otherRow" (click)="onUserClick(i)">
         <ion-avatar slot="start">
-          <img src={{user.profileImg}}>
+          <img src={{profileImage(user)}}>
         </ion-avatar>
         <ion-label>
           <h2>{{i+2}} {{user.firstName}} {{user.lastName}}</h2>
@@ -46,7 +46,7 @@
 
   <footer id="userRow" class="flex-container">
     <div>{{currentUserRank}}</div>
-    <div><img src={{currentUser.profileImg}} id="userImg" /></div>
+    <div><img src={{profileImage(currentUser)}} id="userImg" /></div>
     <div>{{currentUser.firstName}} {{currentUser.lastName}}</div>
     <div>{{currentUser.score}}</div>
   </footer>
