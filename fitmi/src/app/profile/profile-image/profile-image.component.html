@@ -1,0 +1,8 @@
+<ion-text padding><strong>Scegli il tuo Avatar</strong></ion-text>
+<ion-grid>
+  <ion-row>
+    <ion-col *ngFor="let image of availableProfileImages" size-xl="2" size-lg="2" size-md="2" size-sm="4" size-xs="4">
+      <ion-img (click)="dismiss(image)" [src]="serverAddress + '/images/user_pics/' + image"></ion-img>
+    </ion-col>
+  </ion-row>
+</ion-grid>

@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { ProfileComponent } from '../profile/profile.component';
 import { USERS } from './mock_users';
 import { User } from 'src/model/user';
+import { serverAddress } from 'src/server-data';
 
 @Component({
   selector: 'app-leaderboard',
@@ -40,6 +41,16 @@ export class LeaderboardComponent implements OnInit {
       modal.present();
       this.currentModal = modal;
     });
+  }
+
+  profileImage(user: User): string {
+    if (user.profileImg !== undefined) {
+      return serverAddress + '/images/user_pics/' + user.profileImg;
+    } else {
+      return user.gender === 'M' ?
+        serverAddress + '/images/user_pics/man.svg' :
+        serverAddress + '/images/user_pics/girl-1.svg';
+    }
   }
 
 }

@@ -14,6 +14,8 @@ import { DeviceConnectionComponent } from '../device-connection/device-connectio
 import { MiBandTestComponent } from '../mi-band-test/mi-band-test.component';
 import { LineChartComponentModule } from '../data-visualization/line-chart/line-chart.module';
 import { BarChartComponentModule } from '../data-visualization/bar-chart/bar-chart.module';
+import { ProfileImageComponent } from '../profile/profile-image/profile-image.component';
+import { AuthModule } from '../auth/auth.module';
 
 
 @NgModule({
@@ -21,6 +23,7 @@ import { BarChartComponentModule } from '../data-visualization/bar-chart/bar-cha
     IonicModule,
     CommonModule,
     FormsModule,
+    AuthModule,
     TabsComponentRoutingModule,
     LineChartComponentModule,
     BarChartComponentModule,
@@ -32,9 +35,11 @@ import { BarChartComponentModule } from '../data-visualization/bar-chart/bar-cha
     LeaderboardComponent,
     StatisticsComponent,
     ProfileComponent,
+    ProfileImageComponent,
     DeviceConnectionComponent,
     MiBandTestComponent,
-  ]
+  ],
+  entryComponents: [ProfileImageComponent]
 })
 export class TabsPageModule {
 }

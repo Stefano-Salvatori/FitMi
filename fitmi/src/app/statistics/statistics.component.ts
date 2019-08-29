@@ -20,9 +20,9 @@ import { BarChartService } from '../data-visualization/bar-chart/bar-chart.servi
 export class StatisticsComponent implements OnInit {
 
   public lastSession: Session;
-  public allSessions: Session[];
+  public allSessions: Session[] = [];
   public timePeriod = 'last';
-  private dataPath = 'assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
+  private dataPath = '../assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
   private heartRateLineChart: LineChartService;
   private caloriesBarChart: BarChartService;
 
@@ -51,8 +51,6 @@ export class StatisticsComponent implements OnInit {
   }
 
   //#region "Binded Html"
-
-
   public getAllSessionsInSelectedPeriod(): Session[] {
     switch (this.timePeriod) {
       case 'month':
@@ -121,7 +119,6 @@ export class StatisticsComponent implements OnInit {
       heart_frequency: []
     };
 
-    this.allSessions = [];
 
     // get sessions data
     this.http.getMock<Session[]>(this.dataPath)
@@ -129,6 +126,7 @@ export class StatisticsComponent implements OnInit {
       .then(sessions => {
 
         this.allSessions = sessions;
+
         // sort by date
         sessions.sort((s1, s2) => {
           const a = new Date(s1.start);
@@ -137,6 +135,7 @@ export class StatisticsComponent implements OnInit {
         });
 
         this.lastSession = sessions[sessions.length - 1];
+
       })
       .catch(err => {
         console.log('Error occured while retriving sessions');

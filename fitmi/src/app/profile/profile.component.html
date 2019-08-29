@@ -24,8 +24,7 @@
           [showInnerStroke]="false"
            [responsive]="true">
           </circle-progress>
-          <img class="profile-img" src="{{this.user.profileImg}}"
-            alt="Profile image">
+          <img (click)="editImage()" class="profile-img" src="{{profileImage()}}" alt="Profile image">
         </div>
 
 
@@ -56,7 +55,7 @@
   <div padding class="badges">
     <ion-label padding><strong>Badges</strong></ion-label>
     <ion-row nowrap padding>
-      <ion-col *ngFor="let badge of this.user.badges" size-lg="2" size-md="2" size-sm="3">
+      <ion-col *ngFor="let badge of this.user.badges" size-xl="2" size-lg="2" size-md="2" size-sm="3" size-xs="3">
           <ion-img [src]="server+'/images/badges/'+badge.image"></ion-img>        
       </ion-col>
     </ion-row>
