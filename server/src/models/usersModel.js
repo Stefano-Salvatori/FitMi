@@ -15,7 +15,7 @@ var UserSchema = new Schema({
   height: Number,
   weight: Number,
   score: { type: Number, default: 0 },
-  badges: [[Schema.Types.ObjectId]],
+  badges: [Schema.Types.ObjectId],
   statistics: {
     totalCalories: { type: Number, default: 0 },
     totalSteps: { type: Number, default: 0 },
@@ -23,7 +23,7 @@ var UserSchema = new Schema({
     totalSessions: { type: Number, default: 0 },
     sessionStreak: { type: Number, default: 0 }
   },
-  sessions: [[Schema.Types.ObjectId]],
+  sessions: [Schema.Types.ObjectId],
   accessToken: {
     id: String,
     expirationTime: Number
