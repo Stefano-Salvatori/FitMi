@@ -156,15 +156,16 @@ export class SessionDataService {
         if (badge instanceof SessionBadge) {
           if (badge.check(this.currentSession)) {
             currentUser.badges.push(badge._id);
+            this.badgesService.newBadge(badge);
             this.http.post('/users/' + currentUser._id + '/badges', badge)
-              .subscribe(res => this.badgesService.newBadge());
+              .subscribe(res => {});
           }
         } else if (badge instanceof GlobalBadge) {
           if (badge.check(currentUser)) {
-            console.log('streak');
             currentUser.badges.push(badge._id);
+            this.badgesService.newBadge(badge);
             this.http.post('/users/' + currentUser._id + '/badges', badge)
-              .subscribe(res => this.badgesService.newBadge());
+              .subscribe(res => {});
           }
         }
       }

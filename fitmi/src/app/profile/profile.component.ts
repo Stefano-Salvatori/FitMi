@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   user: User = new User();
   userBadges: Badge<any>[] = [];
+  lockedBadges: Badge<any>[] = [];
   server = serverAddress;
 
 
@@ -35,12 +36,12 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
-
     this.user = this.auth.getUser();
     const allBadges = await this.badgeService.allBadges;
     this.user.badges.forEach(badgeId => {
       this.userBadges.push(allBadges.find(badge => badge._id === badgeId));
     });
+    this.lockedBadges = allBadges.filter(badge => !this.userBadges.includes(badge));
   }
 
   ngAfterViewInit() {

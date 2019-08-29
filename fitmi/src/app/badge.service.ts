@@ -10,7 +10,7 @@ import { User } from 'src/model/user';
 })
 export class BadgeService {
 
-  private badgesNotifications = new Subject<any>();
+  private badgesNotifications = new Subject<Badge<any>>();
 
   constructor(private http: HttpClientService) {
 
@@ -19,8 +19,8 @@ export class BadgeService {
   /**
    * Notify all subscribers to badge event that the user has won a new badge.
    */
-  newBadge(): void {
-    this.badgesNotifications.next();
+  newBadge(badge: Badge<any>): void {
+    this.badgesNotifications.next(badge);
   }
 
   get badgesNotificationEvents() {
