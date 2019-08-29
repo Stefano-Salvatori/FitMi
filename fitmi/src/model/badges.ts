@@ -5,7 +5,7 @@ import { User } from './user';
 export class Badges {
     private static readonly BADGE_IMAGES_EXTENSION = '.svg';
 
-    static readonly DISTANCE_5: Badge<Session> = Badges.createDistanceBadge(5);
+    /*static readonly DISTANCE_5: Badge<Session> = Badges.createDistanceBadge(5);
     static readonly DISTANCE_10: Badge<Session> = Badges.createDistanceBadge(10);
     static readonly DISTANCE_50: Badge<Session> = Badges.createDistanceBadge(50);
 
@@ -35,12 +35,12 @@ export class Badges {
 
     static readonly GLOBAL_BADGES: Badge<User>[] = [
         Badges.SESSION_STREAK_2, Badges.SESSION_STREAK_5
-    ];
+    ];*/
 
     constructor() { }
 
 
-    private static createDistanceBadge(distanceThreshold: number): Badge<Session> {
+    /*private static createDistanceBadge(distanceThreshold: number): Badge<Session> {
         return new Badge<Session>('Distanza ' + distanceThreshold + 'km',
             'Percorri ' + distanceThreshold + 'km in una sessione',
             BadgeGoal.DISTANCE,
@@ -84,5 +84,5 @@ export class Badges {
             u => {
                 return u.statistics.sessionStreak >= sessionStreak;
             });
-    }
+    }*/
 }

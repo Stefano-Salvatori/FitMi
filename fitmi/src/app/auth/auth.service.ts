@@ -58,14 +58,10 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    if (username === 'admin' && password === 'admin') {
-      this.router.navigateByUrl(this.tabsRoute);
-    } else {
-      this.loginRequest({
-        username,
-        password
-      });
-    }
+    this.loginRequest({
+      username,
+      password
+    });
   }
 
   tryAutoLogin() {

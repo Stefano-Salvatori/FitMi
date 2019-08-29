@@ -45,11 +45,19 @@ exports.add_badge = (req, res) => {
 
 
 exports.add_user_badge = (req, res) => {
-    User.findById(req.params.id, (err, user) => {
+    User.findById(req.params.id, async (err, user) => {
         if (err) res.status(500).send("User not found");
         else {
-            var newBadge = new Badge(req.body);
-
+            Badge.findOne({
+                name: req.body.name
+            }, async (err, badge) => {
+                if (badge != null) {
+                    user.badges.push(badge._id);
+                    await user.save();
+                    res.status(201).json(newBadge)
+                }
+            });
+         
         }
     });
 }

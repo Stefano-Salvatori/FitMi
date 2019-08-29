@@ -11,7 +11,6 @@ import { BarChartService } from '../data-visualization/bar-chart/bar-chart.servi
 @Component({
   selector: 'app-home',
   templateUrl: './statistics.component.html',
-  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./statistics.component.scss']
 })
 

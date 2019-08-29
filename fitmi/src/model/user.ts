@@ -13,7 +13,7 @@ export class User {
     height: number;
     weight: number;
     score: number;
-    badges: Badge<any>[];
+    badges: string[];
     statistics: {
         totalCalories: number,
         totalSteps: number,
@@ -27,5 +27,5 @@ export class User {
         expirationTime: number
     };
 
-    constructor(){ }
+    constructor() { }
 }
