@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
 
 
-//TODO: https://bl.ocks.org/EfratVil/92f894ac0ba265192411e73f633a3e2f
-// brush and zoom
+/**
+ * Class to generate a line chart
+ */
 @Injectable()
 export class LineChartService {
   private host: any;
@@ -43,10 +44,15 @@ export class LineChartService {
     return this;
   }
 
+  /**
+   * Set how many data are visualized in the graph
+   * @param n number of data to be visualized
+   */
   public setDataWindowSize(n: number): LineChartService {
     this.dataWindowSize = n;
     return this;
   }
+
   public setup(htmlSelector: string): void {
     this.host = d3.select(htmlSelector);
     this.margin = { top: 20, right: 40, bottom: 30, left: 40 };
@@ -99,6 +105,10 @@ export class LineChartService {
   }
 
 
+  /**
+   * Add a new data and dynmically update the graph
+   * @param newValue the new data to be added
+   */
   public pushDynamic(newValue: [Date, number]) {
     const val = { date: newValue[0], close: +newValue[1] };
     this.data.unshift(val);

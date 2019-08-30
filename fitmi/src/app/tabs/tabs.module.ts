@@ -17,6 +17,7 @@ import { LineChartComponentModule } from '../data-visualization/line-chart/line-
 import { BarChartComponentModule } from '../data-visualization/bar-chart/bar-chart.module';
 import { ProfileImageComponent } from '../profile/profile-image/profile-image.component';
 import { AuthModule } from '../auth/auth.module';
+import { HorizontalPercentBarChartComponentModule } from '../data-visualization/horizontal-percent-bar-chart/horizontal-bar-chart.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { AuthModule } from '../auth/auth.module';
     AuthModule,
     TabsComponentRoutingModule,
     LineChartComponentModule,
+    HorizontalPercentBarChartComponentModule,
     BarChartComponentModule,
     NgCircleProgressModule.forRoot({})
   ],

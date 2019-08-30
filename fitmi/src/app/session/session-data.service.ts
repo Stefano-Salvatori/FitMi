@@ -71,6 +71,8 @@ export class SessionDataService {
     this.startPedometerData = await this.miBand.getPedometerData();
     this.pedometerDataTimer = setInterval(async () => {
       const nextPedometerData = await this.miBand.getPedometerData();
+
+
       const deltaPedometerData = {
         calories: nextPedometerData.calories - this.startPedometerData.calories,
         distance: nextPedometerData.distance - this.startPedometerData.distance,
@@ -88,7 +90,7 @@ export class SessionDataService {
     this.miBand.unsubscribeHeartRate();
     clearInterval(this.pedometerDataTimer);
     this.saveCurrentSession()
-      .then(() => this.checkBadges());
+      .then(() => {}/*this.checkBadges()*/);
 
   }
 
@@ -147,7 +149,7 @@ export class SessionDataService {
         }, error => reject());
     });
   }
-
+/*
   private async checkBadges() {
     const currentUser = this.auth.getUser();
     const allBadges = await this.badgesService.allBadges;
@@ -169,5 +171,5 @@ export class SessionDataService {
         }
       }
     });
-  }
+  }*/
 }

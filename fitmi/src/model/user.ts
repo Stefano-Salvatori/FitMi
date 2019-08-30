@@ -1,7 +1,6 @@
-import { Badge } from './badge';
 
-export class User {
-    // tslint:disable-next-line: variable-name
+
+export interface User {
     _id: string;
     username: string;
     password: string;
@@ -13,7 +12,7 @@ export class User {
     height: number;
     weight: number;
     score: number;
-    badges: string[];
+    badges: [];
     statistics: {
         totalCalories: number,
         totalSteps: number,
@@ -26,6 +25,4 @@ export class User {
         id: string,
         expirationTime: number
     };
-
-    constructor() { }
 }

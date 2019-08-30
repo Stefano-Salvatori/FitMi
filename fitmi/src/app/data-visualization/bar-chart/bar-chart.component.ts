@@ -7,7 +7,7 @@ import { BarChartService } from './bar-chart.service';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./bar-chart.component.scss'],
 })
-export class BarChartComponent implements OnChanges, AfterViewInit {
+export class BarChartComponent implements  AfterViewInit, OnChanges {
 
 
   @Input() src: Array<[Date, number]> = [];
@@ -24,17 +24,13 @@ export class BarChartComponent implements OnChanges, AfterViewInit {
     this.barChart.populate(this.src);
   }
 
-  ngOnChanges() {
-    if (this.src.length > 0) {
-      this.createGraph();
-    }
-
-  }
   ngAfterViewInit() {
     this.createGraph();
   }
 
 
- 
+  ngOnChanges() {
+    this.createGraph();
+  }
 }
 

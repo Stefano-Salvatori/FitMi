@@ -1,0 +1,72 @@
+
+.g-hed {
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size:20px; 
+    margin: 3px 0;
+  }
+
+  .g-source-bold {
+    text-align: left;
+    font-size:11px;
+    font-weight: bold;
+    color: #333333; 
+  }
+
+  .g-source {
+    margin-bottom: 2px;
+    font-size:11px;
+    color: #999999;
+  }
+
+  .g-intro {
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    color: #333333;
+  }
+
+
+
+  .g-labels {
+    font-family: "Proxima-Nova",Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .x.axis line, .y.axis line {
+    display: none;
+  }
+
+  .x.axis text {
+    display: none;
+  }
+
+.g-num2 {
+     fill:#e0e0e0;
+  }
+
+  .domain {
+    display: none;
+  }
+
+  .y.axis text {
+    font-family: 'Proxima-Nova', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: end !important;
+  }
+
+  .logo {
+    border-bottom: 1px solid #c3cddf;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+  }
+
+  .logoImg {
+    width: 185px;
+  }
+
+  .g-chart {
+    border-bottom: 1px solid #c3cddf;
+  }

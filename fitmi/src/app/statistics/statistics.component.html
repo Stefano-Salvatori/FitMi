@@ -6,9 +6,13 @@
 
 <!-- Out of ion-content to keep it fixed at top-->
 <!-- Segment with default selection -->
-<ion-segment *ngIf="this.allSessions.length>0" (ionChange)="segmentChanged($event)" value="{{this.SessionPeriods.LAST}}">
+<ion-segment *ngIf="this.allSessions.length>0" (ionChange)="segmentChanged($event)"
+  value="{{this.SessionPeriods.LAST}}">
   <ion-segment-button value="{{this.SessionPeriods.LAST}}">
     <ion-label>Ultima</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="{{this.SessionPeriods.WEEK}}">
+    <ion-label>Settimana</ion-label>
   </ion-segment-button>
   <ion-segment-button value="{{this.SessionPeriods.MONTH}}">
     <ion-label>Mese</ion-label>
@@ -18,176 +22,201 @@
   </ion-segment-button>
 </ion-segment>
 <ion-content ion-justify-content-center>
-  <div *ngIf="this.allSessions.length>0; then thenBlock else elseBlock"></div>
+  <div *ngIf="this.allSessions.length>0; then displayData else noSessionsAvailable"></div>
 
-    <ng-template #thenBlock>
-      <!-- LAST staticstics template-->
-      <div *ngIf="timePeriod===this.SessionPeriods.LAST; then thenBlock else elseBlock"></div>
-        <ng-template #thenBlock>
-          <ion-card>
-            <ion-item>
-              <ion-icon name="md-calendar" slot="start"></ion-icon>
-              <ion-label>{{ lastSessionDate() }}</ion-label>
-            </ion-item>
-          </ion-card>
-
-          <ion-card>
-            <ion-item>
-              <ion-icon name="md-time" slot="start"></ion-icon>
-              <ion-label>{{ lastSessionDuration() }}</ion-label>
-            </ion-item>
-          </ion-card>
-
-
-
-          <ion-grid align-items-center justify-content-center>
-            <ion-row justify-content-center>
-              <ion-col size="12">
-                <h2>Freq. Cardiaca</h2>
-                <line-chart [src]="heartRateData()">
-
-                </line-chart>
-              </ion-col>
-            </ion-row>
-            <ion-row size="12" justify-content-center>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ minHeartRate() }} bpm</h2>
-                  <h4 class="label">Min Freq. Cardiaca</h4>
-                </ion-text>
-              </ion-col>
-
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ maxHeartRate() }} bpm</h2>
-                  <h4 class="label">Max Freq. Cardiaca</h4>
-                </ion-text>
-              </ion-col>
-            </ion-row>
-            <ion-row size="12" justify-content-center>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ lastSession.type }}</h2>
-                  <h4 class="label">Tipo Sessione</h4>
-                </ion-text>
-              </ion-col>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ lastSession.pedometer.calories }} kcal</h2>
-                  <h4 class="label">Calorie</h4>
-                </ion-text>
-              </ion-col>
-            </ion-row>
-
-            <ion-row size="12" justify-content-center>
-              <ion-col size="6">
-
-                <ion-text>
-                  <h2 class="value">{{ lastSession.pedometer.steps }}</h2>
-                  <h4 class="label">Passi</h4>
-                </ion-text>
-              </ion-col>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ lastSession.pedometer.distance }} m</h2>
-                  <h4 class="label">Distanza</h4>
-                </ion-text>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ng-template>
-
-        <!-- GENERAL staticstics template-->
-        <ng-template #elseBlock>
-          <ion-card>
-            <ion-item>
-              <ion-icon slot="start" name="md-fitness"></ion-icon>
-              <ion-label>Sessioni questo {{ this.timePeriod }}: {{ getAllSessionsInSelectedPeriod().length }}</ion-label>
-            </ion-item>
-          </ion-card>
-
-
-          <ion-grid align-items-center justify-content-center>
-            <ion-row justify-content-center>
-              <ion-col>
-                <ion-card>
-
-                </ion-card>
-                <h2>Calorie</h2>
-                <bar-chart [src]="caloriesBarChartData()" [xAxisDateFormat]="caloriesBarChartDateFormat()">
-
-                </bar-chart>
-              </ion-col>
-            </ion-row>
-            <ion-row size="12" justify-content-center>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ favoriteSessionType() }}</h2>
-                  <h4 class="label">Sessione Preferita</h4>
-                </ion-text>
-              </ion-col>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ allCalories() }} kCal</h2>
-                  <h4 class="label">Calorie Totali</h4>
-                </ion-text>
-              </ion-col>
-            </ion-row>
-
-            <ion-row size="12" justify-content-center>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ allSteps() }}</h2>
-                  <h4 class="label">Passi Totali</h4>
-                </ion-text>
-              </ion-col>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ allDistance() }} m</h2>
-                  <h4 class="label">Distanza Totale</h4>
-                </ion-text>
-              </ion-col>
-            </ion-row>
-
-            <ion-row size="12" justify-content-center>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ allSteps() }}</h2>
-                  <h4 class="label">Passi Totali</h4>
-                </ion-text>
-              </ion-col>
-              <ion-col size="6">
-                <ion-text>
-                  <h2 class="value">{{ wholeTimeSpentOnSessions() }} </h2>
-                  <h4 class="label">Tempo in Sessione</h4>
-                </ion-text>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ng-template>
-    </ng-template>
-
-    <ng-template #elseBlock>
+  <ng-template #displayData>
+    <!-- LAST staticstics template-->
+    <div *ngIf="timePeriod===this.SessionPeriods.LAST; then lastSessionAvailable else aggregateSessions"></div>
+    <ng-template #lastSessionAvailable>
+      <ion-card>
+        <ion-item>
+          <ion-icon name="md-calendar" slot="start"></ion-icon>
+          <ion-label>{{ lastSessionDate() }}</ion-label>
+        </ion-item>
+      </ion-card>
 
       <ion-card>
         <ion-item>
-          <ion-icon name="md-alert" slot="start" color="warning"></ion-icon>
-          <ion-label>Nessuna sessione disponibile</ion-label>
-          <ion-button fill="outline" slot="end" (click)="navigateToHomePage()">START</ion-button>
+          <ion-icon name="md-time" slot="start"></ion-icon>
+          <ion-label>{{ lastSessionDuration() }}</ion-label>
         </ion-item>
-      
-        <ion-card-content>
-          Sembra che tu non abbia completato alcuna sessione.
-          Inizia una nuova sessione per vedere le statistiche in questa pagina.
-        </ion-card-content>
       </ion-card>
-      
-      
+
+
+
+      <ion-grid align-items-center justify-content-center>
+        <ion-row justify-content-center>
+          <ion-col size="12">
+            <ion-item align-items-center justify-content-center>
+              <ion-icon slot="start" name="md-heart" color="danger"></ion-icon>
+              <h2>Freq. Cardiaca</h2>
+            </ion-item>
+
+            <ion-slides mode="md" pager="md" scrollbar="md">
+              <ion-slide>
+                <ion-item>
+                  <line-chart [src]="heartRateData()" [windowSize]="heartRateData().length">
+
+                  </line-chart>
+                </ion-item>
+
+              </ion-slide>
+
+              <horizontal-percent-bar-chart [src]="heartRateData()">
+
+              </horizontal-percent-bar-chart>
+              <ion-slide>
+                <ion-item>
+                  <horizontal-percent-bar-chart [src]="heartRatePercentData()">
+
+                  </horizontal-percent-bar-chart>
+                </ion-item>
+
+              </ion-slide>
+            </ion-slides>
+
+
+          </ion-col>
+        </ion-row>
+        <ion-row size="12" justify-content-center>
+          <ion-col size="6">
+            <ion-text>
+              <h2 class="value">{{ minHeartRate() }} bpm</h2>
+              <h4 class="label">Min Freq. Cardiaca</h4>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="6">
+            <ion-text>
+              <h2 class="value">{{ maxHeartRate() }} bpm</h2>
+              <h4 class="label">Max Freq. Cardiaca</h4>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row size="12" justify-content-center>
+          <ion-col size="6">
+            <ion-text>
+              <h2 class="value">{{ this.lastSession.type }}</h2>
+              <h4 class="label">Tipo Sessione</h4>
+            </ion-text>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text>
+              <h2 class="value">{{ lastSession.pedometer.calories }} kcal</h2>
+              <h4 class="label">Calorie</h4>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+
+        <ion-row size="12" justify-content-center>
+          <ion-col size="6">
+
+            <ion-text>
+              <h2 class="value">{{ lastSession.pedometer.steps }}</h2>
+              <h4 class="label">Passi</h4>
+            </ion-text>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text>
+              <h2 class="value">{{ lastSession.pedometer.distance }} m</h2>
+              <h4 class="label">Distanza</h4>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-template>
+
+    <!-- GENERAL staticstics template-->
+    <ng-template #aggregateSessions>
+      <div *ngIf="getAllSessionsInSelectedPeriod().length>0; then aggregateSessionsAvailable else noSessionsAvailable"></div>
+      <ng-template #aggregateSessionsAvailable>
+        <ion-card>
+          <ion-item>
+            <ion-icon slot="start" name="md-fitness"></ion-icon>
+            <ion-label>Sessioni in {{ this.timePeriod }}: {{ getAllSessionsInSelectedPeriod().length }}</ion-label>
+          </ion-item>
+        </ion-card>
+
+        <ion-grid align-items-center justify-content-center>
+          <ion-row justify-content-center>
+            <ion-col>
+              <ion-item align-items-center justify-content-center>
+                <ion-icon slot="start" name="md-flame" color="danger"></ion-icon>
+                <h2>Calorie</h2>
+              </ion-item>
+
+
+              <bar-chart [src]="caloriesBarChartData()" [xAxisDateFormat]="caloriesBarChartDateFormat()">
+
+              </bar-chart>
+            </ion-col>
+          </ion-row>
+          <ion-row size="12" justify-content-center>
+            <ion-col size="6">
+              <ion-text>
+                <h2 class="value">{{ favoriteSessionType() }}</h2>
+                <h4 class="label">Sessione Preferita</h4>
+              </ion-text>
+            </ion-col>
+            <ion-col size="6">
+              <ion-text>
+                <h2 class="value">{{ allCalories() }} kCal</h2>
+                <h4 class="label">Calorie Totali</h4>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+
+          <ion-row size="12" justify-content-center>
+            <ion-col size="6">
+              <ion-text>
+                <h2 class="value">{{ allSteps() }}</h2>
+                <h4 class="label">Passi Totali</h4>
+              </ion-text>
+            </ion-col>
+            <ion-col size="6">
+              <ion-text>
+                <h2 class="value">{{ allDistance() }} m</h2>
+                <h4 class="label">Distanza Totale</h4>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+
+          <ion-row size="12" justify-content-center>
+            <ion-col size="6">
+              <ion-text>
+                <h2 class="value">{{ allSteps() }}</h2>
+                <h4 class="label">Passi Totali</h4>
+              </ion-text>
+            </ion-col>
+            <ion-col size="6">
+              <ion-text>
+                <h2 class="value">{{ wholeTimeSpentOnSessions() }} </h2>
+                <h4 class="label">Tempo in Sessione</h4>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ng-template>
+    </ng-template>
   
+  </ng-template>
+
+  <ng-template #noSessionsAvailable>
+    <!-- If no session available-->
+    <ion-card>
+      <ion-item>
+        <ion-icon name="md-alert" slot="start" color="warning"></ion-icon>
+        <ion-label>Nessuna sessione</ion-label>
+        <ion-button fill="outline" slot="end" (click)="navigateToHomePage()">START</ion-button>
+      </ion-item>
+
+      <ion-card-content>
+        Sembra che tu non abbia completato alcuna sessione in questo periodo.
+        Inizia una nuova sessione per vedere le statistiche in questa pagina.
+      </ion-card-content>
+    </ion-card>
 
 
-
-
+  </ng-template>
 
 </ion-content>

@@ -13,21 +13,27 @@ export class LineChartComponent implements AfterViewInit, OnChanges {
   private lineChart: LineChartService;
 
   @Input() src: Array<[Date, number]> = [];
+  @Input() windowSize: number = 20;
+  @Input() xTicks: number = 0;
+  @Input() yTicks: number = 10;
   constructor() {
 
   }
 
   private createGraph() {
-    this.lineChart = new LineChartService();
+    this.lineChart = new LineChartService()
+                        .setDataWindowSize(this.windowSize)
+                        .setXTicks(this.xTicks)
+                        .setYTicks(this.yTicks);
     this.lineChart.setup('#lineChart');
     this.lineChart.populate(this.src);
   }
-  ngOnChanges() {
-    if (this.src.length > 0) {
-      this.createGraph();
-    }
 
+
+  ngOnChanges() {
+    this.createGraph();
   }
+
   ngAfterViewInit() {
     this.createGraph();
   }
