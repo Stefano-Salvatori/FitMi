@@ -1,8 +1,12 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 
 import { CircleProgressComponent } from 'ng-circle-progress';
 import { User } from 'src/model/user';
 import { serverAddress } from 'src/server-data';
+import { Badge } from 'src/model/badge';
+import { BadgeService } from 'src/app/badge.service';
+import { ModalController } from '@ionic/angular';
+import { LeaderboardComponent } from 'src/app/leaderboard/leaderboard.component';
 
 @Component({
   selector: 'app-public-profile',
@@ -15,18 +19,31 @@ export class PublicProfileComponent implements OnInit, AfterViewInit {
   @ViewChild(CircleProgressComponent, { static: false }) progress!: CircleProgressComponent;
 
   public user: User;
+  public controller: LeaderboardComponent;
+  public userBadges: Badge<any>[] = [];
+  public lockedBadges: Badge<any>[] = [];
+  public server = serverAddress;
 
-  constructor() {
+  constructor(private badgeService: BadgeService) {
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const allBadges = await this.badgeService.allBadges;
+    this.user.badges.forEach(badgeId => {
+      this.userBadges.push(allBadges.find(badge => badge._id === badgeId));
+    });
+    this.lockedBadges = allBadges.filter(badge => !this.userBadges.includes(badge));
   }
 
   ngAfterViewInit() {
     this.progress.animate(0, this.user.score % 100);
   }
 
+ dismissModal() {
+   this.controller.dismissCurrentModal();
+  
+}
 
 
   calculateAge(birthDate: Date): number {

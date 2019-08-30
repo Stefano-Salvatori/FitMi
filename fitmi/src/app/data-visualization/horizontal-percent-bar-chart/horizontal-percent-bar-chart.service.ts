@@ -58,7 +58,7 @@ export class HorizontalPercentBarChartService {
 
     categories.forEach(c => this.colors.push(this.getRandomColor()));
 
-    const color = d3.scaleOrdinal().range(this.colors);
+    const color = d3.scaleOrdinal().range(['#6b486b', '#a05d56', '#d0743c', '#ff8c00']);
 
     // Creates the yScale
     this.y0 = d3.scaleBand()
@@ -108,9 +108,7 @@ export class HorizontalPercentBarChartService {
       .attr('width', d => this.xScale(d.num))
       .attr('height', this.barHeight - 1)
       .attr('class', 'g-num')
-      .style('fill', function (d, i) {
-        return color(i);
-      })
+      .style('fill',  (d, i) =>  color(i))
       .attr('transform', 'translate(0,4)');
 
     // Binds data to labels
@@ -119,9 +117,7 @@ export class HorizontalPercentBarChartService {
       .enter()
       .append('g')
       .attr('class', 'g-label-group')
-      .style('fill', function (d, i) {
-        return color(i);
-      })
+      .style('fill', (d, i) => color(i))
       .attr('transform', d => 'translate(0,' + this.y0(d.category) + ')');
 
     // Appends main bar labels
@@ -134,15 +130,8 @@ export class HorizontalPercentBarChartService {
           return this.xScale(d.num) + 6;
         }
       })
-
-      .style('fill', d => {
-        if (minX > 32) {
-          return 'white';
-        } else {
-          return '#696969';
-        }
-      })
-      .attr('y', this.y0.bandwidth() / 1.6)
+       .style('fill', d => 'none')
+      .attr('y', this.y0.bandwidth() / 2)
       .attr('class', 'g-labels');
 
   }

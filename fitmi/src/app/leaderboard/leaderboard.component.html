@@ -11,12 +11,12 @@
       </ion-label>
     </ion-item-divider>
     <ion-list-header>
-      <ion-item>
+      <ion-item (click)="onUserClick(0)">
         <ion-avatar slot="start">
           <img src={{profileImage(this.users[0])}}>
         </ion-avatar>
         <ion-label>
-          <h2>1 {{this.users[0].firstName}} {{this.users[0].lastName}}</h2>
+          <h2>1 {{this.users[0].username}}</h2>
           <h3>Fitness Points: <b>{{this.users[0].score}}</b></h3>
         </ion-label>
         <ion-icon slot="end" name="md-star" id="leaderStarIcon"></ion-icon>
@@ -28,12 +28,12 @@
   </ion-label>
 </ion-item-divider>
 
-      <ion-item *ngFor="let user of this.users | slice:1; index as i" class="otherRow" (click)="onUserClick(i)">
+      <ion-item *ngFor="let user of this.users | slice:1; index as i" class="otherRow" (click)="onUserClick(i+1)">
         <ion-avatar slot="start">
           <img src={{profileImage(user)}}>
         </ion-avatar>
         <ion-label>
-          <h2>{{i+2}} {{user.firstName}} {{user.lastName}}</h2>
+          <h2>{{i+2}} {{user.username}}</h2>
           <h3>Fitness Points: <b>{{user.score}}</b></h3>
         </ion-label>
       </ion-item>
@@ -47,7 +47,7 @@
   <footer id="userRow" class="flex-container">
     <div>{{currentUserRank}}</div>
     <div><img src={{profileImage(currentUser)}} id="userImg" /></div>
-    <div>{{currentUser.firstName}} {{currentUser.lastName}}</div>
+    <div>{{currentUser.username}}</div>
     <div>{{currentUser.score}}</div>
   </footer>
 

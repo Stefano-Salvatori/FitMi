@@ -21,8 +21,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   @ViewChild(CircleProgressComponent, { static: false }) progress!: CircleProgressComponent;
 
 
-  user: User = null;
+  user: User = new User();
+  currentLevel = 0;
   userBadges: Badge<any>[] = [];
+  lockedBadges: Badge<any>[] = [];
   server = serverAddress;
 
 
@@ -32,18 +34,27 @@ export class ProfileComponent implements OnInit, AfterViewInit {
               public modalController: ModalController) {
   }
 
-  async ngOnInit() {
 
+
+  async ngOnInit() {
     this.user = this.auth.getUser();
+    this.currentLevel = this.user.level;
     const allBadges = await this.badgeService.allBadges;
     this.user.badges.forEach(badgeId => {
       this.userBadges.push(allBadges.find(badge => badge._id === badgeId));
     });
+    this.lockedBadges = allBadges.filter(badge => !this.userBadges.includes(badge));
   }
 
   ngAfterViewInit() {
-    this.progress.animate(0, this.user.score % 100);
+    const previousMax =
+      this.currentLevel === 0 ? 0 :  100 * Math.pow(2, this.currentLevel - 1);
+    const nextMax = 100 * Math.pow(2, this.currentLevel);
+    const todo = nextMax - previousMax;
+    this.progress.animate(0, ((this.user.score - previousMax) / todo) * 100);
   }
+
+
 
 
   logout() {
@@ -92,5 +103,4 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
     return age;
   }
-
 }

@@ -22,6 +22,7 @@ export interface DatabaseBadge {
     type: BadgeGoal;
     scope: BadgeScope;
     threshold: number;
+    points: number;
     image: string;
 
 }
@@ -39,6 +40,7 @@ export class SessionBadge implements Badge<Session> {
     type: BadgeGoal;
     scope: BadgeScope = BadgeScope.SESSION;
     threshold: number;
+    points: number;
     image: string;
     check: (s: Session) => boolean;
     constructor(dbBadge: DatabaseBadge) {
@@ -86,6 +88,8 @@ export class GlobalBadge implements Badge<User> {
     type: BadgeGoal;
     scope: BadgeScope = BadgeScope.SESSION;
     threshold: number;
+    points: number;
+
     image: string;
     check: (s: User) => boolean;
     constructor(dbBadge: DatabaseBadge) {

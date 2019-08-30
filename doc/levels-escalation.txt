@@ -1,0 +1,16 @@
+Lvl 1 --> 0-99      == 100 * 2^0
+Lvl 2 --> 100-199   == 100 * 2^1
+Lvl 3 --> 200-399   == 100 * 2^2
+lvl 4 --> 400-799   == 100 * 2^3
+lvl 5 --> 800-1599  == 100 * 2^4
+lvl 6 --> 1600-3199 == 100 * 2^5
+...
+
+
+10pt a sessione
+    +1pt ogni 1000 passi
+    +1pt ogni 10 kCal
+    +1pt ogni 15 minuti
+    +1pt ogni 1 km
+
+badge --> +50pt

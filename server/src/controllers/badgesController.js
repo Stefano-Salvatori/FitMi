@@ -53,8 +53,9 @@ exports.add_user_badge = (req, res) => {
             }, async (err, badge) => {
                 if (badge != null) {
                     user.badges.push(badge._id);
+                    user.score+=badge.points;
                     await user.save();
-                    res.status(201).json(newBadge)
+                    res.status(201).json(badge)
                 }
             });
          

@@ -148,5 +148,7 @@ export class LineChartService {
       .attr('width', this.width)
       .attr('height', this.height);
 
+
   }
+
 }

@@ -35,7 +35,8 @@ export class LeaderboardComponent implements OnInit {
     this.modalController.create({
       component: PublicProfileComponent,
       componentProps: {
-        user: this.users[userIndex]
+        user: this.users[userIndex],
+        controller: this
       }
     }).then(modal => {
       modal.present();
@@ -43,6 +44,9 @@ export class LeaderboardComponent implements OnInit {
     });
   }
 
+  public dismissCurrentModal() {
+    this.currentModal.dismiss();
+  }
   profileImage(user: User): string {
     if (user.profileImg !== undefined) {
       return serverAddress + '/images/user_pics/' + user.profileImg;

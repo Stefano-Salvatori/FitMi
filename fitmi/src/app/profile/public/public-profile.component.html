@@ -1,7 +1,7 @@
 <ion-header color="primary">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="tabs/leaderboard" mode="md"></ion-back-button>
+      <ion-back-button (click)="dismissModal()" defaultHref="tabs/leaderboard" mode="md"></ion-back-button>
     </ion-buttons>
     <ion-title>{{this.user.username}}</ion-title>
   </ion-toolbar>
@@ -55,14 +55,16 @@
 
   </ion-grid>
 
-  <div padding class="badges">
-    <ion-label padding><strong>Badges</strong></ion-label>
-    <ion-row nowrap padding>
-      <ion-col *ngFor="let badge of this.userBadges" size-xl="2" size-lg="2" size-md="2" size-sm="3" size-xs="3">
-          <ion-img [src]="server+'/images/badges/'+badge.image"></ion-img>        
-      </ion-col>
-    </ion-row>
-  </div>
- 
+<div padding class="badges">
+  <ion-label padding><strong>Badges</strong></ion-label>
+  <ion-row nowrap padding>
+    <ion-col *ngFor="let badge of userBadges" size-xl="1" size-lg="1" size-md="2" size-sm="3" size-xs="3">
+      <ion-img [src]="server+'/images/badges/'+badge.image"></ion-img>
+    </ion-col>
+    <ion-col *ngFor="let badge of lockedBadges" size-xl="1" size-lg="1" size-md="2" size-sm="3" size-xs="3">
+      <ion-img class="locked" [src]="server+'/images/badges/'+badge.image"></ion-img>
+    </ion-col>
+  </ion-row>
+</div>
 
 </ion-content>

@@ -18,7 +18,7 @@
     <ion-tab-button tab="profile" (click)="resetBadgeNotificationCount()">
       <ion-icon name="person"></ion-icon>
       <ion-label>Profilo</ion-label>
-      <ion-badge>{{badgeNotificationCount > 0 ? badgeNotificationCount : null}}</ion-badge>
+      <ion-badge [hidden]="badgeNotificationHidden">{{badgeNotificationCount}}</ion-badge>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

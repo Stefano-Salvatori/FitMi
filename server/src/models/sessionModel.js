@@ -12,4 +12,9 @@ var SessionSchema = new Schema({
   heart_frequency: [{timestamp: Date,value: Number}]
 });
 
+SessionSchema.methods.totalMins = function () {
+  const diffMs = (this.end.getTime() - this.start.getTime());
+	return Math.round(((diffMs % 86400000) % 3600000) / 60000);
+}
+
 module.exports = mongoose.model('Sessions', SessionSchema);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewChecked, AfterViewInit } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateRange } from 'src/model/session';
@@ -29,6 +29,51 @@ export class StatisticsComponent implements OnInit {
   private dataPath = '../assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
   loading: HTMLIonLoadingElement;
 
+  constructor(private router: Router,
+    private http: HttpClientService,
+    private auth: AuthService) {
+
+
+
+      // init lastSession
+      this.lastSession = {
+        start: new Date('01-01-1970 00:00:00'),
+        end: new Date('01-01-1970 00:00:00'),
+        type: SessionType.RUN,
+        pedometer: new PedometerData(),
+        heart_frequency: []
+      };
+
+      // get sessions data
+
+      this.http.getMock<Session[]>(this.dataPath)
+        .toPromise()
+        .then(sessions => {
+
+          this.allSessions = sessions;
+
+          // sort by date
+          sessions.sort((s1, s2) => {
+            const a = new Date(s1.start);
+            const b = new Date(s2.start);
+            return a > b ? -1 : a < b ? 1 : 0;
+          });
+
+          this.lastSession = sessions[sessions.length - 1];
+          this.loading.dismiss();
+
+        })
+        .catch(err => {
+          console.log('Error occured while retriving sessions');
+          console.log(err);
+        });
+
+
+
+
+  }
+
+
   // return the more freq elem in an array of strings
   private mode(arr: string[]) {
     return arr.sort((a, b) =>
@@ -58,8 +103,8 @@ export class StatisticsComponent implements OnInit {
     switch (this.timePeriod) {
       case this.SessionPeriods.MONTH:
         return this.allSessions
-        .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear())
-        .filter(s => new Date(s.start).getMonth() === new Date().getMonth());
+          .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear())
+          .filter(s => new Date(s.start).getMonth() === new Date().getMonth());
       case this.SessionPeriods.WEEK:
         return this.allSessions
           .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear())
@@ -67,16 +112,16 @@ export class StatisticsComponent implements OnInit {
           .filter(s => new Date().getDate() - new Date(s.start).getDate() <= 7);
       case this.SessionPeriods.YEAR:
         return this.allSessions
-        .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear());
+          .filter(s => new Date(s.start).getFullYear() === new Date().getFullYear());
       default:
-      return [];
+        return [];
     }
   }
 
   public lastSessionDate(): string {
     const date = new Date(this.lastSession.start);
     return date.toLocaleDateString() + ' ' +
-    date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
   public lastSessionDuration() {
     return new Date(this.sessionDuration(this.lastSession) * 1000).toISOString().substr(11, 8);
@@ -127,16 +172,16 @@ export class StatisticsComponent implements OnInit {
     return array;
   }
 
-  private getHeartRateRangeFrequency(values: number[], range: {low: number; high: number}): number {
+  private getHeartRateRangeFrequency(values: number[], range: { low: number; high: number }): number {
     return values.filter(val => val > range.low && val <= range.high).length / values.length;
   }
   public heartRatePercentData(): Array<[string, number]> {
     const values = this.lastSession.heart_frequency.map(hr => hr.value);
-    const light = this.getHeartRateRangeFrequency(values, HeartRateRange.LIGHT) ;
+    const light = this.getHeartRateRangeFrequency(values, HeartRateRange.LIGHT);
     const weightLoss = this.getHeartRateRangeFrequency(values, HeartRateRange.WEIGHT_LOSS);
     const aerobic = this.getHeartRateRangeFrequency(values, HeartRateRange.AEROBIC);
     const anaerobic = this.getHeartRateRangeFrequency(values, HeartRateRange.ANAEROBIC);
-    
+
     const array: Array<[string, number]> = [
       ['Anaerobico', anaerobic * 100],
       ['Aerobico', aerobic * 100],
@@ -169,24 +214,6 @@ export class StatisticsComponent implements OnInit {
   //#endregion
 
 
-  constructor(private router: Router,
-              private http: HttpClientService,
-              private auth: AuthService,
-              public loadingController: LoadingController) {
-
-    // init lastSession
-    this.lastSession = {
-      start: new Date('01-01-1970 00:00:00'),
-      end: new Date('01-01-1970 00:00:00'),
-      type: SessionType.RUN,
-      pedometer: new PedometerData(),
-      heart_frequency: []
-    };
-
-
-  }
-
-
   private createOrderedRandomDates(n: number): Date[] {
     const dates = [];
     dates[0] = new Date();
@@ -201,27 +228,7 @@ export class StatisticsComponent implements OnInit {
 
   ngOnInit() {
 
-    // get sessions data
-   this.http.getMock<Session[]>(this.dataPath)
-      .toPromise()
-      .then(sessions => {
 
-        this.allSessions = sessions;
-
-        // sort by date
-        sessions.sort((s1, s2) => {
-          const a = new Date(s1.start);
-          const b = new Date(s2.start);
-          return a > b ? -1 : a < b ? 1 : 0;
-        });
-
-        this.lastSession = sessions[sessions.length - 1];
-
-      })
-      .catch(err => {
-        console.log('Error occured while retriving sessions');
-        console.log(err);
-      });
   }
 
   segmentChanged(event) {
