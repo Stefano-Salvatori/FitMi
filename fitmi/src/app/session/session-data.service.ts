@@ -8,7 +8,8 @@ import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateValue } from 'src/model/session';
 import { SessionType } from 'src/model/session-type';
 import { BadgeService } from '../badge.service';
-import { SessionBadge, GlobalBadge } from 'src/model/badge';
+import { SessionBadge, GlobalBadge, Badge } from 'src/model/badge';
+import { User } from 'src/model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -49,9 +50,9 @@ export class SessionDataService {
   };
 
   constructor(private miBand: MiBandService,
-              private http: HttpClientService,
-              private badgesService: BadgeService,
-              private auth: AuthService) {
+    private http: HttpClientService,
+    private badgesService: BadgeService,
+    private auth: AuthService) {
 
   }
 
@@ -82,13 +83,18 @@ export class SessionDataService {
 
   }
 
-  stopSession(): void {
+  async stopSession(): Promise<void> {
     this.currentSession.end = new Date();
     this.miBand.stopHeartRateMonitoring();
     this.miBand.unsubscribeHeartRate();
     clearInterval(this.pedometerDataTimer);
-    this.saveCurrentSession()
-      .then(() => this.checkBadges());
+    await this.saveCurrentSession();
+    // Before checking badges we update the user so that we work on statistics up-to-date
+    await this.auth.updateCurrentUser();
+    await this.checkBadges();
+    console.log('badges CHECKED');
+    // After checking badges we update the user so that badges can be showed in the application
+    await this.auth.updateCurrentUser();
 
   }
 
@@ -141,34 +147,33 @@ export class SessionDataService {
     const currentUser = this.auth.getUser();
     return new Promise((resolve, reject) => {
       this.http.post('/users/' + currentUser._id + '/sessions', this.currentSession)
-        .subscribe(async res => {
-          await this.auth.updateCurrentUser().catch(() => reject());
+        .subscribe(res => {
           resolve();
         }, error => reject());
     });
   }
 
-  private async checkBadges() {
+  private async checkBadges(): Promise<void> {
     const currentUser = this.auth.getUser();
     const allBadges = await this.badgesService.allBadges;
-    allBadges.forEach(badge => {
+    for (const badge of allBadges) {
       if (!currentUser.badges.includes(badge._id)) {
-        if (badge instanceof SessionBadge) {
-          if (badge.check(this.currentSession)) {
-            currentUser.badges.push(badge._id);
-            this.badgesService.newBadge(badge);
-            this.http.post('/users/' + currentUser._id + '/badges', badge)
-              .subscribe(res => {});
-          }
-        } else if (badge instanceof GlobalBadge) {
-          if (badge.check(currentUser)) {
-            currentUser.badges.push(badge._id);
-            this.badgesService.newBadge(badge);
-            this.http.post('/users/' + currentUser._id + '/badges', badge)
-              .subscribe(res => {});
-          }
+        if (badge instanceof SessionBadge && badge.check(this.currentSession)) {
+          await this.addBadgeToUser(badge, currentUser);
+        } else if (badge instanceof GlobalBadge && badge.check(currentUser)) {
+          await this.addBadgeToUser(badge, currentUser);
         }
       }
+    }
+  }
+
+  private addBadgeToUser(badge: Badge<any>, user: User): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.post('/users/' + user._id + '/badges', badge)
+        .subscribe(res => {
+          this.badgesService.newBadge(badge);
+          resolve();
+        }, err => reject());
     });
   }
 }

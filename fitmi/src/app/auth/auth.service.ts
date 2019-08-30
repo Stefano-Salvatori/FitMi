@@ -28,15 +28,15 @@ export class AuthService {
   /**
    * Update the current user by asking for a newer version to the server.
    *
-   * This is needed because (by the time of writing) some updates on the user's 
-   * informations are performed server-side and if we don't call this function could   
+   * This is needed because (by the time of writing) some updates on the user's
+   * informations are performed server-side and if we don't call this function could
    * not be seen by the client
    */
   updateCurrentUser(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.user !== undefined) {
         this.httpClient.get('/users/' + this.user._id).subscribe((updatedUser: User) => {
-          this.user = updatedUser;
+          this.user = User.fromUser(updatedUser);
           resolve();
         }, error => reject());
       } else {
@@ -85,10 +85,9 @@ export class AuthService {
 
   private loginRequest(payload) {
     this.httpClient.post('/users/login', payload).pipe(
-      tap(async (res: AuthResponse) => {
+      tap(async (res: User) => {
         await this.storage.store(this.storage.getAccessTokenName(), res.accessToken);
-        console.log(res);
-        this.user = res;
+        this.user = User.fromUser(res);
         // this.authSubject.next(true);
         this.router.navigateByUrl(this.tabsRoute);
       })

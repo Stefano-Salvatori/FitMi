@@ -8,6 +8,7 @@ var BadgeSchema = new Schema({
     type: String,
     scope: String,
     threshold: Number,
+    points: {type: Number, default: 50},
     image: String
   });
   

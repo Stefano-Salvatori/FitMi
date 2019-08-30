@@ -35,16 +35,24 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Username</ion-label>
-              <ion-label color="dark"><strong>{{this.user.username}}</strong></ion-label>
+              <ion-label color="dark"><strong>{{user.username}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Punteggio</ion-label>
-              <ion-label color="dark"><strong>{{this.user.score}}</strong></ion-label>
+              <ion-label color="dark"><strong>{{user.score}}</strong></ion-label>
             </ion-col>
           </ion-item>
+
+          
+          <ion-item lines="none">
+              <ion-col size="12">
+                <ion-label color="medium">Livello</ion-label>
+                <ion-label color="dark"><strong>{{currentLevel+1}}</strong></ion-label>
+              </ion-col>
+            </ion-item>
 
         </ion-list>
       </ion-col>
@@ -55,10 +63,10 @@
   <div padding class="badges">
     <ion-label padding><strong>Badges</strong></ion-label>
     <ion-row nowrap padding>
-      <ion-col *ngFor="let badge of this.userBadges" size-xl="2" size-lg="2" size-md="2" size-sm="3" size-xs="3">
+      <ion-col *ngFor="let badge of userBadges" size-xl="1" size-lg="1" size-md="2" size-sm="3" size-xs="3">
           <ion-img [src]="server+'/images/badges/'+badge.image"></ion-img>        
       </ion-col>
-      <ion-col *ngFor="let badge of this.lockedBadges" size-xl="2" size-lg="2" size-md="2" size-sm="3" size-xs="3">
+      <ion-col *ngFor="let badge of lockedBadges" size-xl="1" size-lg="1" size-md="2" size-sm="3" size-xs="3">
           <ion-img class="locked" [src]="server+'/images/badges/'+badge.image"></ion-img>        
       </ion-col>
     </ion-row>
@@ -72,7 +80,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Sesso</ion-label>
-              <ion-label color="dark"><strong>{{this.user.gender}}</strong></ion-label>
+              <ion-label color="dark"><strong>{{user.gender}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
@@ -81,7 +89,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Età</ion-label>
-              <ion-label color="dark"><strong>{{calculateAge(this.user.birthDate)}}</strong></ion-label>
+              <ion-label color="dark"><strong>{{calculateAge(user.birthDate)}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
@@ -92,7 +100,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Altezza</ion-label>
-              <ion-label color="dark"><strong>{{this.user.height}}</strong></ion-label>
+              <ion-label color="dark"><strong>{{user.height}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
@@ -101,7 +109,7 @@
           <ion-item lines="none">
             <ion-col size="12">
               <ion-label color="medium">Peso</ion-label>
-              <ion-label color="dark"><strong>{{this.user.weight}}</strong></ion-label>
+              <ion-label color="dark"><strong>{{user.weight}}</strong></ion-label>
             </ion-col>
           </ion-item>
 
