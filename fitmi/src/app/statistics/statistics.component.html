@@ -2,25 +2,30 @@
   <ion-toolbar color="primary">
     <ion-title>Statistics</ion-title>
   </ion-toolbar>
+
+
+
+
+  <!-- Out of ion-content to keep it fixed at top-->
+  <!-- Segment with default selection -->
+    <ion-segment *ngIf="this.allSessions.length>0" (ionChange)="segmentChanged($event)"
+    value="{{this.SessionPeriods.LAST}}">
+    <ion-segment-button value="{{this.SessionPeriods.LAST}}">
+      <ion-label>Ultima</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="{{this.SessionPeriods.WEEK}}">
+      <ion-label>Settimana</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="{{this.SessionPeriods.MONTH}}">
+      <ion-label>Mese</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="{{this.SessionPeriods.YEAR}}">
+      <ion-label>Anno</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
-<!-- Out of ion-content to keep it fixed at top-->
-<!-- Segment with default selection -->
-<ion-segment *ngIf="this.allSessions.length>0" (ionChange)="segmentChanged($event)"
-  value="{{this.SessionPeriods.LAST}}">
-  <ion-segment-button value="{{this.SessionPeriods.LAST}}">
-    <ion-label>Ultima</ion-label>
-  </ion-segment-button>
-  <ion-segment-button value="{{this.SessionPeriods.WEEK}}">
-    <ion-label>Settimana</ion-label>
-  </ion-segment-button>
-  <ion-segment-button value="{{this.SessionPeriods.MONTH}}">
-    <ion-label>Mese</ion-label>
-  </ion-segment-button>
-  <ion-segment-button value="{{this.SessionPeriods.YEAR}}">
-    <ion-label>Anno</ion-label>
-  </ion-segment-button>
-</ion-segment>
+
 <ion-content ion-justify-content-center>
   <div *ngIf="this.allSessions.length>0; then displayData else noSessionsAvailable"></div>
 
@@ -137,7 +142,7 @@
                 <h4 class="label">Passi</h4>
               </ion-label>
               <ion-label>
-                <h2 class="value">{{ lastSession.pedometer.steps }}</h2>
+                <h2 class="value">{{ lastSession.pedometer.steps }} passi</h2>
               </ion-label>
               <ion-icon slot="end" name="md-walk"></ion-icon>
 

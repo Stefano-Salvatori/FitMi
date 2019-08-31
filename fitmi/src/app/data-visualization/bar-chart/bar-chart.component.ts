@@ -12,14 +12,15 @@ export class BarChartComponent implements  AfterViewInit, OnChanges {
 
   @Input() src: Array<[Date, number]> = [];
   @Input() xAxisDateFormat = '%d-%m-%y';
-
+  @Input() scrollable = false;
   private barChart: BarChartService;
 
   constructor() { }
 
   private createGraph() {
-    this.barChart = new BarChartService();
-    this.barChart.setXAxisTimeFormat(this.xAxisDateFormat);
+    this.barChart = new BarChartService()
+    .setXAxisTimeFormat(this.xAxisDateFormat)
+    .setScrollable(this.scrollable);
     this.barChart.setup('#barChart');
     this.barChart.populate(this.src);
   }

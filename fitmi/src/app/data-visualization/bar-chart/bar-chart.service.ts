@@ -24,7 +24,7 @@ export class BarChartService {
   private yAxis: d3.Axis<d3.AxisDomain>;
   private diagram: any;
   private bars: any;
-
+  private scrollable = false;
   private xAxisTimeFormat = '%d-%m-%y';
   constructor() {
     this.data = [];
@@ -40,8 +40,14 @@ export class BarChartService {
     this.heightOverview = 80 - this.marginOverview.top - this.marginOverview.bottom;
   }
 
-  public setXAxisTimeFormat(format: string): void {
+  public setScrollable(scrollable: boolean): BarChartService {
+    this.scrollable = scrollable;
+    return this;
+  }
+
+  public setXAxisTimeFormat(format: string): BarChartService {
     this.xAxisTimeFormat = format;
+    return this;
   }
 
   public populate(values: Array<[Date, number]>) {
@@ -55,7 +61,7 @@ export class BarChartService {
 
     this.maxLength = d3.max(this.data.map(d => d.label.length));
     this.barWidth = this.maxLength * 3;
-    this.numBars = Math.round(this.width / this.barWidth);
+    this.numBars = this.scrollable ? Math.round(this.width / this.barWidth) : this.data.length;
     this.isScrollDisplayed = this.barWidth * this.data.length > this.width;
     this.xScale = d3.scaleBand()
       .domain(this.data.slice(0, this.numBars).map(d => d.date))
@@ -63,7 +69,8 @@ export class BarChartService {
     this.yScale = d3.scaleLinear()
       .domain([0, d3.max(this.data, d => d.value)])
       .range([this.height, 0]);
-    this.buildChart();
+   
+      this.buildChart();
 
     this.bars.selectAll('rect')
       .data(this.data.slice(0, this.numBars), (d: any) => d.date)
@@ -76,7 +83,7 @@ export class BarChartService {
       .attr('height', (d: any) => this.height - this.yScale(d.value));
 
 
-    if (this.isScrollDisplayed) {
+    if (this.scrollable && this.isScrollDisplayed) {
       this.displayScrollableOverview();
     }
   }
