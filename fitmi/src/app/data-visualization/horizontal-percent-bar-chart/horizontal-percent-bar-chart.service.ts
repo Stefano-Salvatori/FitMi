@@ -45,6 +45,17 @@ export class HorizontalPercentBarChartService {
   public setColors(colors: string[]) {
     this.colors = colors;
   }
+
+  private getWithoutDuplicates(array: any[]): any[] {
+    const toRet = [];
+    array.forEach(a => {
+      if (!toRet.includes(a)) {
+        toRet.push(a);
+      }
+    });
+
+    return toRet;
+  }
   public populate(values: Array<[string, number]>) {
     this.data = values.map(d => {
       return {
@@ -54,7 +65,7 @@ export class HorizontalPercentBarChartService {
       };
     });
 
-    const categories = [...new Set(this.data.map(d => d.category))];
+    const categories = this.getWithoutDuplicates(this.data.map(d => d.category));
 
     categories.forEach(c => this.colors.push(this.getRandomColor()));
 

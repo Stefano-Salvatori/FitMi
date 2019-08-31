@@ -25,13 +25,14 @@ export class StatisticsComponent implements OnInit {
   public lastSession: Session;
   public allSessions: Session[] = [];
   public timePeriod = this.SessionPeriods.LAST;
-
+  public heartRateData = [];
+  public heartRateDataPercent = [];
+  public caloriesBarChartData = [];
   private dataPath = '../assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
-  loading: HTMLIonLoadingElement;
 
   constructor(private router: Router,
-    private http: HttpClientService,
-    private auth: AuthService) {
+              private http: HttpClientService,
+              private auth: AuthService) {
 
 
 
@@ -44,35 +45,42 @@ export class StatisticsComponent implements OnInit {
         heart_frequency: []
       };
 
+      this.allSessions.push(this.lastSession);
+
       // get sessions data
 
-      this.http.getMock<Session[]>(this.dataPath)
-        .toPromise()
-        .then(sessions => {
-
-          this.allSessions = sessions;
-
-          // sort by date
-          sessions.sort((s1, s2) => {
-            const a = new Date(s1.start);
-            const b = new Date(s2.start);
-            return a > b ? -1 : a < b ? 1 : 0;
-          });
-
-          this.lastSession = sessions[sessions.length - 1];
-          this.loading.dismiss();
-
-        })
-        .catch(err => {
-          console.log('Error occured while retriving sessions');
-          console.log(err);
-        });
+      this.loadData();
 
 
 
 
   }
 
+  async loadData() {
+    await this.http.getMock<Session[]>(this.dataPath)
+      .toPromise()
+      .then(sessions => {
+
+        this.allSessions = sessions;
+
+        // sort by date
+        sessions.sort((s1, s2) => {
+          const a = new Date(s1.start);
+          const b = new Date(s2.start);
+          return a > b ? -1 : a < b ? 1 : 0;
+        });
+
+        this.lastSession = sessions[sessions.length - 1];
+        this.heartRateData = this.getHeartRateData();
+        this.heartRateDataPercent = this.getHeartRatePercentData();
+        this.caloriesBarChartData = this.getCaloriesBarChartData();
+
+      })
+      .catch(err => {
+        console.log('Error occured while retriving sessions');
+        console.log(err);
+      });
+  }
 
   // return the more freq elem in an array of strings
   private mode(arr: string[]) {
@@ -161,7 +169,7 @@ export class StatisticsComponent implements OnInit {
     this.router.navigateByUrl('tabs/home');
   }
 
-  public heartRateData(): Array<[Date, number]> {
+  public getHeartRateData(): Array<[Date, number]> {
     // generates ordered date to simulate heartrates timestamp
     const dates = this.createOrderedRandomDates(this.lastSession.heart_frequency.length);
     const array: Array<[Date, number]> = [];
@@ -175,7 +183,7 @@ export class StatisticsComponent implements OnInit {
   private getHeartRateRangeFrequency(values: number[], range: { low: number; high: number }): number {
     return values.filter(val => val > range.low && val <= range.high).length / values.length;
   }
-  public heartRatePercentData(): Array<[string, number]> {
+  public getHeartRatePercentData(): Array<[string, number]> {
     const values = this.lastSession.heart_frequency.map(hr => hr.value);
     const light = this.getHeartRateRangeFrequency(values, HeartRateRange.LIGHT);
     const weightLoss = this.getHeartRateRangeFrequency(values, HeartRateRange.WEIGHT_LOSS);
@@ -191,7 +199,7 @@ export class StatisticsComponent implements OnInit {
 
     return array;
   }
-  public caloriesBarChartData(): Array<[Date, number]> {
+  public getCaloriesBarChartData(): Array<[Date, number]> {
     // generates ordered date to simulate heartrates timestamp
     const array: Array<[Date, number]> = [];
     this.getAllSessionsInSelectedPeriod().forEach(s => {

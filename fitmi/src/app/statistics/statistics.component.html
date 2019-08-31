@@ -44,30 +44,26 @@
 
 
 
-      <ion-grid align-items-center justify-content-center>
-        <ion-row justify-content-center>
-          <ion-col size="12">
-            <ion-item align-items-center justify-content-center>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
               <ion-icon slot="start" name="md-heart" color="danger"></ion-icon>
-              <h2>Freq. Cardiaca</h2>
+              <h4>Freq. Cardiaca</h4>
             </ion-item>
-
             <ion-slides mode="md" pager="md" scrollbar="md">
               <ion-slide>
                 <ion-item>
-                  <line-chart [src]="heartRateData()" [windowSize]="heartRateData().length">
+                  <line-chart [src]="this.heartRateData" [windowSize]="this.heartRateData.length">
 
                   </line-chart>
                 </ion-item>
 
               </ion-slide>
 
-              <horizontal-percent-bar-chart [src]="heartRateData()">
-
-              </horizontal-percent-bar-chart>
               <ion-slide>
                 <ion-item>
-                  <horizontal-percent-bar-chart [src]="heartRatePercentData()">
+                  <horizontal-percent-bar-chart [src]="this.heartRateDataPercent">
 
                   </horizontal-percent-bar-chart>
                 </ion-item>
@@ -78,49 +74,88 @@
 
           </ion-col>
         </ion-row>
-        <ion-row size="12" justify-content-center>
-          <ion-col size="6">
-            <ion-text>
-              <h2 class="value">{{ minHeartRate() }} bpm</h2>
-              <h4 class="label">Min Freq. Cardiaca</h4>
-            </ion-text>
-          </ion-col>
-
-          <ion-col size="6">
-            <ion-text>
-              <h2 class="value">{{ maxHeartRate() }} bpm</h2>
-              <h4 class="label">Max Freq. Cardiaca</h4>
-            </ion-text>
-          </ion-col>
-        </ion-row>
-        <ion-row size="12" justify-content-center>
-          <ion-col size="6">
-            <ion-text>
-              <h2 class="value">{{ this.lastSession.type }}</h2>
-              <h4 class="label">Tipo Sessione</h4>
-            </ion-text>
-          </ion-col>
-          <ion-col size="6">
-            <ion-text>
-              <h2 class="value">{{ lastSession.pedometer.calories }} kcal</h2>
-              <h4 class="label">Calorie</h4>
-            </ion-text>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-label slot="start">
+                <h4 class="label">Min Freq. Cardiaca</h4>
+              </ion-label>
+              <ion-label>
+                <h2 class="value">{{ minHeartRate() }} bpm</h2>
+              </ion-label>
+              <ion-icon slot="end" name="md-heart"></ion-icon>
+            </ion-item>
           </ion-col>
         </ion-row>
 
-        <ion-row size="12" justify-content-center>
-          <ion-col size="6">
-
-            <ion-text>
-              <h2 class="value">{{ lastSession.pedometer.steps }}</h2>
-              <h4 class="label">Passi</h4>
-            </ion-text>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-label slot="start">
+                <h4 class="label">Max Freq. Cardiaca</h4>
+              </ion-label>
+              <ion-label>
+                <h2 class="value">{{ maxHeartRate() }} bpm</h2>
+              </ion-label>
+              <ion-icon slot="end" name="md-heart"></ion-icon>
+            </ion-item>
           </ion-col>
-          <ion-col size="6">
-            <ion-text>
-              <h2 class="value">{{ lastSession.pedometer.distance }} m</h2>
-              <h4 class="label">Distanza</h4>
-            </ion-text>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-label slot="start">
+                <h4 class="label">Tipo Sessione</h4>
+              </ion-label>
+              <ion-label>
+                <h2 class="value">{{ this.lastSession.type }}</h2>
+              </ion-label>
+              <ion-icon slot="end" name="md-fitness"></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-label slot="start">
+                <h4 class="label">Calorie</h4>
+              </ion-label>
+              <ion-label>
+                <h2 class="value">{{ lastSession.pedometer.calories }} kcal</h2>
+
+              </ion-label>
+              <ion-icon slot="end" name="md-flame"></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-label slot="start">
+                <h4 class="label">Passi</h4>
+              </ion-label>
+              <ion-label>
+                <h2 class="value">{{ lastSession.pedometer.steps }}</h2>
+              </ion-label>
+              <ion-icon slot="end" name="md-walk"></ion-icon>
+
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-item>
+              <ion-label slot="start">
+                <h4 class="label">Distanza</h4>
+              </ion-label>
+              <ion-label>
+                <h2 class="value">{{ lastSession.pedometer.distance }} m</h2>
+              </ion-label>
+              <ion-icon slot="end" name="md-trending-up"></ion-icon>
+            </ion-item>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -128,7 +163,8 @@
 
     <!-- GENERAL staticstics template-->
     <ng-template #aggregateSessions>
-      <div *ngIf="getAllSessionsInSelectedPeriod().length>0; then aggregateSessionsAvailable else noSessionsAvailable"></div>
+      <div *ngIf="getAllSessionsInSelectedPeriod().length>0; then aggregateSessionsAvailable else noSessionsAvailable">
+      </div>
       <ng-template #aggregateSessionsAvailable>
         <ion-card>
           <ion-item>
@@ -137,68 +173,119 @@
           </ion-item>
         </ion-card>
 
-        <ion-grid align-items-center justify-content-center>
-          <ion-row justify-content-center>
-            <ion-col>
+        <ion-grid>
+         
+          <!--Calories bar chart-->
+          <ion-row>
+            <ion-col size="12">
               <ion-item align-items-center justify-content-center>
                 <ion-icon slot="start" name="md-flame" color="danger"></ion-icon>
                 <h2>Calorie</h2>
               </ion-item>
-
-
-              <bar-chart [src]="caloriesBarChartData()" [xAxisDateFormat]="caloriesBarChartDateFormat()">
+              <bar-chart [src]="this.getCaloriesBarChartData()" [xAxisDateFormat]="caloriesBarChartDateFormat()">
 
               </bar-chart>
             </ion-col>
           </ion-row>
-          <ion-row size="12" justify-content-center>
-            <ion-col size="6">
-              <ion-text>
-                <h2 class="value">{{ favoriteSessionType() }}</h2>
-                <h4 class="label">Sessione Preferita</h4>
-              </ion-text>
-            </ion-col>
-            <ion-col size="6">
-              <ion-text>
-                <h2 class="value">{{ allCalories() }} kCal</h2>
-                <h4 class="label">Calorie Totali</h4>
-              </ion-text>
+
+          <!--Favorite Session-->
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label slot="start">
+                  <h4 class="label">Sessione Preferita</h4>
+                </ion-label>
+                <ion-label>
+                  <h2 class="value">{{ favoriteSessionType() }}</h2>
+                </ion-label>
+                <ion-icon slot="end" name="md-fitness"></ion-icon>
+              </ion-item>
             </ion-col>
           </ion-row>
 
-          <ion-row size="12" justify-content-center>
-            <ion-col size="6">
-              <ion-text>
-                <h2 class="value">{{ allSteps() }}</h2>
-                <h4 class="label">Passi Totali</h4>
-              </ion-text>
+          <!--Total Calories-->
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label slot="start">
+                  <h4 class="label">Calorie Totali</h4>
+                </ion-label>
+                <ion-label>
+                  <h2 class="value">{{ allCalories() }} kCal</h2>
+                </ion-label>
+                <ion-icon slot="end" name="md-flame"></ion-icon>
+              </ion-item>
             </ion-col>
-            <ion-col size="6">
-              <ion-text>
-                <h2 class="value">{{ allDistance() }} m</h2>
-                <h4 class="label">Distanza Totale</h4>
-              </ion-text>
+          </ion-row>
+         
+          <!--Total Steps-->
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label slot="start">
+                  <h4 class="label">Passi Totali</h4>
+                </ion-label>
+                <ion-label>
+                  <h2 class="value">{{ allSteps() }} passi</h2>
+                </ion-label>
+                <ion-icon slot="end" name="md-walk"></ion-icon>
+              </ion-item>
             </ion-col>
           </ion-row>
 
-          <ion-row size="12" justify-content-center>
-            <ion-col size="6">
-              <ion-text>
-                <h2 class="value">{{ allSteps() }}</h2>
-                <h4 class="label">Passi Totali</h4>
-              </ion-text>
-            </ion-col>
-            <ion-col size="6">
-              <ion-text>
-                <h2 class="value">{{ wholeTimeSpentOnSessions() }} </h2>
-                <h4 class="label">Tempo in Sessione</h4>
-              </ion-text>
+          <!--
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label slot="start">
+                  <h4 class="label">Passi Totali</h4>
+                </ion-label>
+                <ion-label>
+                  <h2 class="value">{{ allSteps() }}</h2>
+                </ion-label>
+                <ion-icon slot="end" name="md-walk"></ion-icon>
+
+              </ion-item>
             </ion-col>
           </ion-row>
+          -->
+                  
+          <!--Total Distance-->
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label slot="start">
+                  <h4 class="label">Distanza Totale</h4>
+                </ion-label>
+                <ion-label>
+                  <h2 class="value">{{ allDistance() }} m</h2>
+                </ion-label>
+                <ion-icon slot="end" name="md-trending-up"></ion-icon>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+
+          <!--Total Time On Session-->
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label slot="start">
+                  <h4 class="label">Tempo in Sessione</h4>
+                </ion-label>
+                <ion-label>
+                  <h2 class="value">{{ wholeTimeSpentOnSessions() }} </h2>
+                </ion-label>
+                <ion-icon slot="end" name="md-time"></ion-icon>
+              </ion-item>
+            </ion-col>
+
+          </ion-row>
+       
         </ion-grid>
       </ng-template>
     </ng-template>
-  
+
   </ng-template>
 
   <ng-template #noSessionsAvailable>
