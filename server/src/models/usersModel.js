@@ -9,8 +9,14 @@ var UserSchema = new Schema({
   password: { type: String, required: 'password is required' },
   firstName: String,
   lastName: String,
-  profileImg: String,
   gender: String,
+  profileImg: {type:String,   default: function() {
+    if (this.gender==='M') {
+      return 'man.svg';
+    } else {
+      return 'girl-1.svg';
+    }
+  }},
   birthDate: Date,
   height: Number,
   weight: Number,

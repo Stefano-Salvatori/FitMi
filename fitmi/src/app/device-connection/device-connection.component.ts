@@ -40,9 +40,8 @@ export class DeviceConnectionComponent implements OnInit {
         this.ble.enable();
       }
 
-      this.miBand.findMiBand().then(() => {
-          return this.miBand.connect();
-        })
+      await this.miBand.findMiBand();
+      this.miBand.connect()
         .then(() => {
           this.hideSpinner();
           this.miBand.sendNotification(Notification.VIBRATE);
@@ -64,7 +63,7 @@ export class DeviceConnectionComponent implements OnInit {
     new ToastController().create({
       color: 'dark',
       animated: true,
-      message: 'Bluetooth device connected',
+      message: 'Smartband Connesso!',
       duration: 3000,
       position: 'bottom',
       showCloseButton: true
@@ -77,7 +76,7 @@ export class DeviceConnectionComponent implements OnInit {
     new ToastController().create({
       color: 'danger',
       animated: true,
-      message: 'Cannot find MiBand device',
+      message: 'Errore durante la connessione al device',
       duration: 3000,
       position: 'bottom',
       showCloseButton: true

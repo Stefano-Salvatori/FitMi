@@ -57,8 +57,9 @@ export class MiBandService {
      */
     public async findMiBand(): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
-            if ((await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY)) !== undefined) {
-                this.address = await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY);
+            const storedAddress = await this.storage.retrieve(this.MI_BAND_ADDRESS_KEY);
+            if (storedAddress !== null && storedAddress !== undefined) {
+                this.address = storedAddress;
                 resolve();
             } else {
                 this.notifyNewConnectionState(ConnectionState.SEARCHING_DEVICE);

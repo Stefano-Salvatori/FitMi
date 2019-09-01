@@ -21,9 +21,9 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   steps = 0;
   distance = 0;
   calories = 0;
-  currHeartbeat: number;
-  minHeartbeat: number;
-  maxHeartbeat: number;
+  currHeartbeat = 0;
+  minHeartbeat = 500;
+  maxHeartbeat = 0;
   private heartRateLineChart: LineChartService;
   private activityChecker: ActivityChecker;
 
@@ -50,7 +50,7 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-   
+
 
     this.startChrono();
 
@@ -111,13 +111,13 @@ export class SessionDataComponent implements OnInit, OnDestroy {
 
   private setHeartbeat(newHeartbeat: number) {
     this.currHeartbeat = newHeartbeat;
-    if (this.minHeartbeat === undefined) {
+    if (this.minHeartbeat === 0) {
       this.minHeartbeat = this.currHeartbeat;
     } else {
       this.minHeartbeat = Math.min(this.currHeartbeat, this.minHeartbeat);
     }
 
-    if (this.maxHeartbeat === undefined) {
+    if (this.maxHeartbeat === 0) {
       this.maxHeartbeat = this.currHeartbeat;
     } else {
       this.maxHeartbeat = Math.max(this.currHeartbeat, this.maxHeartbeat);

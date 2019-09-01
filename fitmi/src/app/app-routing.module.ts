@@ -3,30 +3,46 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { NotFoundResourceComponent } from './not-found-resource/not-found-resource.component';
 import { LoginComponent } from './login/login.component';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { TabsComponent } from './tabs/tabs.component';
-import { HomeComponent } from './home/home.component';
 
 import { SessionTabsComponent } from './session/session-tabs/session-tabs.component';
 import { SessionMapComponent } from './session/session-map/session-map.component';
 import { SessionStatsComponent } from './session/session-stats/session-stats.component';
 import { GoalSettingsComponent } from './session/goal-settings/goal-settings.component';
-
-import { DeviceConnectionComponent } from './device-connection/device-connection.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'sign-in', component: SignInComponent },
-  { path: 'tabs', loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule) },
-  { path: 'running/goal_settings', component: GoalSettingsComponent },
-  { path: 'walking/goal_settings', component: GoalSettingsComponent },
-  { path: 'cycling/goal_settings', component: GoalSettingsComponent },
-  { path: 'gym/goal_settings', component: GoalSettingsComponent },
-  { path: 'swimming/goal_settings', component: GoalSettingsComponent },
-  { path: 'indoor-run/goal_settings', component: GoalSettingsComponent },
+  {
+    path: 'tabs',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
+  },
+  {
+    path: 'running/goal_settings',
+    canActivate: [AuthGuard],
+    component: GoalSettingsComponent
+  },
+  { path: 'walking/goal_settings',
+  canActivate: [AuthGuard],
+  component: GoalSettingsComponent },
+  { path: 'cycling/goal_settings',
+  canActivate: [AuthGuard],
+  component: GoalSettingsComponent },
+  { path: 'gym/goal_settings',
+  canActivate: [AuthGuard],
+  component: GoalSettingsComponent },
+  { path: 'swimming/goal_settings',
+  canActivate: [AuthGuard],
+  component: GoalSettingsComponent },
+  { path: 'indoor-run/goal_settings',
+  canActivate: [AuthGuard],
+  component: GoalSettingsComponent },
   {
     path: 'running',
     component: SessionTabsComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -46,6 +62,7 @@ const routes: Routes = [
   {
     path: 'walking',
     component: SessionTabsComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -65,6 +82,7 @@ const routes: Routes = [
   {
     path: 'cycling',
     component: SessionTabsComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -84,6 +102,7 @@ const routes: Routes = [
   {
     path: 'gym',
     component: SessionTabsComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -103,6 +122,7 @@ const routes: Routes = [
   {
     path: 'swimming',
     component: SessionTabsComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -122,6 +142,7 @@ const routes: Routes = [
   {
     path: 'indoor-run',
     component: SessionTabsComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',

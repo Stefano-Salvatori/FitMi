@@ -25,6 +25,11 @@ export class AuthService {
     private storage: StorageService,
     private router: Router) { }
 
+
+  isLoggedIn(): boolean {
+    return this.user !== undefined;
+  }
+
   /**
    * Update the current user by asking for a newer version to the server.
    *
