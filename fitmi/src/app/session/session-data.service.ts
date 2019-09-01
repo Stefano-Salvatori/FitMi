@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Goal, GoalType } from '../../model/goal';
-import { MiBandService } from '../miband/miband.service';
+import { MiBandService, Notification } from '../miband/miband.service';
 import { PedometerData } from '../miband/pedometer-data';
 import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
@@ -85,6 +85,9 @@ export class SessionDataService {
 
   }
 
+  public makeBandVibrate(): void {
+    this.miBand.sendNotification(Notification.VIBRATE);
+  }
   async stopSession(): Promise<void> {
     this.currentSession.end = new Date();
     this.miBand.stopHeartRateMonitoring();
