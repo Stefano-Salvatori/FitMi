@@ -46,14 +46,8 @@ export class StatisticsComponent implements OnInit {
       };
 
   this.allSessions.push(this.lastSession);
-
-      // get sessions data
-
+  // get sessions data
   this.loadData();
-
-
-
-
   }
 
   async loadData() {
