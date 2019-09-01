@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewChecked, AfterViewInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateRange } from 'src/model/session';
 import { SessionType } from 'src/model/session-type';
 import { PedometerData } from '../miband/pedometer-data';
 import { Router } from '@angular/router';
-import { ThrowStmt } from '@angular/compiler';
-import { LoadingController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-home',
@@ -28,32 +27,27 @@ export class StatisticsComponent implements OnInit {
   public heartRateData = [];
   public heartRateDataPercent = [];
   public caloriesBarChartData = [];
-  private dataPath = '../assets/mock-sessions.json';  // '/users/' + this.auth.getUser()._id + '/sessions'
+  private dataPath = '';
 
   constructor(private router: Router,
               private http: HttpClientService,
               private auth: AuthService) {
 
-
+  this.dataPath = '/users/' + this.auth.getUser()._id + '/sessions';
 
       // init lastSession
-      this.lastSession = {
+  this.lastSession = {
         start: new Date('01-01-1970 00:00:00'),
         end: new Date('01-01-1970 00:00:00'),
         type: SessionType.RUN,
         pedometer: new PedometerData(),
-        heart_frequency: []
+        heart_frequency: [],
+        gps_path: []
       };
 
-      this.allSessions.push(this.lastSession);
-
-      // get sessions data
-
-      this.loadData();
-
-
-
-
+  this.allSessions.push(this.lastSession);
+  // get sessions data
+  this.loadData();
   }
 
   async loadData() {
@@ -131,14 +125,16 @@ export class StatisticsComponent implements OnInit {
     return date.toLocaleDateString() + ' ' +
       date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
+
   public lastSessionDuration() {
     return new Date(this.sessionDuration(this.lastSession) * 1000).toISOString().substr(11, 8);
   }
+
   public minHeartRate(): number {
     const hfValues = this.lastSession.heart_frequency.map(hf => hf.value);
     return Math.min(...hfValues);
   }
-
+  
   public maxHeartRate(): number {
     const hfValues = this.lastSession.heart_frequency.map(hf => hf.value);
     return Math.max(...hfValues);
@@ -170,12 +166,9 @@ export class StatisticsComponent implements OnInit {
   }
 
   public getHeartRateData(): Array<[Date, number]> {
-    // generates ordered date to simulate heartrates timestamp
-    const dates = this.createOrderedRandomDates(this.lastSession.heart_frequency.length);
     const array: Array<[Date, number]> = [];
-    let j = 0;
     this.lastSession.heart_frequency.forEach(hf => {
-      array.push([dates[j++], +hf.value]);
+      array.push([new Date(hf.timestamp), +hf.value]);
     });
     return array;
   }
@@ -183,6 +176,7 @@ export class StatisticsComponent implements OnInit {
   private getHeartRateRangeFrequency(values: number[], range: { low: number; high: number }): number {
     return values.filter(val => val > range.low && val <= range.high).length / values.length;
   }
+
   public getHeartRatePercentData(): Array<[string, number]> {
     const values = this.lastSession.heart_frequency.map(hr => hr.value);
     const light = this.getHeartRateRangeFrequency(values, HeartRateRange.LIGHT);
@@ -199,6 +193,7 @@ export class StatisticsComponent implements OnInit {
 
     return array;
   }
+
   public getCaloriesBarChartData(): Array<[Date, number]> {
     // generates ordered date to simulate heartrates timestamp
     const array: Array<[Date, number]> = [];
@@ -222,17 +217,6 @@ export class StatisticsComponent implements OnInit {
   //#endregion
 
 
-  private createOrderedRandomDates(n: number): Date[] {
-    const dates = [];
-    dates[0] = new Date();
-    for (let i = 1; i < this.lastSession.heart_frequency.length; i++) {
-      dates.push(this.nextDate(dates[i - 1]));
-    }
-    return dates.sort((d1, d2) => d2 - d1);
-  }
-  private nextDate(date): Date {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-  }
 
   ngOnInit() {
 

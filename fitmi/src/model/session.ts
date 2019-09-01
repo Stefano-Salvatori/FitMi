@@ -32,4 +32,5 @@ export interface Session {
     type: SessionType;
     pedometer: PedometerData;
     heart_frequency: HeartRateValue[];
+    gps_path: Coordinates[];
 }

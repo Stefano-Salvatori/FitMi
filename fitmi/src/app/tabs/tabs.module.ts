@@ -18,6 +18,7 @@ import { BarChartComponentModule } from '../data-visualization/bar-chart/bar-cha
 import { ProfileImageComponent } from '../profile/profile-image/profile-image.component';
 import { AuthModule } from '../auth/auth.module';
 import { HorizontalPercentBarChartComponentModule } from '../data-visualization/horizontal-percent-bar-chart/horizontal-bar-chart.module';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 
 @NgModule({

@@ -8,7 +8,7 @@
 
   <!-- Out of ion-content to keep it fixed at top-->
   <!-- Segment with default selection -->
-    <ion-segment *ngIf="this.allSessions.length>0" (ionChange)="segmentChanged($event)"
+  <ion-segment *ngIf="this.allSessions.length>0" (ionChange)="segmentChanged($event)"
     value="{{this.SessionPeriods.LAST}}">
     <ion-segment-button value="{{this.SessionPeriods.LAST}}">
       <ion-label>Ultima</ion-label>
@@ -79,6 +79,30 @@
 
           </ion-col>
         </ion-row>
+
+
+        <!--Show user path if the session provides gps_path info-->
+        <ion-row *ngIf="this.lastSession.gps_path.length > 0">
+          <ion-col>
+            <ion-item>
+              <ion-icon slot="start" name="md-map"></ion-icon>
+              <h4>Percorso</h4>
+            </ion-item>
+            <ion-item>
+              <agm-map [latitude]="this.lastSession.gps_path[0].latitude" [longitude]="this.lastSession.gps_path[0].longitude">
+                <agm-polyline strokeColor="red">
+                  <agm-polyline-point *ngFor="let coord of this.lastSession.gps_path" [latitude]="coord.latitude"
+                    [longitude]="coord.longitude">
+                  </agm-polyline-point>
+                </agm-polyline>
+              </agm-map>
+            </ion-item>
+
+          </ion-col>
+        </ion-row>
+
+
+
         <ion-row>
           <ion-col size="12">
             <ion-item>
@@ -179,7 +203,7 @@
         </ion-card>
 
         <ion-grid>
-         
+
           <!--Calories bar chart-->
           <ion-row>
             <ion-col size="12">
@@ -222,7 +246,7 @@
               </ion-item>
             </ion-col>
           </ion-row>
-         
+
           <!--Total Steps-->
           <ion-row>
             <ion-col size="12">
@@ -254,7 +278,7 @@
             </ion-col>
           </ion-row>
           -->
-                  
+
           <!--Total Distance-->
           <ion-row>
             <ion-col size="12">
@@ -286,7 +310,7 @@
             </ion-col>
 
           </ion-row>
-       
+
         </ion-grid>
       </ng-template>
     </ng-template>
