@@ -1,10 +1,8 @@
-import { Component, OnInit, NgZone, OnDestroy, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { OnInit, NgZone, OnDestroy, Output, EventEmitter, Component, ViewEncapsulation } from '@angular/core';
 import { SessionDataService } from '../session-data.service';
 import { LineChartService } from 'src/app/data-visualization/line-chart/line-chart.service';
-import * as d3 from 'd3';
-import { HeartRateValue, HeartRateRange } from 'src/model/session';
-import { PedometerData } from 'src/app/miband/pedometer-data';
 import { AlertController } from '@ionic/angular';
+import { ActivityChecker } from './ActivityChecker';
 
 @Component({
   selector: 'app-session-data',
@@ -13,36 +11,6 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./session-data.component.scss'],
 })
 
-export class ActivityChecker {
-
-
-  private timer;
-  private _onNoActivityObserved;
-  constructor(private maxNoActivityTime: number) {
-
-  }
-
-  private isInRange(val: number, range: { low: number, high: number }) {
-    return val > range.low && val < range.high;
-
-  }
-
-  public onNoActivityObserved(fun: () => void): void{
-    this._onNoActivityObserved = fun;
-  }
-  public updateHeartRate(newHeartRate: HeartRateValue) {
-    if (this.isInRange(newHeartRate.value, HeartRateRange.LIGHT)) {
-     this.timer = setTimeout(
-        () => this._onNoActivityObserved,
-        this.maxNoActivityTime
-      );
-    } else {
-      clearTimeout(this.timer);
-    }
-
-  }
-
-}
 export class SessionDataComponent implements OnInit, OnDestroy {
 
   private chrono: NodeJS.Timer;

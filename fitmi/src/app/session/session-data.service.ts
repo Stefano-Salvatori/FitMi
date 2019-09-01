@@ -46,13 +46,14 @@ export class SessionDataService {
     end: new Date(),
     type: SessionType.RUN,
     pedometer: new PedometerData(),
-    heart_frequency: []
+    heart_frequency: [],
+    gps_path: []
   };
 
   constructor(private miBand: MiBandService,
-    private http: HttpClientService,
-    private badgesService: BadgeService,
-    private auth: AuthService) {
+              private http: HttpClientService,
+              private badgesService: BadgeService,
+              private auth: AuthService) {
 
   }
 
@@ -88,6 +89,7 @@ export class SessionDataService {
   public makeBandVibrate(): void {
     this.miBand.sendNotification(Notification.VIBRATE);
   }
+
   async stopSession(): Promise<void> {
     this.currentSession.end = new Date();
     this.miBand.stopHeartRateMonitoring();
@@ -146,6 +148,10 @@ export class SessionDataService {
 
   get endTime() {
     return this.currentSession.end;
+  }
+
+  public updateGpsPath(newCoord: Coordinates) {
+    this.currentSession.gps_path.push(newCoord);
   }
 
   private saveCurrentSession(): Promise<void> {

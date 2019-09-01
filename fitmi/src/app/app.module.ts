@@ -28,8 +28,8 @@ import { SessionTabsComponent } from './session/session-tabs/session-tabs.compon
 import { SessionMapComponent } from './session/session-map/session-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
-import { LineChartComponentModule } from './data-visualization/line-chart/line-chart.module';
 import { PublicProfileComponent } from './profile/public/public-profile.component';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
   entryComponents: [PublicProfileComponent],
@@ -62,6 +62,7 @@ import { PublicProfileComponent } from './profile/public/public-profile.componen
   ],
   providers: [
     BluetoothLE,
+    Geolocation,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
