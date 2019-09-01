@@ -51,14 +51,15 @@ import { PublicProfileComponent } from './profile/public/public-profile.componen
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule,
     FormsModule,
     HttpClientModule,
     AuthModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCubnab2Mn3cbhQH3CDWpmHYGgt5iB8MP4'
     }),
-    NgCircleProgressModule.forRoot({})
+    NgCircleProgressModule.forRoot({}),
+    AppRoutingModule,
+
   ],
   providers: [
     BluetoothLE,
