@@ -40,7 +40,7 @@ export class SessionFooterComponent implements OnInit {
     });
   }
 
-  dismissPopover(){
+  dismissPopover() {
     this.currentPopover.dismiss();
   }
 

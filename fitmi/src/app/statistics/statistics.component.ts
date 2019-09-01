@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateRange } from 'src/model/session';
-import { SessionType } from 'src/model/session-type';
-import { PedometerData } from '../miband/pedometer-data';
 import { Router } from '@angular/router';
 
 
@@ -38,6 +36,7 @@ export class StatisticsComponent implements OnInit {
 
     // get sessions data
     this.loadData();
+    
   }
 
   async loadData() {
@@ -59,6 +58,7 @@ export class StatisticsComponent implements OnInit {
         this.heartRateDataPercent = this.getHeartRatePercentData();
         this.caloriesBarChartData = this.getCaloriesBarChartData();
         this.isDataAvailable = true;
+        console.log(this.lastSession);
 
       })
       .catch(err => {
@@ -172,7 +172,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   public getHeartRatePercentData(): Array<[string, number]> {
-    if(this.lastSession){
+    if (this.lastSession) {
       const values = this.lastSession.heart_frequency.map(hr => hr.value);
       const light = this.getHeartRateRangeFrequency(values, HeartRateRange.LIGHT);
       const weightLoss = this.getHeartRateRangeFrequency(values, HeartRateRange.WEIGHT_LOSS);
@@ -197,7 +197,7 @@ export class StatisticsComponent implements OnInit {
     // generates ordered date to simulate heartrates timestamp
     const array: Array<[Date, number]> = [];
     this.getAllSessionsInSelectedPeriod().forEach(s => {
-      array.push([new Date(s.start), +s.pedometer.calories]);
+        array.push([new Date(s.start), +s.pedometer.calories]);
     });
 
     return array;
