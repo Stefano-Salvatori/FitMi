@@ -19,6 +19,8 @@ import { ProfileImageComponent } from '../profile/profile-image/profile-image.co
 import { AuthModule } from '../auth/auth.module';
 import { HorizontalPercentBarChartComponentModule } from '../data-visualization/horizontal-percent-bar-chart/horizontal-bar-chart.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { BadgePopoverComponent } from '../profile/badge-popover/badge-popover.component';
+import { PublicProfileComponent } from '../profile/public/public-profile.component';
 
 
 @NgModule({
@@ -40,10 +42,11 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     StatisticsComponent,
     ProfileComponent,
     ProfileImageComponent,
+    BadgePopoverComponent,
     DeviceConnectionComponent,
-    MiBandTestComponent,
+    MiBandTestComponent
   ],
-  entryComponents: [ProfileImageComponent]
+  entryComponents: [BadgePopoverComponent, ProfileImageComponent]
 })
 export class TabsPageModule {
 }

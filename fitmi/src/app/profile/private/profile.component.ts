@@ -4,11 +4,12 @@ import { AuthService } from '../../auth/auth.service';
 import { CircleProgressComponent } from 'ng-circle-progress';
 import { Badge } from 'src/model/badge';
 import { serverAddress } from 'src/server-data';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 import { ProfileImageComponent } from './../profile-image/profile-image.component';
 import { HttpClientService } from '../../http-client.service';
 import { BadgeService } from '../../badge.service';
 import { User } from 'src/model/user';
+import { BadgePopoverComponent } from '../badge-popover/badge-popover.component';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +22,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   @ViewChild(CircleProgressComponent, { static: false }) progress!: CircleProgressComponent;
 
 
+  isDataAvailable = false;
   user: User = new User();
   currentLevel = 0;
   userBadges: Badge<any>[] = [];
@@ -31,7 +33,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   constructor(private auth: AuthService,
               private http: HttpClientService,
               private badgeService: BadgeService,
-              public modalController: ModalController) {
+              public modalController: ModalController,
+              public popoverController: PopoverController) {
   }
 
 
@@ -44,6 +47,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       this.userBadges.push(allBadges.find(badge => badge._id === badgeId));
     });
     this.lockedBadges = allBadges.filter(badge => !this.userBadges.includes(badge));
+    this.isDataAvailable = true;
   }
 
   ngAfterViewInit() {
@@ -86,6 +90,23 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         serverAddress + '/images/user_pics/man.svg' :
         serverAddress + '/images/user_pics/girl-1.svg';
     }
+  }
+
+  onBadgeClick(badge: Badge<any>) {
+    this.presentPopover(badge);
+  }
+
+  async presentPopover(badge: Badge<any>) {
+    const popover = await this.popoverController.create({
+      component: BadgePopoverComponent,
+      componentProps: {
+        badge
+      },
+      translucent: true,
+      showBackdrop: true,
+      cssClass: 'badge-popover-style',
+    });
+    return await popover.present();
   }
 
   // tslint:disable-next-line: variable-name

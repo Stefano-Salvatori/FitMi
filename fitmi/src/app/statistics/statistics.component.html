@@ -26,7 +26,7 @@
 </ion-header>
 
 
-<ion-content ion-justify-content-center>
+<ion-content ion-justify-content-center *ngIf="isDataAvailable">
   <div *ngIf="this.allSessions.length>0; then displayData else noSessionsAvailable"></div>
 
   <ng-template #displayData>
@@ -81,11 +81,12 @@
         </ion-row>
 
 
-        <!--Show user path if the session provides gps_path info-->
-        <ion-row *ngIf="this.lastSession.gps_path.length > 0">
-          <ion-col>
-            <ion-item>
-              <ion-icon slot="start" name="md-map"></ion-icon>
+        <!--Show user path if the session provides gps_path info
+       
+          <ion-row *ngIf="this.lastSession.gps_path.length > 0">
+            <ion-col>
+              <ion-item>
+                <ion-icon slot="start" name="md-map"></ion-icon>
               <h4>Percorso</h4>
             </ion-item>
             <ion-item>
@@ -101,7 +102,7 @@
           </ion-col>
         </ion-row>
 
-
+-->
 
         <ion-row>
           <ion-col size="12">

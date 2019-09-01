@@ -5,8 +5,9 @@ import { User } from 'src/model/user';
 import { serverAddress } from 'src/server-data';
 import { Badge } from 'src/model/badge';
 import { BadgeService } from 'src/app/badge.service';
-import { ModalController } from '@ionic/angular';
+import {  PopoverController } from '@ionic/angular';
 import { LeaderboardComponent } from 'src/app/leaderboard/leaderboard.component';
+import { BadgePopoverComponent } from '../badge-popover/badge-popover.component';
 
 @Component({
   selector: 'app-public-profile',
@@ -24,7 +25,7 @@ export class PublicProfileComponent implements OnInit, AfterViewInit {
   public lockedBadges: Badge<any>[] = [];
   public server = serverAddress;
 
-  constructor(private badgeService: BadgeService) {
+  constructor(private badgeService: BadgeService, private popoverController: PopoverController) {
 
   }
 
@@ -40,10 +41,28 @@ export class PublicProfileComponent implements OnInit, AfterViewInit {
     this.progress.animate(0, this.user.score % 100);
   }
 
- dismissModal() {
-   this.controller.dismissCurrentModal();
-  
-}
+  dismissModal() {
+    this.controller.dismissCurrentModal();
+
+  }
+
+  onBadgeClick(badge: Badge<any>) {
+    this.presentPopover(badge);
+  }
+
+  async presentPopover(badge: Badge<any>) {
+    const popover = await this.popoverController.create({
+      component: BadgePopoverComponent,
+      componentProps: {
+        badge
+      },
+      translucent: true,
+      showBackdrop: true,
+      cssClass: 'badge-popover-style',
+    });
+    return await popover.present();
+  }
+
 
 
   calculateAge(birthDate: Date): number {

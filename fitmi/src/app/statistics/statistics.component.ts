@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { AuthService } from '../auth/auth.service';
 import { Session, HeartRateRange } from 'src/model/session';
@@ -21,6 +21,7 @@ export class StatisticsComponent implements OnInit {
     WEEK: 'settimana',
     YEAR: 'anno',
   };
+  public isDataAvailable = false;
   public lastSession: Session;
   public allSessions: Session[] = [];
   public timePeriod = this.SessionPeriods.LAST;
@@ -30,28 +31,17 @@ export class StatisticsComponent implements OnInit {
   private dataPath = '';
 
   constructor(private router: Router,
-              private http: HttpClientService,
-              private auth: AuthService) {
+    private http: HttpClientService,
+    private auth: AuthService) {
 
-  this.dataPath = '/users/' + this.auth.getUser()._id + '/sessions';
+    this.dataPath = '/users/' + this.auth.getUser()._id + '/sessions';
 
-      // init lastSession
-  this.lastSession = {
-        start: new Date('01-01-1970 00:00:00'),
-        end: new Date('01-01-1970 00:00:00'),
-        type: SessionType.RUN,
-        pedometer: new PedometerData(),
-        heart_frequency: [],
-        gps_path: []
-      };
-
-  this.allSessions.push(this.lastSession);
-  // get sessions data
-  this.loadData();
+    // get sessions data
+    this.loadData();
   }
 
   async loadData() {
-    await this.http.getMock<Session[]>(this.dataPath)
+    await this.http.get<Session[]>(this.dataPath)
       .toPromise()
       .then(sessions => {
 
@@ -68,6 +58,7 @@ export class StatisticsComponent implements OnInit {
         this.heartRateData = this.getHeartRateData();
         this.heartRateDataPercent = this.getHeartRatePercentData();
         this.caloriesBarChartData = this.getCaloriesBarChartData();
+        this.isDataAvailable = true;
 
       })
       .catch(err => {
@@ -134,7 +125,7 @@ export class StatisticsComponent implements OnInit {
     const hfValues = this.lastSession.heart_frequency.map(hf => hf.value);
     return Math.min(...hfValues);
   }
-  
+
   public maxHeartRate(): number {
     const hfValues = this.lastSession.heart_frequency.map(hf => hf.value);
     return Math.max(...hfValues);
@@ -167,9 +158,12 @@ export class StatisticsComponent implements OnInit {
 
   public getHeartRateData(): Array<[Date, number]> {
     const array: Array<[Date, number]> = [];
-    this.lastSession.heart_frequency.forEach(hf => {
-      array.push([new Date(hf.timestamp), +hf.value]);
-    });
+    if (this.lastSession) {
+      this.lastSession.heart_frequency.forEach(hf => {
+        array.push([new Date(hf.timestamp), +hf.value]);
+      });
+    }
+
     return array;
   }
 
@@ -178,20 +172,25 @@ export class StatisticsComponent implements OnInit {
   }
 
   public getHeartRatePercentData(): Array<[string, number]> {
-    const values = this.lastSession.heart_frequency.map(hr => hr.value);
-    const light = this.getHeartRateRangeFrequency(values, HeartRateRange.LIGHT);
-    const weightLoss = this.getHeartRateRangeFrequency(values, HeartRateRange.WEIGHT_LOSS);
-    const aerobic = this.getHeartRateRangeFrequency(values, HeartRateRange.AEROBIC);
-    const anaerobic = this.getHeartRateRangeFrequency(values, HeartRateRange.ANAEROBIC);
+    if(this.lastSession){
+      const values = this.lastSession.heart_frequency.map(hr => hr.value);
+      const light = this.getHeartRateRangeFrequency(values, HeartRateRange.LIGHT);
+      const weightLoss = this.getHeartRateRangeFrequency(values, HeartRateRange.WEIGHT_LOSS);
+      const aerobic = this.getHeartRateRangeFrequency(values, HeartRateRange.AEROBIC);
+      const anaerobic = this.getHeartRateRangeFrequency(values, HeartRateRange.ANAEROBIC);
 
-    const array: Array<[string, number]> = [
-      ['Anaerobico', anaerobic * 100],
-      ['Aerobico', aerobic * 100],
-      ['Cardio', weightLoss * 100],
-      ['Leggero', light * 100],
-    ];
+      const array: Array<[string, number]> = [
+        ['Anaerobico', anaerobic * 100],
+        ['Aerobico', aerobic * 100],
+        ['Cardio', weightLoss * 100],
+        ['Leggero', light * 100],
+      ];
 
-    return array;
+      return array;
+    } else {
+      return [];
+    }
+
   }
 
   public getCaloriesBarChartData(): Array<[Date, number]> {

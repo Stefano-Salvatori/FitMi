@@ -3,7 +3,7 @@
     <ion-title>Leaderboard</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content fullsreen>
+<ion-content fullsreen *ngIf="isDataAvailable">
   <ion-list>
     <ion-item-divider>
       <ion-label>
@@ -13,11 +13,11 @@
     <ion-list-header>
       <ion-item (click)="onUserClick(0)">
         <ion-avatar slot="start">
-          <img src={{profileImage(this.users[0])}}>
+          <img src={{profileImage(this.getLeader())}}>
         </ion-avatar>
         <ion-label>
-          <h2>1 {{this.users[0].username}}</h2>
-          <h3>Fitness Points: <b>{{this.users[0].score}}</b></h3>
+          <h2>1 {{this.getLeader().username}}</h2>
+          <h3>Fitness Points: <b>{{this.getLeader().score}}</b></h3>
         </ion-label>
         <ion-icon slot="end" name="md-star" id="leaderStarIcon"></ion-icon>
       </ion-item>
@@ -45,10 +45,12 @@
 
 
   <footer id="userRow" class="flex-container">
-    <div>{{currentUserRank}}</div>
+    <div>
+      <ion-label>{{currentUserRank}}</ion-label>
+    </div>
     <div><img src={{profileImage(currentUser)}} id="userImg" /></div>
-    <div>{{currentUser.username}}</div>
-    <div>{{currentUser.score}}</div>
+    <div><ion-label>{{currentUser.username}}</ion-label></div>
+    <div><ion-label>{{currentUser.score}}</ion-label></div>
   </footer>
 
 

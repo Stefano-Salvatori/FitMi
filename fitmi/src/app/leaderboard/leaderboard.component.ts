@@ -5,6 +5,7 @@ import { PublicProfileComponent } from '../profile/public/public-profile.compone
 import { USERS } from './mock_users';
 import { User } from 'src/model/user';
 import { serverAddress } from 'src/server-data';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-leaderboard',
@@ -15,19 +16,35 @@ import { serverAddress } from 'src/server-data';
 
 export class LeaderboardComponent implements OnInit {
 
-  users: User[] = USERS.sort((u1, u2) => u2.score - u1.score);
-  currentUserRank = 1;
+  public isDataAvailable = false;
+  users: User[] = [];
+  currentUserRank = 0;
   currentUser = USERS[0];
   currentModal: HTMLIonModalElement;
 
   constructor(private httpClient: HttpClientService,
-              public modalController: ModalController) {
+              private auth: AuthService,
+              public modalController: ModalController,
+  ) {
 
-    // currentUser = auth.getUser();
-    // httpClient.get<User[]>('/users').subscribe(res =>  this.users = res);
+  }
+
+  public getLeader(): User {
+      return this.users[0];
+  }
+  async getUsers() {
+    this.currentUser = this.auth.getUser();
+
+    await this.httpClient.get<User[]>('/users').subscribe(res => {
+      this.users = res.sort((u1, u2) => u2.score - u1.score);
+      this.currentUserRank = this.users.map(u => u._id).indexOf(this.currentUser._id) + 1;
+      this.isDataAvailable = true;
+    });
   }
 
   ngOnInit() {
+    this.getUsers();
+
   }
 
   onUserClick(userIndex: number) {
@@ -47,14 +64,20 @@ export class LeaderboardComponent implements OnInit {
   public dismissCurrentModal() {
     this.currentModal.dismiss();
   }
+
   profileImage(user: User): string {
-    if (user.profileImg !== undefined) {
-      return serverAddress + '/images/user_pics/' + user.profileImg;
+    if (user) {
+      if (user.profileImg !== undefined) {
+        return serverAddress + '/images/user_pics/' + user.profileImg;
+      } else {
+        return user.gender === 'M' ?
+          serverAddress + '/images/user_pics/man.svg' :
+          serverAddress + '/images/user_pics/girl-1.svg';
+      }
     } else {
-      return user.gender === 'M' ?
-        serverAddress + '/images/user_pics/man.svg' :
-        serverAddress + '/images/user_pics/girl-1.svg';
+      return '';
     }
+
   }
 
 }

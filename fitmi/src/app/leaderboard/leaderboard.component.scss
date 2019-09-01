@@ -1,15 +1,18 @@
 
 footer {
   background: var(--ion-color-dark);
-color: white;
- height: 12%;
+  color: white;
+  height: 12%;
+  border-radius: 2%;
+
+
 }
 
 .flex-container {
     position: fixed;
     bottom: 0;
-    width: 100%;
-  display: flex;
+     margin: auto;
+   display: flex;
   flex-wrap: nowrap;
   align-items: center;
    justify-content: space-between;

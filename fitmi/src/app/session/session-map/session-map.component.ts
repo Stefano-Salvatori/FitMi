@@ -16,8 +16,8 @@ export class SessionMapComponent implements OnInit {
   public coordinates: Coordinates[] = [];
   public currentPos: Coordinates;
 
-  constructor(private session: SessionDataService, private geolocation: Geolocation) {
-    this.geolocation.getCurrentPosition().then((resp) => {
+  constructor(private session: SessionDataService/*, private geolocation: Geolocation*/) {
+    /*this.geolocation.getCurrentPosition().then((resp) => {
       this.currentPos = resp.coords;
 
       // save position each 5s
@@ -25,17 +25,17 @@ export class SessionMapComponent implements OnInit {
 
     }).catch((error) => {
      this.onGeoLocationError(error);
-    });
+    });*/
   }
 
 
   private saveGeoPosition() {
-    this.geolocation.getCurrentPosition().then((resp) => {
+    /*this.geolocation.getCurrentPosition().then((resp) => {
       this.coordinates.push(resp.coords);
       this.session.updateGpsPath(resp.coords);
     }).catch((error) => {
      this.onGeoLocationError(error);
-    });
+    });*/
   }
 
   private onGeoLocationError(error) {

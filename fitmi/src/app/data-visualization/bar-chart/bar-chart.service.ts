@@ -159,8 +159,6 @@ export class BarChartService {
 
   }
 
-
-
   private buildChart() {
     this.host.html('');
     this.xAxis = d3.axisBottom(this.xScale);

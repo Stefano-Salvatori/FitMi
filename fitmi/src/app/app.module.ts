@@ -30,14 +30,16 @@ import { AgmCoreModule } from '@agm/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { PublicProfileComponent } from './profile/public/public-profile.component';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { SessionRecapComponent } from './session/session-recap/session-recap.component';
 
 @NgModule({
-  entryComponents: [PublicProfileComponent],
+  entryComponents: [PublicProfileComponent, SessionRecapComponent],
   declarations: [
     AppComponent,
     NotFoundResourceComponent,
     LoginComponent,
     PublicProfileComponent,
+    SessionRecapComponent,
     SignInComponent,
     SessionStatsComponent,
     SessionHeaderComponent,

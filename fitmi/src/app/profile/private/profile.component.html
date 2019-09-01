@@ -9,20 +9,10 @@
     <ion-row align-items-center justify-content-center>
       <ion-col align-items-center justify-content-center size="7">
         <div class="profile-photo-div">
-          <circle-progress class="profile-photo" 
-          [percent]="85" 
-          [backgroundOpacity]="1" 
-          [radius]="100" 
-          [toFixed]="0"
-          [maxPercent]="100" 
-          [outerStrokeWidth]="5" 
-          [outerStrokeColor]="'#058dba'" 
-          [animationDuration]="800"
-          [showTitle]="false" 
-          [showSubtitle]="false" 
-          [showUnits]="false" 
-          [showInnerStroke]="false"
-           [responsive]="true">
+          <circle-progress class="profile-photo" [percent]="85" [backgroundOpacity]="1" [radius]="100" [toFixed]="0"
+            [maxPercent]="100" [outerStrokeWidth]="5" [outerStrokeColor]="'#058dba'" [animationDuration]="800"
+            [showTitle]="false" [showSubtitle]="false" [showUnits]="false" [showInnerStroke]="false"
+            [responsive]="true">
           </circle-progress>
           <img (click)="editImage()" class="profile-img" src="{{profileImage()}}" alt="Profile image">
         </div>
@@ -46,13 +36,13 @@
             </ion-col>
           </ion-item>
 
-          
+
           <ion-item lines="none">
-              <ion-col size="12">
-                <ion-label color="medium">Livello</ion-label>
-                <ion-label color="dark"><strong>{{currentLevel+1}}</strong></ion-label>
-              </ion-col>
-            </ion-item>
+            <ion-col size="12">
+              <ion-label color="medium">Livello</ion-label>
+              <ion-label color="dark"><strong>{{currentLevel+1}}</strong></ion-label>
+            </ion-col>
+          </ion-item>
 
         </ion-list>
       </ion-col>
@@ -61,60 +51,85 @@
   </ion-grid>
 
   <div padding class="badges">
-    <ion-label padding><strong>Badges</strong></ion-label>
+    <ion-item>
+      <ion-label><strong>Badges</strong></ion-label>
+    </ion-item>
     <ion-row nowrap padding>
       <ion-col *ngFor="let badge of userBadges" size-xl="1" size-lg="1" size-md="2" size-sm="3" size-xs="3">
-          <ion-img [src]="server+'/images/badges/'+badge.image"></ion-img>        
+        <ion-img [src]="server+'/images/badges/'+badge.image" (click)="onBadgeClick(badge)"></ion-img>
       </ion-col>
       <ion-col *ngFor="let badge of lockedBadges" size-xl="1" size-lg="1" size-md="2" size-sm="3" size-xs="3">
-          <ion-img class="locked" [src]="server+'/images/badges/'+badge.image"></ion-img>        
+        <ion-img class="locked" [src]="server+'/images/badges/'+badge.image" (click)="onBadgeClick(badge)"></ion-img>
       </ion-col>
     </ion-row>
   </div>
 
   <div padding class="informations">
-    <ion-label padding><strong>Informazioni</strong></ion-label>
+    <ion-item>
+      <ion-label><strong>Informazioni</strong></ion-label>
+    </ion-item>
     <ion-grid fixed no-margin>
+
+      <!--user gender-->
       <ion-row>
-        <ion-col size="6">
+        <ion-col size="12">
           <ion-item lines="none">
-            <ion-col size="12">
-              <ion-label color="medium">Sesso</ion-label>
-              <ion-label color="dark"><strong>{{user.gender}}</strong></ion-label>
-            </ion-col>
+            <ion-label slot="start">
+              <h4 class="label">Sesso</h4>
+            </ion-label>
+            <ion-label>
+              <h2 class="value">{{user.gender}}</h2>
+            </ion-label>
+            <ion-icon slot="end" name="md-create"></ion-icon>
           </ion-item>
-
-        </ion-col>
-        <ion-col size="6">
-          <ion-item lines="none">
-            <ion-col size="12">
-              <ion-label color="medium">Età</ion-label>
-              <ion-label color="dark"><strong>{{calculateAge(user.birthDate)}}</strong></ion-label>
-            </ion-col>
-          </ion-item>
-
         </ion-col>
       </ion-row>
+
+      <!--user age-->
       <ion-row>
-        <ion-col size="6">
+        <ion-col size="12">
           <ion-item lines="none">
-            <ion-col size="12">
-              <ion-label color="medium">Altezza</ion-label>
-              <ion-label color="dark"><strong>{{user.height}}</strong></ion-label>
-            </ion-col>
+            <ion-label slot="start">
+              <h4 class="label">Età</h4>
+            </ion-label>
+            <ion-label>
+              <h2 class="value">{{calculateAge(user.birthDate)}}</h2>
+            </ion-label>
+            <ion-icon slot="end" name="md-create"></ion-icon>
           </ion-item>
-
-        </ion-col>
-        <ion-col size="6">
-          <ion-item lines="none">
-            <ion-col size="12">
-              <ion-label color="medium">Peso</ion-label>
-              <ion-label color="dark"><strong>{{user.weight}}</strong></ion-label>
-            </ion-col>
-          </ion-item>
-
         </ion-col>
       </ion-row>
+
+      <!--user height-->
+      <ion-row>
+        <ion-col size="12">
+          <ion-item lines="none">
+            <ion-label slot="start">
+              <h4 class="label">Altezza</h4>
+            </ion-label>
+            <ion-label>
+              <h2 class="value">{{user.height}}</h2>
+            </ion-label>
+            <ion-icon slot="end" name="md-create"></ion-icon>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!--user weight-->
+      <ion-row>
+        <ion-col size="12">
+          <ion-item lines="none">
+            <ion-label slot="start">
+              <h4 class="label">Peso</h4>
+            </ion-label>
+            <ion-label>
+              <h2 class="value">{{user.weight}}</h2>
+            </ion-label>
+            <ion-icon slot="end" name="md-create"></ion-icon>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
 
     </ion-grid>
   </div>

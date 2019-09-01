@@ -1,0 +1,44 @@
+<ion-grid fixed>
+  <ion-row>
+    <ion-col size="12">
+      <ion-item>
+        <ion-label>
+          <h2><strong>Sessione Completata!</strong></h2>
+        </ion-label>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-item lines="none">
+        <ion-label slot="start">
+          <h4 class="label">Tipologia</h4>
+        </ion-label>
+        <ion-label>
+          <h2 class="value">{{this.session.type}}</h2>
+        </ion-label>
+        <ion-icon slot="end" name="md-fitness"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="12">
+      <ion-item lines="none">
+        <ion-label slot="start">
+          <h4 class="label">Durata</h4>
+        </ion-label>
+        <ion-label>
+          <h2 class="value">{{this.sessionDuration()}}</h2>
+        </ion-label>
+        <ion-icon slot="end" name="md-time"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+<ion-row>
+  <ion-col size="12">
+    <ion-button expand="block" (click)="dismissPopover()" >Continua</ion-button>
+  </ion-col>
+</ion-row>
+</ion-grid>

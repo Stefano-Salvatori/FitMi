@@ -57,6 +57,9 @@ export class SessionDataService {
 
   }
 
+  public getFitnessSession() {
+    return this.currentSession;
+  }
   async startSession() {
     this.currentSession.start = new Date();
     await this.miBand.findMiBand();

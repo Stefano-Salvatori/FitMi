@@ -29,3 +29,15 @@
 @import "theme/variables.scss";
 
 
+.badge-popover-style .popover-content {
+    background: transparent !important;
+    border: none;
+    box-shadow: none;
+}
+
+.session-popover-style .popover-content {
+    width: 320px;
+    /*background: transparent !important;
+    border: none;
+    box-shadow: none;*/
+}

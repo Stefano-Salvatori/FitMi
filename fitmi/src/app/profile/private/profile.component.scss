@@ -26,7 +26,6 @@
 
 }
 
-
 .informations {
     display: flex;
     flex-direction: column;
@@ -45,4 +44,13 @@ ion-modal {
 .locked {
     filter: grayscale(1) opacity(0.5);
 
+}
+
+.value {
+  color: var(--ion-color-dark);
+  font-weight: bold;
+}
+
+.label {
+  color: var(--ion-color-medium);
 }
