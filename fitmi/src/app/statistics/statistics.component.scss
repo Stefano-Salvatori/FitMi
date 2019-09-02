@@ -20,3 +20,18 @@ ion-label {
   font-size: 12px;
 }
 
+agm-map {
+  height: 200px;
+  width: 100%;
+}
+
+img[src*="https://maps.gstatic.com/mapfiles/api-3/images/google4_hdpi.png"]{display:none !important}
+
+a[href^="https://www.google.com/intl/it-IT_US/help/terms_maps.html"]
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display:none;
+}
+.gmnoprint div {
+    background:none !important;
+}
+

@@ -26,14 +26,14 @@ exports.add_session = (req, res) => {
 			var newSession = new Session(req.body);
 			user.sessions.push(newSession.id);
 			user.score += 10;
-			user.statistics.totalCalories += newSession.calories;
-			user.score += Math.floor(newSession.calories / 10)
+			user.statistics.totalCalories += newSession.pedometer.calories;
+			user.score += Math.floor(newSession.pedometer.calories / 10)
 
-			user.statistics.totalSteps += newSession.steps;
-			user.score += Math.floor(newSession.steps / 1000)
+			user.statistics.totalSteps += newSession.pedometer.steps;
+			user.score += Math.floor(newSession.pedometer.steps / 1000)
 
-			user.statistics.totalKm += newSession.distance;
-			user.score += Math.floor(newSession.distance / 1000)
+			user.statistics.totalKm += newSession.pedometer.distance;
+			user.score += Math.floor(newSession.pedometer.distance / 1000)
 
 			user.score += Math.floor(newSession.totalMins()/15);
 
