@@ -36,6 +36,20 @@
     </ion-col>
   </ion-row>
 
+    <ion-row>
+      <ion-col size="12">
+        <ion-item lines="none">
+          <ion-label slot="start">
+            <h4 class="label">Fitness Points</h4>
+          </ion-label>
+          <ion-label>
+            <h2 class="value">{{ this.sessionScore }}</h2>
+          </ion-label>
+          <ion-icon slot="end" name="md-star" style="fill: gold"></ion-icon>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
 <ion-row>
   <ion-col size="12">
     <ion-button expand="block" (click)="dismissPopover()" >Continua</ion-button>

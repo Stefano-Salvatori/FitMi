@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Goal, GoalType } from '../../model/goal';
 import { MiBandService, Notification } from '../miband/miband.service';
@@ -49,6 +49,8 @@ export class SessionDataService {
     heart_frequency: [],
     gps_path: []
   };
+  private oldScore = 0;
+  private sessionScore = 0;
 
   constructor(private miBand: MiBandService,
               private http: HttpClientService,
@@ -61,6 +63,7 @@ export class SessionDataService {
     return this.currentSession;
   }
   async startSession() {
+    this.oldScore = this.auth.getUser().score;
     this.currentSession.start = new Date();
     await this.miBand.findMiBand();
     this.miBand.startHeartRateMonitoring();
@@ -98,14 +101,19 @@ export class SessionDataService {
     this.miBand.stopHeartRateMonitoring();
     this.miBand.unsubscribeHeartRate();
     clearInterval(this.pedometerDataTimer);
+
     await this.saveCurrentSession();
     // Before checking badges we update the user so that we work on statistics up-to-date
     await this.auth.updateCurrentUser();
     await this.checkBadges();
-    console.log('badges CHECKED');
     // After checking badges we update the user so that badges can be showed in the application
     await this.auth.updateCurrentUser();
 
+    this.sessionScore = this.auth.getUser().score - this.oldScore;
+  }
+
+  getSessionScore(): number {
+    return this.sessionScore;
   }
 
   get heartRateObservable(): Observable<HeartRateValue> {
@@ -162,6 +170,7 @@ export class SessionDataService {
     return new Promise((resolve, reject) => {
       this.http.post('/users/' + currentUser._id + '/sessions', this.currentSession)
         .subscribe(res => {
+
           resolve();
         }, error => reject());
     });
@@ -183,9 +192,9 @@ export class SessionDataService {
 
   private addBadgeToUser(badge: Badge<any>, user: User): Promise<void> {
     return new Promise((resolve, reject) => {
+      this.badgesService.newBadge(badge);
       this.http.post('/users/' + user._id + '/badges', badge)
         .subscribe(res => {
-          this.badgesService.newBadge(badge);
           resolve();
         }, err => reject());
     });

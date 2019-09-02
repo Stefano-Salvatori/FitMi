@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Session } from 'src/model/session';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-session-recap',
@@ -10,6 +9,7 @@ import { Router } from '@angular/router';
 export class SessionRecapComponent implements OnInit {
 
   @Input() session: Session;
+  @Input() sessionScore: number;
   @Input() controller: any;
   constructor() {
   }

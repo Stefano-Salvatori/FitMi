@@ -50,7 +50,7 @@
 
 
       <ion-grid>
-        <ion-row>
+        <ion-row *ngIf="this.lastSession.heart_frequency.length > 0">
           <ion-col>
             <ion-item>
               <ion-icon slot="start" name="md-heart" color="danger"></ion-icon>
@@ -81,28 +81,26 @@
         </ion-row>
 
 
-        <!--Show user path if the session provides gps_path info
-       
-          <ion-row *ngIf="this.lastSession.gps_path.length > 0">
-            <ion-col>
-              <ion-item>
-                <ion-icon slot="start" name="md-map"></ion-icon>
-              <h4>Percorso</h4>
-            </ion-item>
+        <!--Show user path if the session provides gps_path info-->
+        
+        <ion-row *ngIf="this.lastSession.gps_path.length > 0">
+          <ion-col>
             <ion-item>
-              <agm-map [latitude]="this.lastSession.gps_path[0].latitude" [longitude]="this.lastSession.gps_path[0].longitude">
-                <agm-polyline strokeColor="red">
-                  <agm-polyline-point *ngFor="let coord of this.lastSession.gps_path" [latitude]="coord.latitude"
-                    [longitude]="coord.longitude">
-                  </agm-polyline-point>
-                </agm-polyline>
-              </agm-map>
-            </ion-item>
-
-          </ion-col>
-        </ion-row>
-
--->
+              <ion-icon slot="start" name="md-map" style="fill: cadetblue"></ion-icon>
+              <h4>Percorso</h4>
+              </ion-item>
+              <ion-item>
+                <agm-map [latitude]="this.lastSession.gps_path[0].latitude" [longitude]="this.lastSession.gps_path[0].longitude">
+                  <agm-polyline strokeColor="red">
+                    <agm-polyline-point *ngFor="let coord of this.lastSession.gps_path" [latitude]="coord.latitude"
+                      [longitude]="coord.longitude">
+                    </agm-polyline-point>
+                  </agm-polyline>
+                </agm-map>
+              </ion-item>
+              
+              </ion-col>
+              </ion-row>
 
         <ion-row>
           <ion-col size="12">
@@ -206,7 +204,7 @@
         <ion-grid>
 
           <!--Calories bar chart-->
-          <ion-row>
+          <ion-row *ngIf="isToDisplayBarChartData()">
             <ion-col size="12">
               <ion-item align-items-center justify-content-center>
                 <ion-icon slot="start" name="md-flame" color="danger"></ion-icon>
