@@ -26,6 +26,8 @@ export class SessionGoalComponent implements OnInit, AfterViewInit {
 
   async ngAfterViewInit() {
     this.progress.units = this.goal.unit;
+    this.progress.title = '0/' + this.goal.threshold;
+
     this.progress.render();
     this.progress.draw(this.progress.percent);
 
@@ -70,7 +72,7 @@ export class SessionGoalComponent implements OnInit, AfterViewInit {
     const previousPrecent = this.progress.percent;
     this.progress.percent += value;
     const step = 100 / this.goal.threshold;
-    this.progress.title = '' + this.progress.percent / step;
+    this.progress.title = '' + (this.progress.percent / step).toFixed(0) + '/' + this.goal.threshold;
     this.progress.render();
     this.progress.animate(previousPrecent, this.progress.percent);
   }

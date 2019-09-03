@@ -12,11 +12,11 @@ export namespace GoalType {
       case GoalType.STEPS:
         return 'passi';
       case GoalType.DISTANCE:
-        return 'km';
+        return 'm';
       case GoalType.TIME:
         return 'min';
       case GoalType.CALORIES:
-        return 'kCal';
+        return 'cal';
       default:
         return '';
     }
