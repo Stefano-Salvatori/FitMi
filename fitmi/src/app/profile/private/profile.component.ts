@@ -31,10 +31,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
 
   constructor(private auth: AuthService,
-    private http: HttpClientService,
-    private badgeService: BadgeService,
-    public modalController: ModalController,
-    public popoverController: PopoverController) {
+              private http: HttpClientService,
+              private badgeService: BadgeService,
+              public modalController: ModalController,
+              public popoverController: PopoverController) {
   }
 
 
@@ -130,7 +130,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   public newHeight: number;
 
 
-  public async modifyConfirm(info: string) {
+  public modifyConfirm(info: string) {
     const currUser = this.auth.getUser();
     const newUser = currUser;
 
@@ -154,7 +154,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
     }
 
-    await this.http.put('/users/' + currUser._id, newUser).subscribe(() => {
+    this.http.put('/users/' + currUser._id, newUser).subscribe(() => {
       this.user = this.auth.getUser();
     });
 
