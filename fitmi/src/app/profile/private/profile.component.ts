@@ -31,10 +31,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
 
   constructor(private auth: AuthService,
-              private http: HttpClientService,
-              private badgeService: BadgeService,
-              public modalController: ModalController,
-              public popoverController: PopoverController) {
+    private http: HttpClientService,
+    private badgeService: BadgeService,
+    public modalController: ModalController,
+    public popoverController: PopoverController) {
   }
 
 
@@ -52,7 +52,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const previousMax =
-      this.currentLevel === 0 ? 0 :  100 * Math.pow(2, this.currentLevel - 1);
+      this.currentLevel === 0 ? 0 : 100 * Math.pow(2, this.currentLevel - 1);
     const nextMax = 100 * Math.pow(2, this.currentLevel);
     const todo = nextMax - previousMax;
     this.progress.animate(0, ((this.user.score - previousMax) / todo) * 100);
@@ -107,6 +107,62 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       cssClass: 'badge-popover-style',
     });
     return await popover.present();
+  }
+
+  public isModifyingGender = false;
+  public isModifyingHeight = false;
+  public isModifyingWeight = false;
+  public isModifyingAge = false;
+
+  public onModifyInfoClick(info: string) {
+    switch (info) {
+      case 'gender': this.isModifyingGender = !this.isModifyingGender; break;
+      case 'age': this.isModifyingAge = !this.isModifyingAge; break;
+      case 'weight': this.isModifyingWeight = !this.isModifyingWeight; break;
+      case 'height': this.isModifyingHeight = !this.isModifyingHeight; break;
+
+    }
+  }
+
+  public newWeight: number;
+  public newGender: string;
+  public newBirthDate: string;
+  public newHeight: number;
+
+
+  public async modifyConfirm(info: string) {
+    const currUser = this.auth.getUser();
+    const newUser = currUser;
+
+    switch (info) {
+      case 'gender':
+        newUser.gender = this.newGender;
+        this.isModifyingGender = false;
+        break;
+      case 'age':
+        newUser.birthDate = new Date(this.newBirthDate);
+        this.isModifyingAge = false;
+        break;
+      case 'weight':
+        newUser.weight = this.newWeight;
+        this.isModifyingWeight = false;
+        break;
+      case 'height':
+        newUser.height = this.newHeight;
+        this.isModifyingHeight = false;
+        break;
+
+    }
+
+    await this.http.put('/users/' + currUser._id, newUser).subscribe(() => {
+      this.user = this.auth.getUser();
+    });
+
+  }
+
+  genderSegmentChanged(event) {
+    this.newGender = event.target.value;
+
   }
 
   // tslint:disable-next-line: variable-name

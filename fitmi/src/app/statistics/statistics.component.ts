@@ -52,12 +52,11 @@ export class StatisticsComponent implements OnInit {
           return a > b ? -1 : a < b ? 1 : 0;
         });
 
-        this.lastSession = sessions[sessions.length - 1];
+        this.lastSession = sessions[0];
         this.heartRateData = this.getHeartRateData();
         this.heartRateDataPercent = this.getHeartRatePercentData();
         this.caloriesBarChartData = this.getCaloriesBarChartData();
         this.isDataAvailable = true;
-        console.log(this.lastSession);
 
       })
       .catch(err => {

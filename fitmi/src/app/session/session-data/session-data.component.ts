@@ -3,6 +3,7 @@ import { SessionDataService } from '../session-data.service';
 import { LineChartService } from 'src/app/data-visualization/line-chart/line-chart.service';
 import { AlertController } from '@ionic/angular';
 import { ActivityChecker } from './ActivityChecker';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-session-data',
@@ -36,11 +37,17 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   }
 
   private async presentAlert() {
+    this.activityChecker.pause();
     const alert = await this.alertController.create({
-      header: 'Alert',
+      header: 'Attenzione',
       subHeader: 'Battiti leggeri',
       message: 'Non ti fermare!',
-      buttons: ['OK']
+      buttons: [{
+        text: 'Ok',
+        handler: () => {
+          this.activityChecker.play();
+        }
+      }]
     });
 
     await alert.present();

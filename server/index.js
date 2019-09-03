@@ -55,9 +55,9 @@ var badgeRoutes = require('./src/routes/badgesRoutes');
 userRoutes(app);
 badgeRoutes(app);
 
-/*app.use((req, res) => {
-	res.sendFile(appRoot + "/www/index.html");
-});*/
+app.get('/', (req, res) => {
+	res.sendFile(appRoot + '/public/www/index.html');
+});
 
 //metto in ascolto il web server
 app.listen(3000, function () {

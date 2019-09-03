@@ -105,7 +105,7 @@
         <ion-row>
           <ion-col size="12">
             <ion-item>
-              <ion-label slot="start">
+              <ion-label slot="start" text-wrap>
                 <h4 class="label">Min Freq. Cardiaca</h4>
               </ion-label>
               <ion-label>
@@ -119,8 +119,8 @@
         <ion-row>
           <ion-col size="12">
             <ion-item>
-              <ion-label slot="start">
-                <h4 class="label">Max Freq. Cardiaca</h4>
+              <ion-label slot="start" text-wrap>
+                <h4 class="label" >Max Freq. Cardiaca</h4>
               </ion-label>
               <ion-label>
                 <h2 class="value">{{ maxHeartRate() }} bpm</h2>
@@ -133,7 +133,7 @@
         <ion-row>
           <ion-col size="12">
             <ion-item>
-              <ion-label slot="start">
+              <ion-label slot="start" text-wrap>
                 <h4 class="label">Tipo Sessione</h4>
               </ion-label>
               <ion-label>
@@ -210,7 +210,7 @@
                 <ion-icon slot="start" name="md-flame" color="danger"></ion-icon>
                 <h2>Calorie</h2>
               </ion-item>
-              <bar-chart [src]="this.getCaloriesBarChartData()" [xAxisDateFormat]="caloriesBarChartDateFormat()">
+              <bar-chart [src]="this.getCaloriesBarChartData()" [xAxisDateFormat]="this.caloriesBarChartDateFormat()">
 
               </bar-chart>
             </ion-col>
@@ -220,7 +220,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Sessione Preferita</h4>
                 </ion-label>
                 <ion-label>
@@ -235,7 +235,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Calorie Totali</h4>
                 </ion-label>
                 <ion-label>
@@ -250,7 +250,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Passi Totali</h4>
                 </ion-label>
                 <ion-label>
@@ -282,7 +282,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Distanza Totale</h4>
                 </ion-label>
                 <ion-label>
@@ -298,7 +298,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Tempo in Sessione</h4>
                 </ion-label>
                 <ion-label>
@@ -321,7 +321,7 @@
     <ion-card>
       <ion-item>
         <ion-icon name="md-alert" slot="start" color="warning"></ion-icon>
-        <ion-label>Nessuna sessione</ion-label>
+        <ion-label text-wrap>Nessuna sessione</ion-label>
         <ion-button fill="outline" slot="end" (click)="navigateToHomePage()">START</ion-button>
       </ion-item>
 
