@@ -24,7 +24,7 @@ export class HorizontalPercentBarChartService {
 
   public setup(htmlSelector: string): void {
     this.host = d3.select(htmlSelector);
-    this.margin = { top: 20, right: 50, bottom: 30, left: 80 };
+    this.margin = { top: 20, right: 20, bottom: 30, left: 80 };
     this.width = window.innerWidth - this.margin.left - this.margin.right;
     this.height = window.innerHeight / 3 - this.margin.top - this.margin.bottom;
 
@@ -32,15 +32,6 @@ export class HorizontalPercentBarChartService {
     this.buildChart();
   }
 
-
-  private getRandomColor(): string {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
 
   public setColors(colors: string[]) {
     this.colors = colors;
@@ -66,8 +57,6 @@ export class HorizontalPercentBarChartService {
     });
 
     const categories = this.getWithoutDuplicates(this.data.map(d => d.category));
-
-    categories.forEach(c => this.colors.push(this.getRandomColor()));
 
     const color = d3.scaleOrdinal().range(['#6b486b', '#a05d56', '#d0743c', '#ff8c00']);
 
@@ -133,7 +122,7 @@ export class HorizontalPercentBarChartService {
 
     // Appends main bar labels
     const barLabels = labelGroup.append('text')
-      .text(d => d.num.toFixed(2) + '%')
+      .text(d => d.category)
       .attr('x', d => {
         if (minX > 32) {
           return this.xScale(d.num) - 37;

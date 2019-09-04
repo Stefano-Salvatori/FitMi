@@ -1,5 +1,6 @@
+#lineChart {
 
-.lineChart svg {
+svg {
   min-height: 250px;
 }
 
@@ -45,4 +46,5 @@
   cursor: move;
   fill: none;
   pointer-events: all;
+}
 }

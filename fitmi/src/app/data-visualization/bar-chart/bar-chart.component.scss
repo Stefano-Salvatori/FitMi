@@ -1,4 +1,7 @@
-.barchart svg {
+#barChart {
+
+
+svg {
   font: 10px sans-serif;
 }
 
@@ -22,6 +25,10 @@
   shape-rendering: crispEdges;
 }
 
+.x.axis text {
+    display: block;
+}
+
 .axis text{
   fill: gray;
   display: block;
@@ -41,3 +48,4 @@
             fill: lightSteelBlue;
             fill-opacity: .5;
         }
+  }

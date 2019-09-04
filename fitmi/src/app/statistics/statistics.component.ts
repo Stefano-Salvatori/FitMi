@@ -29,8 +29,8 @@ export class StatisticsComponent implements OnInit {
   private dataPath = '';
 
   constructor(private router: Router,
-    private http: HttpClientService,
-    private auth: AuthService) {
+              private http: HttpClientService,
+              private auth: AuthService) {
 
     this.dataPath = '/users/' + this.auth.getUser()._id + '/sessions';
 
@@ -178,10 +178,10 @@ export class StatisticsComponent implements OnInit {
       const anaerobic = this.getHeartRateRangeFrequency(values, HeartRateRange.ANAEROBIC);
 
       const array: Array<[string, number]> = [
-        ['Anaerobico', anaerobic * 100],
-        ['Aerobico', aerobic * 100],
         ['Cardio', weightLoss * 100],
         ['Leggero', light * 100],
+        ['Aerobico', aerobic * 100],
+        ['Anaerobico', anaerobic * 100],
       ];
 
       return array;
@@ -194,13 +194,45 @@ export class StatisticsComponent implements OnInit {
   public isToDisplayBarChartData() {
     return this.allSessions.filter(s => s.pedometer.calories > 0).length > 0;
   }
+
+ private groupBy(list, keyGetter): Map<any, any> {
+  const map = new Map();
+  list.forEach((item) => {
+    const key = keyGetter(item);
+    const collection = map.get(key);
+    if (!collection) {
+      map.set(key, [item]);
+    } else {
+      collection.push(item);
+    }
+  });
+  return map;
+  }
+
   public getCaloriesBarChartData(): Array<[Date, number]> {
     const array: Array<[Date, number]> = [];
-    this.getAllSessionsInSelectedPeriod().forEach(s => {
+
+    const sessionInPeriod = this.getAllSessionsInSelectedPeriod();
+    const sessionsGroupedByPeriod = this.groupBy(sessionInPeriod, this.timePeriodSubstringFun());
+    for (const kv of sessionsGroupedByPeriod.entries()) {
+      const date = new Date(kv[0]);
+      const totCalories = kv[1].map(e => e.pedometer.calories).reduce((total, amount) => total + amount);
+      array.push([date, +totCalories]);
+    }
+    /*this.getAllSessionsInSelectedPeriod().forEach(s => {
       array.push([new Date(s.start), +s.pedometer.calories]);
-    });
+    });*/
 
     return array;
+  }
+
+  private timePeriodSubstringFun(): (arg0: any) => string {
+    switch (this.timePeriod) {
+      case this.SessionPeriods.MONTH: return s => s.start.substring(0, 10);
+      case this.SessionPeriods.WEEK: return s => s.start.substring(0, 10);
+      case this.SessionPeriods.YEAR: return s => s.start.substring(0, 7);
+      default: return s => s.start.substring(0, 10);
+    }
   }
 
   public caloriesBarChartDateFormat(): string {

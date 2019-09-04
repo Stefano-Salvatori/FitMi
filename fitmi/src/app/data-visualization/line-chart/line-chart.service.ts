@@ -55,7 +55,7 @@ export class LineChartService {
 
   public setup(htmlSelector: string): void {
     this.host = d3.select(htmlSelector);
-    this.margin = { top: 20, right: 40, bottom: 30, left: 40 };
+    this.margin = { top: 20, right: 10, bottom: 0, left: 20 };
     this.width = window.innerWidth - this.margin.left - this.margin.right;
     this.height = window.innerHeight / 3 - this.margin.top - this.margin.bottom;
     this.xScale = d3.scaleTime().range([0, this.width]);
