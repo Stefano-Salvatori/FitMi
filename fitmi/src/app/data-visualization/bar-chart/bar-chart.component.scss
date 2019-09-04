@@ -1,4 +1,4 @@
-svg {
+.barchart svg {
   font: 10px sans-serif;
 }
 
@@ -15,14 +15,16 @@ svg {
 }
 
 .axis path, .axis line {
+  display: block;
   fill: none;
   stroke: lightgray;
-    stroke-opacity: 0.7;
+  stroke-opacity: 0.7;
   shape-rendering: crispEdges;
 }
 
 .axis text{
   fill: gray;
+  display: block;
 }
 
 

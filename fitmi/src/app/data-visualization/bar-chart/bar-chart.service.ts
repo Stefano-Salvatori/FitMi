@@ -24,7 +24,7 @@ export class BarChartService {
   private yAxis: d3.Axis<d3.AxisDomain>;
   private diagram: any;
   private bars: any;
-  private scrollable = false;
+  private scrollable = true;
   private xAxisTimeFormat = '%d-%m-%y';
   constructor() {
     this.data = [];
@@ -59,6 +59,8 @@ export class BarChartService {
       };
     });
 
+    console.log(this.data);
+
     this.maxLength = d3.max(this.data.map(d => d.label.length));
     this.barWidth = this.maxLength * 3;
     this.numBars = this.scrollable ? Math.round(this.width / this.barWidth) : this.data.length;
@@ -69,8 +71,8 @@ export class BarChartService {
     this.yScale = d3.scaleLinear()
       .domain([0, d3.max(this.data, d => d.value)])
       .range([this.height, 0]);
-   
-      this.buildChart();
+
+    this.buildChart();
 
     this.bars.selectAll('rect')
       .data(this.data.slice(0, this.numBars), (d: any) => d.date)
@@ -156,13 +158,12 @@ export class BarChartService {
 
   private xAxisAttr(x) {
     x.call(d3.axisBottom(this.xScale).tickFormat(d3.timeFormat(this.xAxisTimeFormat)));
-
   }
 
   private buildChart() {
     this.host.html('');
     this.xAxis = d3.axisBottom(this.xScale);
-    this.yAxis = d3.axisLeft(this.yScale);
+    this.yAxis = d3.axisLeft(this.yScale).ticks(5);
 
     this.svg = this.host.append('svg')
       .attr('width', this.width + this.margin.left + this.margin.right)
@@ -173,11 +174,12 @@ export class BarChartService {
 
     this.xAxisAttr(this.diagram.append('g')
       .attr('class', 'x axis')
-      .attr('transform', 'translate(0, ' + this.height + ')')
+      .attr('transform', 'translate(0, ' + (this.height + 3 ) + ')')
       .call(this.xAxis));
 
     this.diagram.append('g')
       .attr('class', 'y axis')
+      .attr('transform', 'translate(-5,0)')
       .call(this.yAxis);
 
     this.bars = this.diagram.append('g');

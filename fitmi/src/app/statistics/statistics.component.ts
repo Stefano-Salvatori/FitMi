@@ -29,8 +29,8 @@ export class StatisticsComponent implements OnInit {
   private dataPath = '';
 
   constructor(private router: Router,
-              private http: HttpClientService,
-              private auth: AuthService) {
+    private http: HttpClientService,
+    private auth: AuthService) {
 
     this.dataPath = '/users/' + this.auth.getUser()._id + '/sessions';
 
@@ -161,7 +161,7 @@ export class StatisticsComponent implements OnInit {
         array.push([new Date(hf.timestamp), +hf.value]);
       });
     }
-    
+
     return array;
   }
 
@@ -183,7 +183,7 @@ export class StatisticsComponent implements OnInit {
         ['Cardio', weightLoss * 100],
         ['Leggero', light * 100],
       ];
-      
+
       return array;
     } else {
       return [];
@@ -191,13 +191,13 @@ export class StatisticsComponent implements OnInit {
 
   }
 
-  public isToDisplayBarChartData(){
+  public isToDisplayBarChartData() {
     return this.allSessions.filter(s => s.pedometer.calories > 0).length > 0;
   }
   public getCaloriesBarChartData(): Array<[Date, number]> {
     const array: Array<[Date, number]> = [];
     this.getAllSessionsInSelectedPeriod().forEach(s => {
-        array.push([new Date(s.start), +s.pedometer.calories]);
+      array.push([new Date(s.start), +s.pedometer.calories]);
     });
 
     return array;
