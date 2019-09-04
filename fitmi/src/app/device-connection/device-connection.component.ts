@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import { MiBandService, ConnectionState, Notification } from '../miband/miband.service';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Platform, ToastController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-device-connection',
@@ -58,6 +58,11 @@ export class DeviceConnectionComponent implements OnInit {
     });
   }
 
+ onBackButtonClick() {
+    this.router.navigateByUrl('tabs/home').then(s => {
+      this.showWarningBluetoothConnectionToast();
+    });
+  }
 
   private showSuccesfullBluetoothConnectionToast() {
     new ToastController().create({
@@ -66,7 +71,8 @@ export class DeviceConnectionComponent implements OnInit {
       message: 'Smartband Connesso!',
       duration: 3000,
       position: 'bottom',
-      showCloseButton: true
+      showCloseButton: true,
+      closeButtonText: 'X'
     }).then(t => {
       t.present();
     });
@@ -79,7 +85,23 @@ export class DeviceConnectionComponent implements OnInit {
       message: 'Errore durante la connessione al device',
       duration: 3000,
       position: 'bottom',
-      showCloseButton: true
+      showCloseButton: true,
+      closeButtonText: 'X'
+    }).then(t => {
+      t.present();
+    });
+  }
+
+
+  private showWarningBluetoothConnectionToast() {
+    new ToastController().create({
+      color: 'warning',
+      animated: true,
+      message: 'Connessione non completata',
+      duration: 3000,
+      position: 'bottom',
+      showCloseButton: true,
+      closeButtonText: 'X'
     }).then(t => {
       t.present();
     });

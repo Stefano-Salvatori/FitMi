@@ -19,8 +19,8 @@
     </ion-row>
   </ion-grid>
 
-    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-      <ion-fab-button (click)="navigateToDeviceConnectionPage()">
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!this.isBluetoothConnected()">
+      <ion-fab-button (click)="navigateToDeviceConnectionPage()" class='pulse'>
         <ion-icon name="bluetooth"></ion-icon>
       </ion-fab-button>
     </ion-fab>

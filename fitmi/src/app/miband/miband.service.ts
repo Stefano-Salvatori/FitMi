@@ -47,6 +47,10 @@ export class MiBandService {
     constructor(private ble: BluetoothLE, private storage: StorageService) {
     }
 
+    public async isConnected() {
+        return this.address !== undefined && this.address !== null && (await this.ble.isConnected({address: this.address})).isConnected;
+    }
+
 
 
     /**

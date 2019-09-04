@@ -1,5 +1,17 @@
-<app-session-header title="{{title}} - Obiettivi"></app-session-header>
 
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="tabs/home" mode="md"></ion-back-button>
+        </ion-buttons>
+    <ion-title>Selezione Obiettivo</ion-title>
+  </ion-toolbar>
+</ion-header>
+<!--
+<app-session-header title="{{title}} - Obiettivi">
+
+</app-session-header>
+-->
 <ion-content>
   <ion-list>
     <ion-radio-group name="type"  [(ngModel)]="goal.type">
