@@ -30,11 +30,7 @@ export class StatisticsComponent implements OnInit {
 
   constructor(private router: Router,
               private http: HttpClientService,
-<<<<<<< HEAD
-              private auth: AuthService) {
-=======
               private auth: AuthService) {}
->>>>>>> 69a94d0fe974bf788afe6499e7b8e65d917e6e14
 
 
   ngOnInit() {

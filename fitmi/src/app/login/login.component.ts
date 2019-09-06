@@ -41,4 +41,8 @@ export class LoginComponent implements OnInit {
   public login(): void {
     this.auth.login(this.username, this.password);
   }
+
+  public onRegisterButtonClick() {
+    this.router.navigateByUrl(this.registrationRoute);
+  }
 }
