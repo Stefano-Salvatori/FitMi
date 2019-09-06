@@ -214,14 +214,11 @@ export class StatisticsComponent implements OnInit {
 
     const sessionInPeriod = this.getAllSessionsInSelectedPeriod();
     const sessionsGroupedByPeriod = this.groupBy(sessionInPeriod, this.timePeriodSubstringFun());
-    for (const kv of sessionsGroupedByPeriod.entries()) {
+    Array.from(sessionsGroupedByPeriod.entries()).forEach(kv => {
       const date = new Date(kv[0]);
       const totCalories = kv[1].map(e => e.pedometer.calories).reduce((total, amount) => total + amount);
       array.push([date, +totCalories]);
-    }
-    /*this.getAllSessionsInSelectedPeriod().forEach(s => {
-      array.push([new Date(s.start), +s.pedometer.calories]);
-    });*/
+    });
 
     return array;
   }
