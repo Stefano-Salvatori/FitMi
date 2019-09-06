@@ -1,7 +1,7 @@
 
-  <agm-map [latitude]="currentPos.latitude" [longitude]="currentPos.longitude">
+  <agm-map [latitude]="this.getCurrentPosition().latitude" [longitude]="this.getCurrentPosition().longitude">
     <agm-polyline strokeColor="red">
-      <agm-polyline-point *ngFor="let coord of coordinates" [latitude]="coord.latitude" [longitude]="coord.longitude"></agm-polyline-point>
+      <agm-polyline-point *ngFor="let coord of this.getGpsPath()" [latitude]="coord.latitude" [longitude]="coord.longitude"></agm-polyline-point>
     </agm-polyline>
   </agm-map>
 <app-session-footer></app-session-footer>

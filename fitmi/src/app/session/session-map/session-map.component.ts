@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { interval } from 'rxjs';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 import { SessionDataService } from '../session-data.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 
 @Component({
@@ -13,43 +13,33 @@ import { SessionDataService } from '../session-data.service';
 export class SessionMapComponent implements OnInit {
 
 
-  public coordinates: Coordinates[] = [];
-  public currentPos: Coordinates = {
-    accuracy: 0,
-    altitude: 0,
-    altitudeAccuracy: 0,
-    heading: 0,
-    latitude: 0,
-    longitude: 0,
-    speed: 0
-  };
+  constructor(private session: SessionDataService) {
+   
+  }
 
-  constructor(private session: SessionDataService, private geolocation: Geolocation) {
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.currentPos = resp.coords;
+  public getGpsPath(): Coordinates[] {
+    return this.session.getGpsPath();
+  }
 
-      // save position each 5s
-      interval(5000).subscribe(() => this.saveGeoPosition());
+  public getCurrentPosition(): Coordinates {
+    const path = this.getGpsPath();
 
-
-    }).catch((error) => {
-     this.onGeoLocationError(error);
-    });
+    if (path.length > 0) {
+      return path[path.length - 1];
+    } else {
+      return {
+        accuracy: 0,
+        altitude: 0,
+        altitudeAccuracy: 0,
+        heading: 0,
+        latitude: 0,
+        longitude: 0,
+        speed: 0
+      };
+    }
   }
 
 
-  private saveGeoPosition() {
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.coordinates.push(resp.coords);
-      this.session.updateGpsPath(resp.coords);
-    }).catch((error) => {
-     this.onGeoLocationError(error);
-    });
-  }
-
-  private onGeoLocationError(error) {
-    console.log('Error getting location', error);
-  }
 
   ngOnInit() { }
 

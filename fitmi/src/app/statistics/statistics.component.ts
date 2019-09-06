@@ -30,13 +30,19 @@ export class StatisticsComponent implements OnInit {
 
   constructor(private router: Router,
               private http: HttpClientService,
+<<<<<<< HEAD
               private auth: AuthService) {
+=======
+              private auth: AuthService) {}
+>>>>>>> 69a94d0fe974bf788afe6499e7b8e65d917e6e14
 
+
+  ngOnInit() {
     this.dataPath = '/users/' + this.auth.getUser()._id + '/sessions';
-
     // get sessions data
     this.loadData();
   }
+
 
   async loadData() {
     await this.http.get<Session[]>(this.dataPath)
@@ -245,11 +251,6 @@ export class StatisticsComponent implements OnInit {
   //#endregion
 
 
-
-  ngOnInit() {
-
-
-  }
 
   segmentChanged(event) {
     this.timePeriod = event.detail.value;
