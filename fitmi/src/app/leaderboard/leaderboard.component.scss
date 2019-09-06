@@ -1,32 +1,40 @@
 
 footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   background: var(--ion-color-dark);
   color: white;
   height: 12%;
 
+  ion-grid {
+    height: 100%;
+  }
 
+  ion-row {
+    height: 100%;
+    align-items: center;
+  }
+
+  ion-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  img {
+    transform: scale(0.6);
+  }
 }
 
-.flex-container {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-   display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-   justify-content: space-between;
-}
-
-.flex-container > div {
-    margin: 20px;
-}
 
 #userImg {
     border: 1pt solid rgb(255, 255, 255);
     border-radius: 50%;
     min-width:100px;
-      width:100px;
-  height:100px;
+    width:100px;
+    height:100px;
 }
 
 #leaderStarIcon {
