@@ -18,8 +18,8 @@ export class SessionFooterComponent implements OnInit {
 
   ngOnInit() { }
 
-  endSession() {
-    this.session.stopSession();
+  async endSession() {
+    await this.session.stopSession();
     this.router.navigateByUrl('tabs/home').then(r => {
       this.presentSessionPopover();
     });
@@ -30,6 +30,7 @@ export class SessionFooterComponent implements OnInit {
       component: SessionRecapComponent,
       componentProps: {
         session: this.session.getFitnessSession(),
+        sessionScore: this.session.getSessionScore(),
         controller: this
       },
       showBackdrop: true,

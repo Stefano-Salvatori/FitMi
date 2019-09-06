@@ -57,7 +57,7 @@ import { SessionRecapComponent } from './session/session-recap/session-recap.com
     HttpClientModule,
     AuthModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCubnab2Mn3cbhQH3CDWpmHYGgt5iB8MP4'
+      apiKey: 'AIzaSyCyiMAitV4caAbSHr26Pumqa5dwHM5zALM'
     }),
     NgCircleProgressModule.forRoot({}),
     AppRoutingModule,

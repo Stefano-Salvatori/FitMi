@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content align-items-center  justify-content-center>
-  <ion-grid align-items-center  justify-content-center>
+  <ion-grid align-items-center  justify-content-center fixed="true">
     <ion-row  justify-content-center >
       <ion-col size-xs="6" size-md="4" size-lg="4" *ngFor="let activity of this.activities" no-padding>
         <ion-card justify-content-center routerLink="/home" routerDirection="root" button="true" 
@@ -19,8 +19,8 @@
     </ion-row>
   </ion-grid>
 
-    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-      <ion-fab-button (click)="navigateToDeviceConnectionPage()">
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!this.isBluetoothConnected()">
+      <ion-fab-button (click)="navigateToDeviceConnectionPage()" class='pulse'>
         <ion-icon name="bluetooth"></ion-icon>
       </ion-fab-button>
     </ion-fab>

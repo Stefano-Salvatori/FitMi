@@ -74,13 +74,31 @@
       <ion-row>
         <ion-col size="12">
           <ion-item lines="none">
-            <ion-label slot="start">
+            <ion-label>
               <h4 class="label">Sesso</h4>
             </ion-label>
-            <ion-label>
-              <h2 class="value">{{user.gender}}</h2>
-            </ion-label>
-            <ion-icon slot="end" name="md-create"></ion-icon>
+            <div *ngIf="this.isModifyingGender; else showGenderValue">
+              <ion-segment (ionChange)="genderSegmentChanged($event)">
+                <ion-segment-button value="M">
+                  <ion-label>M</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="F">
+                  <ion-label>F</ion-label>
+                </ion-segment-button>
+              </ion-segment>
+            </div>
+            <ng-template #showGenderValue>
+              <ion-label>
+                <h2 class="value" id="gender">{{user.gender}}</h2>
+              </ion-label>
+            </ng-template>
+
+
+
+            <ion-icon slot="end" name="md-create" (click)="onModifyInfoClick('gender')"></ion-icon>
+            <ion-icon slot="end" name="md-checkmark" *ngIf="this.isModifyingGender" (click)="modifyConfirm('gender')">
+            </ion-icon>
+
           </ion-item>
         </ion-col>
       </ion-row>
@@ -89,13 +107,26 @@
       <ion-row>
         <ion-col size="12">
           <ion-item lines="none">
-            <ion-label slot="start">
+            <ion-label>
               <h4 class="label">Età</h4>
             </ion-label>
-            <ion-label>
-              <h2 class="value">{{calculateAge(user.birthDate)}}</h2>
-            </ion-label>
-            <ion-icon slot="end" name="md-create"></ion-icon>
+
+            <div *ngIf="this.isModifyingAge; else showAgeValue">
+              <ion-item >
+                <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newBirthDate" placeholder="Data di nascita"></ion-datetime>
+              </ion-item>
+            </div>
+            <ng-template #showAgeValue>
+              <ion-label>
+                <h2 class="value">{{calculateAge(user.birthDate)}}</h2>
+              </ion-label>
+            </ng-template>
+
+
+
+            <ion-icon slot="end" name="md-create" (click)="onModifyInfoClick('age')"></ion-icon>
+            <ion-icon slot="end" name="md-checkmark" *ngIf="this.isModifyingAge" (click)="modifyConfirm('age')">
+            </ion-icon>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -104,13 +135,25 @@
       <ion-row>
         <ion-col size="12">
           <ion-item lines="none">
-            <ion-label slot="start">
+            <ion-label>
               <h4 class="label">Altezza</h4>
             </ion-label>
-            <ion-label>
-              <h2 class="value">{{user.height}}</h2>
-            </ion-label>
-            <ion-icon slot="end" name="md-create"></ion-icon>
+            <div *ngIf="this.isModifyingHeight; else showHeightValue">
+              <ion-item margin>
+                <ion-input [(ngModel)]="newHeight" type="number" placeholder="{{user.height.toFixed(2)}}"></ion-input>
+              </ion-item>
+            </div>
+            <ng-template #showHeightValue>
+              <ion-label>
+                <h2 class="value">{{user.height.toFixed(2)}}</h2>
+              </ion-label>
+            </ng-template>
+
+
+            <ion-icon slot="end" name="md-create" (click)="onModifyInfoClick('height')"></ion-icon>
+            <ion-icon *ngIf="this.isModifyingHeight" slot="end" name="md-checkmark" (click)="modifyConfirm('height')">
+            </ion-icon>
+
           </ion-item>
         </ion-col>
       </ion-row>
@@ -119,13 +162,25 @@
       <ion-row>
         <ion-col size="12">
           <ion-item lines="none">
-            <ion-label slot="start">
+            <ion-label>
               <h4 class="label">Peso</h4>
             </ion-label>
-            <ion-label>
-              <h2 class="value">{{user.weight}}</h2>
-            </ion-label>
-            <ion-icon slot="end" name="md-create"></ion-icon>
+            <div *ngIf="this.isModifyingWeight; else showWeightValue">
+              <ion-item margin>
+                <ion-input [(ngModel)]="newWeight" type="number"  placeholder="{{user.weight}}">
+                </ion-input>
+              </ion-item>
+            </div>
+            <ng-template #showWeightValue>
+              <ion-label>
+                <h2 class="value">{{user.weight}}</h2>
+              </ion-label>
+            </ng-template>
+
+
+            <ion-icon slot="end" name="md-create" (click)="onModifyInfoClick('weight')"></ion-icon>
+            <ion-icon slot="end" name="md-checkmark" *ngIf="this.isModifyingWeight" (click)="modifyConfirm('weight')">
+            </ion-icon>
           </ion-item>
         </ion-col>
       </ion-row>

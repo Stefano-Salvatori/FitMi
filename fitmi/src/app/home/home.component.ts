@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SessionDataService } from '../session/session-data.service';
 import { SessionType } from 'src/model/session-type';
-import { ToastController } from '@ionic/angular';
+import { ConnectionState, MiBandService } from '../miband/miband.service';
 
 @Component({
   selector: 'app-home',
@@ -16,13 +16,27 @@ export class HomeComponent implements OnInit {
   activities: SessionType[] =
     Object.values(SessionType)
     .filter(k => typeof k !== 'function');
+ 
+    public connectionState: ConnectionState = ConnectionState.IDLE;
+
     // the filter 'k !=== "function"' is needed to remove SessionType utility functions from the array
 
   constructor(private router: Router,
-              private sessionData: SessionDataService) {
-    }
+              private miBand: MiBandService,
+              private sessionData: SessionDataService,
+              private route: ActivatedRoute) {
+  }
 
-  ngOnInit() {
+
+  isBluetoothConnected() {
+    return this.connectionState === ConnectionState.CONNECTED;
+  }
+
+  async ngOnInit() {
+    if (await this.miBand.isConnected()) {
+      this.connectionState = ConnectionState.CONNECTED;
+
+    }
   }
 
   startSession(activity: SessionType) {

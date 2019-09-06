@@ -21,6 +21,7 @@ import { HorizontalPercentBarChartComponentModule } from '../data-visualization/
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { BadgePopoverComponent } from '../profile/badge-popover/badge-popover.component';
 import { PublicProfileComponent } from '../profile/public/public-profile.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -33,7 +34,10 @@ import { PublicProfileComponent } from '../profile/public/public-profile.compone
     LineChartComponentModule,
     HorizontalPercentBarChartComponentModule,
     BarChartComponentModule,
-    NgCircleProgressModule.forRoot({})
+    NgCircleProgressModule.forRoot({}),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCyiMAitV4caAbSHr26Pumqa5dwHM5zALM'
+    }),
   ],
   declarations: [
     TabsComponent,
@@ -44,7 +48,8 @@ import { PublicProfileComponent } from '../profile/public/public-profile.compone
     ProfileImageComponent,
     BadgePopoverComponent,
     DeviceConnectionComponent,
-    MiBandTestComponent
+    MiBandTestComponent,
+
   ],
   entryComponents: [BadgePopoverComponent, ProfileImageComponent]
 })

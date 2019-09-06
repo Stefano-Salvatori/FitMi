@@ -1,6 +1,6 @@
 <ion-header color="primary">
   <ion-toolbar color="primary">
-    <ion-title>Statistics</ion-title>
+    <ion-title>Statistiche</ion-title>
   </ion-toolbar>
 
 
@@ -50,7 +50,7 @@
 
 
       <ion-grid>
-        <ion-row>
+        <ion-row *ngIf="this.lastSession.heart_frequency.length > 0">
           <ion-col>
             <ion-item>
               <ion-icon slot="start" name="md-heart" color="danger"></ion-icon>
@@ -81,33 +81,31 @@
         </ion-row>
 
 
-        <!--Show user path if the session provides gps_path info
-       
-          <ion-row *ngIf="this.lastSession.gps_path.length > 0">
-            <ion-col>
-              <ion-item>
-                <ion-icon slot="start" name="md-map"></ion-icon>
-              <h4>Percorso</h4>
-            </ion-item>
+        <!--Show user path if the session provides gps_path info-->
+        
+        <ion-row *ngIf="this.lastSession.gps_path.length > 0">
+          <ion-col>
             <ion-item>
-              <agm-map [latitude]="this.lastSession.gps_path[0].latitude" [longitude]="this.lastSession.gps_path[0].longitude">
-                <agm-polyline strokeColor="red">
-                  <agm-polyline-point *ngFor="let coord of this.lastSession.gps_path" [latitude]="coord.latitude"
-                    [longitude]="coord.longitude">
-                  </agm-polyline-point>
-                </agm-polyline>
-              </agm-map>
-            </ion-item>
-
-          </ion-col>
-        </ion-row>
-
--->
+              <ion-icon slot="start" name="md-map" style="fill: cadetblue"></ion-icon>
+              <h4>Percorso</h4>
+              </ion-item>
+              <ion-item>
+                <agm-map [latitude]="this.lastSession.gps_path[0].latitude" [longitude]="this.lastSession.gps_path[0].longitude">
+                  <agm-polyline strokeColor="red">
+                    <agm-polyline-point *ngFor="let coord of this.lastSession.gps_path" [latitude]="coord.latitude"
+                      [longitude]="coord.longitude">
+                    </agm-polyline-point>
+                  </agm-polyline>
+                </agm-map>
+              </ion-item>
+              
+              </ion-col>
+              </ion-row>
 
         <ion-row>
           <ion-col size="12">
             <ion-item>
-              <ion-label slot="start">
+              <ion-label slot="start" text-wrap>
                 <h4 class="label">Min Freq. Cardiaca</h4>
               </ion-label>
               <ion-label>
@@ -121,8 +119,8 @@
         <ion-row>
           <ion-col size="12">
             <ion-item>
-              <ion-label slot="start">
-                <h4 class="label">Max Freq. Cardiaca</h4>
+              <ion-label slot="start" text-wrap>
+                <h4 class="label" >Max Freq. Cardiaca</h4>
               </ion-label>
               <ion-label>
                 <h2 class="value">{{ maxHeartRate() }} bpm</h2>
@@ -135,7 +133,7 @@
         <ion-row>
           <ion-col size="12">
             <ion-item>
-              <ion-label slot="start">
+              <ion-label slot="start" text-wrap>
                 <h4 class="label">Tipo Sessione</h4>
               </ion-label>
               <ion-label>
@@ -206,13 +204,13 @@
         <ion-grid>
 
           <!--Calories bar chart-->
-          <ion-row>
+          <ion-row *ngIf="isToDisplayBarChartData()">
             <ion-col size="12">
               <ion-item align-items-center justify-content-center>
                 <ion-icon slot="start" name="md-flame" color="danger"></ion-icon>
                 <h2>Calorie</h2>
               </ion-item>
-              <bar-chart [src]="this.getCaloriesBarChartData()" [xAxisDateFormat]="caloriesBarChartDateFormat()">
+              <bar-chart [src]="this.getCaloriesBarChartData()" [xAxisDateFormat]="this.caloriesBarChartDateFormat()">
 
               </bar-chart>
             </ion-col>
@@ -222,7 +220,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Sessione Preferita</h4>
                 </ion-label>
                 <ion-label>
@@ -237,7 +235,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Calorie Totali</h4>
                 </ion-label>
                 <ion-label>
@@ -252,7 +250,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Passi Totali</h4>
                 </ion-label>
                 <ion-label>
@@ -284,7 +282,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Distanza Totale</h4>
                 </ion-label>
                 <ion-label>
@@ -300,7 +298,7 @@
           <ion-row>
             <ion-col size="12">
               <ion-item>
-                <ion-label slot="start">
+                <ion-label slot="start" text-wrap>
                   <h4 class="label">Tempo in Sessione</h4>
                 </ion-label>
                 <ion-label>
@@ -323,7 +321,7 @@
     <ion-card>
       <ion-item>
         <ion-icon name="md-alert" slot="start" color="warning"></ion-icon>
-        <ion-label>Nessuna sessione</ion-label>
+        <ion-label text-wrap>Nessuna sessione</ion-label>
         <ion-button fill="outline" slot="end" (click)="navigateToHomePage()">START</ion-button>
       </ion-item>
 

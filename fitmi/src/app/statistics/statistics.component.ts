@@ -36,7 +36,6 @@ export class StatisticsComponent implements OnInit {
 
     // get sessions data
     this.loadData();
-    
   }
 
   async loadData() {
@@ -53,12 +52,11 @@ export class StatisticsComponent implements OnInit {
           return a > b ? -1 : a < b ? 1 : 0;
         });
 
-        this.lastSession = sessions[sessions.length - 1];
+        this.lastSession = sessions[0];
         this.heartRateData = this.getHeartRateData();
         this.heartRateDataPercent = this.getHeartRatePercentData();
         this.caloriesBarChartData = this.getCaloriesBarChartData();
         this.isDataAvailable = true;
-        console.log(this.lastSession);
 
       })
       .catch(err => {
@@ -123,12 +121,12 @@ export class StatisticsComponent implements OnInit {
 
   public minHeartRate(): number {
     const hfValues = this.lastSession.heart_frequency.map(hf => hf.value);
-    return Math.min(...hfValues);
+    return Math.min(...hfValues) === Infinity ? 0 : Math.min(...hfValues);
   }
 
   public maxHeartRate(): number {
     const hfValues = this.lastSession.heart_frequency.map(hf => hf.value);
-    return Math.max(...hfValues);
+    return Math.max(...hfValues) === -Infinity ? 0 : Math.max(...hfValues);
   }
 
   public favoriteSessionType(): string {
@@ -172,7 +170,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   public getHeartRatePercentData(): Array<[string, number]> {
-    if (this.lastSession) {
+    if (this.lastSession && this.lastSession.heart_frequency.length > 0) {
       const values = this.lastSession.heart_frequency.map(hr => hr.value);
       const light = this.getHeartRateRangeFrequency(values, HeartRateRange.LIGHT);
       const weightLoss = this.getHeartRateRangeFrequency(values, HeartRateRange.WEIGHT_LOSS);
@@ -193,11 +191,13 @@ export class StatisticsComponent implements OnInit {
 
   }
 
+  public isToDisplayBarChartData() {
+    return this.allSessions.filter(s => s.pedometer.calories > 0).length > 0;
+  }
   public getCaloriesBarChartData(): Array<[Date, number]> {
-    // generates ordered date to simulate heartrates timestamp
     const array: Array<[Date, number]> = [];
     this.getAllSessionsInSelectedPeriod().forEach(s => {
-        array.push([new Date(s.start), +s.pedometer.calories]);
+      array.push([new Date(s.start), +s.pedometer.calories]);
     });
 
     return array;
