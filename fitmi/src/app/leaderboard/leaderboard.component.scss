@@ -1,6 +1,6 @@
 
 footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   background: var(--ion-color-dark);
@@ -25,17 +25,17 @@ footer {
 
   img {
     transform: scale(0.6);
+    border: 3pt solid white;
+    border-radius: 50%;
+
   }
 }
 
-
-#userImg {
-    border: 1pt solid rgb(255, 255, 255);
-    border-radius: 50%;
-    min-width:100px;
-    width:100px;
-    height:100px;
+ion-list {
+  height: 85%;
+  overflow: scroll
 }
+
 
 #leaderStarIcon {
   color: gold;
