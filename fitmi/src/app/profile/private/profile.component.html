@@ -74,18 +74,24 @@
       <ion-row>
         <ion-col size="12">
           <ion-item lines="none">
-            <ion-label>
+            <ion-label *ngIf="!this.isModifyingGender">
               <h4 class="label">Sesso</h4>
             </ion-label>
             <div *ngIf="this.isModifyingGender; else showGenderValue">
-              <ion-segment (ionChange)="genderSegmentChanged($event)">
-                <ion-segment-button value="M">
-                  <ion-label>M</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="F">
-                  <ion-label>F</ion-label>
-                </ion-segment-button>
-              </ion-segment>
+              <ion-list>
+                <ion-radio-group [(ngModel)]="newGender">
+                  <ion-item>
+                    <ion-label>M</ion-label>
+                    <ion-radio value="M"></ion-radio>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>F</ion-label>
+                    <ion-radio value="F"></ion-radio>
+                  </ion-item>
+                </ion-radio-group>
+              </ion-list>
+   
+
             </div>
             <ng-template #showGenderValue>
               <ion-label>
@@ -107,13 +113,14 @@
       <ion-row>
         <ion-col size="12">
           <ion-item lines="none">
-            <ion-label>
+            <ion-label *ngIf="!this.isModifyingAge">
               <h4 class="label">Età</h4>
             </ion-label>
 
             <div *ngIf="this.isModifyingAge; else showAgeValue">
-              <ion-item >
-                <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newBirthDate" placeholder="Data di nascita"></ion-datetime>
+              <ion-item>
+                <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="newBirthDate" placeholder="Data di nascita">
+                </ion-datetime>
               </ion-item>
             </div>
             <ng-template #showAgeValue>
@@ -135,7 +142,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-item lines="none">
-            <ion-label>
+            <ion-label *ngIf="!this.isModifyingHeight">
               <h4 class="label">Altezza</h4>
             </ion-label>
             <div *ngIf="this.isModifyingHeight; else showHeightValue">
@@ -162,12 +169,12 @@
       <ion-row>
         <ion-col size="12">
           <ion-item lines="none">
-            <ion-label>
+            <ion-label *ngIf="!this.isModifyingWeight">
               <h4 class="label">Peso</h4>
             </ion-label>
             <div *ngIf="this.isModifyingWeight; else showWeightValue">
               <ion-item margin>
-                <ion-input [(ngModel)]="newWeight" type="number"  placeholder="{{user.weight}}">
+                <ion-input [(ngModel)]="newWeight" type="number" placeholder="{{user.weight}}">
                 </ion-input>
               </ion-item>
             </div>

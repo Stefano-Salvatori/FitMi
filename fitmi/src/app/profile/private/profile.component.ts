@@ -4,7 +4,7 @@ import { AuthService } from '../../auth/auth.service';
 import { CircleProgressComponent } from 'ng-circle-progress';
 import { Badge } from 'src/model/badge';
 import { serverAddress } from 'src/server-data';
-import { ModalController, PopoverController } from '@ionic/angular';
+import { ModalController, PopoverController, ToastController } from '@ionic/angular';
 import { ProfileImageComponent } from './../profile-image/profile-image.component';
 import { HttpClientService } from '../../http-client.service';
 import { BadgeService } from '../../badge.service';
@@ -28,7 +28,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   userBadges: Badge<any>[] = [];
   lockedBadges: Badge<any>[] = [];
   server = serverAddress;
-
+  public isModifyingGender = false;
+  public isModifyingHeight = false;
+  public isModifyingWeight = false;
+  public isModifyingAge = false;
+  public newWeight: number;
+  public newGender: string;
+  public newBirthDate: string;
+  public newHeight: number;
 
   constructor(private auth: AuthService,
               private http: HttpClientService,
@@ -109,10 +116,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     return await popover.present();
   }
 
-  public isModifyingGender = false;
-  public isModifyingHeight = false;
-  public isModifyingWeight = false;
-  public isModifyingAge = false;
+
 
   public onModifyInfoClick(info: string) {
     switch (info) {
@@ -124,10 +128,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public newWeight: number;
-  public newGender: string;
-  public newBirthDate: string;
-  public newHeight: number;
+
 
 
   public modifyConfirm(info: string) {
@@ -156,11 +157,27 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
     this.http.put('/users/' + currUser._id, newUser).subscribe(() => {
       this.user = this.auth.getUser();
+      this.showToastModificationConfirmed();
     });
 
   }
 
+  private showToastModificationConfirmed(){
+    new ToastController().create({
+      color: 'dark',
+      animated: true,
+      message: 'Modifica effettuata',
+      duration: 3000,
+      position: 'bottom',
+      showCloseButton: true,
+      closeButtonText: 'X'
+    }).then(t => {
+      t.present();
+    });
+  }
+
   genderSegmentChanged(event) {
+    console.log(event);
     this.newGender = event.target.value;
 
   }

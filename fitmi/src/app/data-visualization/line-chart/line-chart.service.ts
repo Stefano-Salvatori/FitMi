@@ -73,7 +73,7 @@ export class LineChartService {
     const dataWindow = this.data.slice(0, Math.min(this.data.length, this.dataWindowSize));
 
     this.x = this.xScale.domain(d3.extent(dataWindow, d => d.date));
-    this.y = this.yScale.domain([0, d3.max(dataWindow, d => d.close)]);
+    this.y = this.yScale.domain([0, d3.max(dataWindow, d => d.close) + 20]);
 
     // add the Y gridlines
     this.yGridiLines = this.svg.append('g').attr('class', 'grid');

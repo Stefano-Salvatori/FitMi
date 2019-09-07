@@ -22,10 +22,10 @@ ion-segment {
   }
 }
 
-
-agm-map {
+:host::ng-deep agm-map {
   height: 200px;
   width: 100%;
+
 }
 
 

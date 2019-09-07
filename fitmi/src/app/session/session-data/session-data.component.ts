@@ -28,12 +28,18 @@ export class SessionDataComponent implements OnInit, OnDestroy {
   private heartRateLineChart: LineChartService;
   private activityChecker: ActivityChecker;
 
-  constructor(private session: SessionDataService, private ngZone: NgZone, private alertController: AlertController) {
-    this.activityChecker = new ActivityChecker(5000);
-    this.activityChecker.onNoActivityObserved(() => {
-      this.session.makeBandVibrate();
-      this.presentAlert();
-    });
+  constructor(private session: SessionDataService,
+              private ngZone: NgZone,
+              private alertController: AlertController) {
+
+    setTimeout(() => {
+      this.activityChecker = new ActivityChecker(5000);
+      this.activityChecker.onNoActivityObserved(() => {
+        this.session.makeBandVibrate();
+        this.presentAlert();
+      });
+    }, 15000);
+
   }
 
   private async presentAlert() {
@@ -70,7 +76,9 @@ export class SessionDataComponent implements OnInit, OnDestroy {
       .subscribe(hrv => {
         this.ngZone.run(() => {
           this.setHeartbeat(hrv.value);
-          this.activityChecker.updateHeartRate(hrv);
+          if (this.activityChecker) {
+            this.activityChecker.updateHeartRate(hrv);
+          }
           this.heartRateLineChart.pushDynamic([new Date(), hrv.value]);
         });
       });

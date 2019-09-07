@@ -116,7 +116,7 @@ export class SessionDataService {
   }
 
   private stopGeolocationMonitoring() {
-    if (this.geolocationObserver){
+    if (this.geolocationObserver) {
       this.geolocationObserver.unsubscribe();
     }
   }
@@ -125,6 +125,8 @@ export class SessionDataService {
   public getGpsPath(): Coordinates[] {
     return this.currentSession.gps_path;
   }
+
+
   private saveGeoPosition() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.currentSession.gps_path.push(resp.coords);
