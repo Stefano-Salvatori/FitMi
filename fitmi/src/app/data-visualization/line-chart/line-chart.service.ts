@@ -55,7 +55,7 @@ export class LineChartService {
 
   public setup(htmlSelector: string): void {
     this.host = d3.select(htmlSelector);
-    this.margin = { top: 20, right: 40, bottom: 30, left: 40 };
+    this.margin = { top: 20, right: 10, bottom: 0, left: 20 };
     this.width = window.innerWidth - this.margin.left - this.margin.right;
     this.height = window.innerHeight / 3 - this.margin.top - this.margin.bottom;
     this.xScale = d3.scaleTime().range([0, this.width]);
@@ -73,7 +73,7 @@ export class LineChartService {
     const dataWindow = this.data.slice(0, Math.min(this.data.length, this.dataWindowSize));
 
     this.x = this.xScale.domain(d3.extent(dataWindow, d => d.date));
-    this.y = this.yScale.domain([0, d3.max(dataWindow, d => d.close)]);
+    this.y = this.yScale.domain([0, d3.max(dataWindow, d => d.close) + 20]);
 
     // add the Y gridlines
     this.yGridiLines = this.svg.append('g').attr('class', 'grid');

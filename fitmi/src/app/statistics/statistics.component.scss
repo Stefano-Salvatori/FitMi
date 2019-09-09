@@ -16,13 +16,16 @@ text-align: center;
   color: var(--ion-color-medium);
 }
 
-ion-label {
-  font-size: 12px;
+ion-segment {
+  ion-label {
+    font-size: 0.8em;
+  }
 }
 
-agm-map {
+:host::ng-deep agm-map {
   height: 200px;
   width: 100%;
+
 }
 
 

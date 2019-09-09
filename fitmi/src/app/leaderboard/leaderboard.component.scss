@@ -1,33 +1,41 @@
 
 footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   background: var(--ion-color-dark);
   color: white;
   height: 12%;
 
+  ion-grid {
+    height: 100%;
+  }
 
-}
+  ion-row {
+    height: 100%;
+    align-items: center;
+  }
 
-.flex-container {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-   display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-   justify-content: space-between;
-}
+  ion-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
 
-.flex-container > div {
-    margin: 20px;
-}
-
-#userImg {
-    border: 1pt solid rgb(255, 255, 255);
+  img {
+    transform: scale(0.6);
+    border: 3pt solid white;
     border-radius: 50%;
-    min-width:100px;
-      width:100px;
-  height:100px;
+
+  }
 }
+
+ion-list {
+  height: 85%;
+  overflow: scroll
+}
+
 
 #leaderStarIcon {
   color: gold;

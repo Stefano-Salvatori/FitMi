@@ -32,7 +32,6 @@ export class DeviceConnectionComponent implements OnInit {
     this.ble.initialize().subscribe(async () => {
       this.miBand.getConnectionStateObservable()
         .subscribe(connectionState => {
-          console.log(connectionState);
           this.ngZone.run(() => this.mibandConnection = connectionState);
         });
 

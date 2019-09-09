@@ -74,6 +74,6 @@ export class SessionGoalComponent implements OnInit, AfterViewInit {
     const step = 100 / this.goal.threshold;
     this.progress.title = '' + (this.progress.percent / step).toFixed(0) + '/' + this.goal.threshold;
     this.progress.render();
-    this.progress.animate(previousPrecent, this.progress.percent);
+    // this.progress.animate(previousPrecent, this.progress.percent);
   }
 }

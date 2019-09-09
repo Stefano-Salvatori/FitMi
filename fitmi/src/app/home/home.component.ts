@@ -23,8 +23,8 @@ export class HomeComponent implements OnInit {
 
   constructor(private router: Router,
               private miBand: MiBandService,
-              private sessionData: SessionDataService,
-              private route: ActivatedRoute) {
+              private sessionData: SessionDataService) {
+
   }
 
 

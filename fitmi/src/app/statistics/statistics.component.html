@@ -90,7 +90,11 @@
               <h4>Percorso</h4>
               </ion-item>
               <ion-item>
-                <agm-map [latitude]="this.lastSession.gps_path[0].latitude" [longitude]="this.lastSession.gps_path[0].longitude">
+                <agm-map 
+                [disableDefaultUI] = "true"
+                [zoom]="15"
+                [latitude]="this.lastSession.gps_path[0].latitude" 
+                [longitude]="this.lastSession.gps_path[0].longitude">
                   <agm-polyline strokeColor="red">
                     <agm-polyline-point *ngFor="let coord of this.lastSession.gps_path" [latitude]="coord.latitude"
                       [longitude]="coord.longitude">

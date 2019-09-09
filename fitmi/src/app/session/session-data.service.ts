@@ -10,6 +10,8 @@ import { SessionType } from 'src/model/session-type';
 import { BadgeService } from '../badge.service';
 import { SessionBadge, GlobalBadge, Badge } from 'src/model/badge';
 import { User } from 'src/model/user';
+import { interval } from 'rxjs';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -51,11 +53,14 @@ export class SessionDataService {
   };
   private oldScore = 0;
   private sessionScore = 0;
+  geolocationObserver: any;
+
 
   constructor(private miBand: MiBandService,
               private http: HttpClientService,
               private badgesService: BadgeService,
-              private auth: AuthService) {
+              private auth: AuthService,
+              private geolocation: Geolocation) {
 
   }
 
@@ -90,8 +95,49 @@ export class SessionDataService {
       this.pedometerData.next(deltaPedometerData);
     }, SessionDataService.POLLING_FREQ);
 
+    if (this.currentSession.type === SessionType.CYCLING ||
+      this.currentSession.type === SessionType.RUN ||
+      this.currentSession.type === SessionType.WALK ) {
+    this.startGeolocationMonitoring();
+    }
   }
 
+  private startGeolocationMonitoring() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+
+      // save position each 5s
+      this.geolocationObserver = interval(5000)
+      .subscribe(() => this.saveGeoPosition());
+
+
+    }).catch((error) => {
+     this.onGeoLocationError(error);
+    });
+  }
+
+  private stopGeolocationMonitoring() {
+    if (this.geolocationObserver) {
+      this.geolocationObserver.unsubscribe();
+    }
+  }
+  
+
+  public getGpsPath(): Coordinates[] {
+    return this.currentSession.gps_path;
+  }
+
+
+  private saveGeoPosition() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.currentSession.gps_path.push(resp.coords);
+    }).catch((error) => {
+     this.onGeoLocationError(error);
+    });
+  }
+
+  private onGeoLocationError(error) {
+    console.log('Error getting location', error);
+  }
   public makeBandVibrate(): void {
     this.miBand.sendNotification(Notification.VIBRATE);
   }
@@ -100,6 +146,7 @@ export class SessionDataService {
     this.currentSession.end = new Date();
     this.miBand.stopHeartRateMonitoring();
     this.miBand.unsubscribeHeartRate();
+    this.stopGeolocationMonitoring();
     clearInterval(this.pedometerDataTimer);
 
     await this.saveCurrentSession();
@@ -160,11 +207,6 @@ export class SessionDataService {
   get endTime() {
     return this.currentSession.end;
   }
-
-  public updateGpsPath(newCoord: Coordinates) {
-    this.currentSession.gps_path.push(newCoord);
-  }
-
   private saveCurrentSession(): Promise<void> {
     const currentUser = this.auth.getUser();
     return new Promise((resolve, reject) => {
