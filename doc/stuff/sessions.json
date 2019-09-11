@@ -1,0 +1,22 @@
+{
+    "_id": "",
+    "start": "",
+    "end": "",
+    "type": "",
+    "steps": "",
+    "calories": "",
+    "distance": "",
+    "heart_frequency": [
+        {
+            "timestamp": "",
+            "value": ""
+        }
+    ],
+    "position": [
+        {
+            "latitude": "",
+            "longitude": "",
+            "timestamp": ""
+        }
+    ]
+}

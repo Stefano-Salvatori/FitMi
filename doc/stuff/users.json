@@ -1,0 +1,45 @@
+{
+    "_id": "ObjectId",
+    "username": "",
+    "password":"",
+    "salt": "",
+    "firstName": "",
+    "lastName": "",
+    "gender": "",
+    "birthDate": "",
+    "height": "",
+    "weight": "",
+    "score": "",
+    "badges": [1,2,3],
+    "statistics": {
+        "total_calories": "",
+        "total_steps": "",
+        "total_km": "",
+        "total_sessions": "",
+        "session_streak": ""
+    },
+    "sessions": [
+        1,
+        2,
+        3
+    ],
+    "last_session": {
+        "start": "",
+        "end": "",
+        "type": "",
+        "steps": "",
+        "heart_frequency": [
+            {
+                "time": "",
+                "value": ""
+            }
+        ],
+        "position": [
+            {
+                "latitude": "",
+                "longitude": "",
+                "time": ""
+            }
+        ]
+    }
+}
